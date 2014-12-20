@@ -1,0 +1,11 @@
+﻿@model IEnumerable<TenantSystem.Models.Tenant>
+
+@{
+    ViewBag.Title = "Tenants";
+}
+
+<ul>
+    <li>@Html.ActionLink("Add Tenant", "AddTenant")</li>
+    <li>@Html.ActionLink("Show Tenant Details", "ShowTenants")</li>
+    <li>@Html.ActionLink("Add Tenant Meter Reading", "AddTenantMeterReading")</li>
+</ul>

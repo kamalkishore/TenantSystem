@@ -1,0 +1,15 @@
+﻿@model IEnumerable<TenantSystem.Models.Tenant>
+
+@{
+    ViewBag.Title = "Tenant Details";
+}
+
+<h2>Tenant Details</h2>
+
+<p>
+    @Html.ActionLink("Add New", "AddTenant")
+</p>
+
+@foreach (var item in Model) {
+    @Html.Partial("_TenantDetailsTemplate", item)
+}

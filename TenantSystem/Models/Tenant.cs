@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+
+namespace TenantSystem.Models
+{
+    public class Tenant
+    {
+        public int Id { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        public string FirstName { get; set; }
+
+        [DataType(DataType.Text)]
+        public string MiddleName { get; set; }        
+        
+        [Required]
+        [DataType(DataType.Text)]        
+        public string LastName { get; set; }        
+        
+        [DataType(DataType.Text)]
+        public string NickName { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
+        
+        public int MeterId { get; set; }
+                
+        public ElectricMeter Meter { get; set; }
+        public virtual ICollection<TenantMeterReading> MeterReading { get; set; }
+
+        public string FullName { get { return this.FirstName + " " + this.LastName; } }
+    }
+}
