@@ -24,19 +24,30 @@
         <div class="editor-label">
             @Html.Label("Tenant")
         </div>
-        <div class="editor-field">
-            @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
-            @Html.ValidationMessageFor(model => model.TenantId)
-        </div>
+        @*@Html.BeginForm("GetPeviousMonthReading","Tenant")
+        {*@
+            <div class="editor-field">
+                @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
+                @Html.ValidationMessageFor(model => model.TenantId)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MeterId)
+            <div class="editor-label">
+                @Html.LabelFor(model => model.MeterId)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.MeterId, new { @readonly = "readOnly" })
+                
+                @Html.ValidationMessageFor(model => model.MeterId)
+            </div>
+        @*}*@
+
+        <div class="editor-lable">
+            @Html.LabelFor(model=>model.PreviousMeterReading)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.MeterId)
-            @Html.ValidationMessageFor(model => model.MeterId)
-        </div>
+            @Html.TextBoxFor(model=>model.PreviousMeterReading, new {@readonly = "readOnly"})
 
+        </div>
         <div class="editor-label">
             @Html.LabelFor(model=>model.PerUnitPrice)
         </div>
@@ -46,14 +57,30 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.MeterReading)
+            @Html.LabelFor(model => model.CurrentMeterReading)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.MeterReading)
-            @Html.ValidationMessageFor(model => model.MeterReading)
+            @Html.EditorFor(model => model.CurrentMeterReading)
+            @Html.ValidationMessageFor(model => model.CurrentMeterReading)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AmountPayable)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.AmountPayable, new{ @readonly = "readOnly"})
+            @Html.ValidationMessageFor(model => model.AmountPayable)
+        </div>
+        
+        <div class="calculated-amount-label">Amount Payable :  </div>
+        <div class="calculated-amount">            
+            0
+        </div>
 
+        <div>
+
+        </div>
+        
         <p>
             <input type="submit" value="Create" />
         </p>
@@ -66,18 +93,62 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+
+            $("#MeterId").val(1);
+
+            $('#TenantId').change(function () {
+                console.log(this.value);                
+
+                var options = {
+                    url: "GetPreviousMeterReading",
+                    type : "get",                    
+                    datatype: "json",
+                    data: { Id: this.value },
+                    success: function (data) {
+                        console.log(data.MeterReading);
+                        $("#PreviousMeterReading").val(data.MeterReading);
+                    },
+                    error: function (xhr, event) {
+                        console.log(xhr + " " + event);
+                    }
+                };
+
+                $.ajax(options)
+                //$.ajax(options).done(function(data){
+                //    console.log(data);
+                //});
+
+                $.ajaxError(function (event, xhr) {
+                    console.log(xhr.status + " : " + event.status); 
+                });
+            });
+
+            $('#CurrentMeterReading').keyup(function (e) {
+                CalculateAmount();
+            });
+
+            $("#PerUnitPrice").change(function () {
+                CalculateAmount();
+            });
+
+            function CalculateAmount() {
+                var perUnit = $('#PerUnitPrice').val();
+                var meterReading = $('#CurrentMeterReading').val() - $('#PreviousMeterReading').val();
+                console.log(meterReading);
+                var calculatedAmount = perUnit * meterReading;
+                console.log("Amount payable : " + calculatedAmount);
+
+                $('.calculated-amount').text(meterReading + " * " + perUnit + " : " +calculatedAmount);
+                $("#AmountPayable").val(calculatedAmount);
+
+                if (!$.isNumeric(perUnit) && (!$.isNumeric(meterReading)))
+                { $('.calculated-amount').text(calculatedAmount); }
+            }
+
+        });
+</script>
 }
 
-<script type="text/javascript">
-    $.ready(function () {
-        alert("working");
-        $('#MeterReading').on('change', function (e) {
-            var perUnit = $('#PricePerUnit').val();
-            var meterReading = $('#MeterReading').val();
-
-            if (!isNaN(perUnit) && (!isNaN(meterReading)))
-            { alert(perUnit * meterReading); }
-        });
-
-    });
-</script>

@@ -754,3 +754,40 @@ tr.pager td {
             margin: 0;
         }
 }
+
+.calculated-amount-label {
+font-size : 30px;
+margin-right : 5px;
+float: left;
+}
+
+.calculated-amount {
+font-size : 30px;
+}
+
+/*---------------------------------------------------------------------------*/
+.tenantbill-template-container {
+border: solid black 1px;
+margin-bottom: 50px;
+float:left;
+display:block;
+}
+
+.display-tenantbill {
+width:400px;
+overflow:auto;
+}
+
+.display-label-tenantbill {
+float:left;
+margin-right : 100px;
+/*border: solid black 1px;*/
+}
+
+.display-field-tenantbill {
+float:right;
+/*text-align:left;*/
+/*width:50px;*/
+/*border: solid black 1px;*/
+margin-right:10px;
+}

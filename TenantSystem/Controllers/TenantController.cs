@@ -54,8 +54,18 @@ namespace TenantSystem.Controllers
             ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
                                                                     {
                                                                         Value = x.Id.ToString(),
-                                                                        Text = x.FirstName
+                                                                        Text = x.FullName
                                                                     });
+            ViewBag.PreviousMeterReading = _db.Tenant.Select(x => new SelectListItem
+                                                                        {
+                                                                            Value = x.MeterReading
+                                                                                     .OrderByDescending(y => y.Id)
+                                                                                     .Where(z => z.DoesBillGenerated == true)
+                                                                                     .Select(i => i.CurrentMeterReading)
+                                                                                     .FirstOrDefault()
+                                                                                     .ToString(),
+                                                                            Text = x.Id.ToString()
+                                                                        });
             ViewBag.PricePerUnit = new SelectList(new[] { 7, 6.5, 5 });
             return View();
         }
@@ -63,6 +73,7 @@ namespace TenantSystem.Controllers
         [HttpPost]
         public ActionResult AddTenantMeterReading(TenantMeterReading tenantMeterReading)
         {
+            
             if (ModelState.IsValid)
             {
                 var tenant = _db.Tenant.Find(tenantMeterReading.TenantId);
@@ -71,6 +82,71 @@ namespace TenantSystem.Controllers
             }
 
             return AddTenantMeterReading();
+        }
+
+        [HttpGet]
+        public ActionResult GetPreviousMeterReading(int Id)
+        {
+            var tenant = _db.Tenant.Find(Id);
+            var prevReading = tenant.MeterReading
+                                    .OrderByDescending(x => x.Id)
+                                    //.Where(y => y.DoesBillGenerated)
+                                    .Select(z => z.CurrentMeterReading)
+                                    .FirstOrDefault();
+            return Json(new { MeterReading = prevReading },JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpGet]
+        public ActionResult AddTenantPayment()
+        {
+            ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
+                                                {
+                                                    Value = x.Id.ToString(),
+                                                    Text = x.FirstName
+                                                });
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddTenantPayment(TenantPayment payment)
+        {
+            if (ModelState.IsValid)
+            {
+                var tenant = _db.Tenant.Find(payment.TenantId);
+                tenant.Payments.Add(payment);
+                _db.SaveChanges();
+
+            }
+            return AddTenantPayment();
+        }
+
+        [HttpGet]
+        public ActionResult ShowTenantBills()
+        {            
+            var bill = _db.Tenant
+                                .Select(x => new
+                                {
+                                    TenantId = x.Id,
+                                    FirstName = x.FirstName,
+                                    MeterReadingDetails = x.MeterReading
+                                                           .OrderBy(y=> y.Id)
+                                                           .Where(z=>z.DoesBillGenerated != true).FirstOrDefault(),
+                                    LastPayment = x.Payments.OrderByDescending(y=>y.Id).FirstOrDefault()
+                                }).ToList();
+
+            var billdata = bill.Select(x => new TenantBill
+                                                    {
+                                                        TenantId = x.TenantId,                                                        
+                                                        PreviousMonthReading = (x.MeterReadingDetails==null) ? 0 : x.MeterReadingDetails.PreviousMeterReading,
+                                                        CurrentMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.CurrentMeterReading,
+                                                        CurrentMonthPayableAmount = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.AmountPayable,
+                                                        LastPaidAmount = (x.LastPayment == null) ? 0 : x.LastPayment.Amount,
+                                                        LastPaidAmountDate = (x.LastPayment == null) ? System.DateTime.MinValue : x.LastPayment.DateOfPayment //todo need to display the blank if date is not present
+                                                    });
+
+            return View(billdata);
         }
     }
 }

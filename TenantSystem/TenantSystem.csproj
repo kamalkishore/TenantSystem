@@ -125,6 +125,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\TenantMeterReadingController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -134,13 +135,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201412201642402_InitialCreate.cs" />
-    <Compile Include="Migrations\201412201642402_InitialCreate.Designer.cs">
-      <DependentUpon>201412201642402_InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\ElectricMeter.cs" />
+    <Compile Include="Models\TenantBill.cs" />
+    <Compile Include="Models\TenantPayment.cs" />
     <Compile Include="Models\Tenant.cs" />
     <Compile Include="Models\TenantDBContext.cs" />
     <Compile Include="Models\TenantMeterReading.cs" />
@@ -219,7 +218,9 @@
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -238,17 +239,15 @@
     <Content Include="Views\Tenant\AddTenant.cshtml" />
     <Content Include="Views\Tenant\ShowTenants.cshtml" />
     <Content Include="Views\Tenant\AddTenantMeterReading.cshtml" />
+    <Content Include="Views\Tenant\AddTenantPayment.cshtml" />
+    <Content Include="Views\Tenant\ShowTenantBills.cshtml" />
+    <Content Include="Views\Shared\_TenantBillTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201412201642402_InitialCreate.resx">
-      <DependentUpon>201412201642402_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

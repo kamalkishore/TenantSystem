@@ -31,7 +31,13 @@ namespace TenantSystem.Models
                 
         public ElectricMeter Meter { get; set; }
         public virtual ICollection<TenantMeterReading> MeterReading { get; set; }
+        public virtual ICollection<TenantPayment> Payments { get; set; }
+        public virtual ICollection<TenantBill> Bills { get; set; }
 
-        public string FullName { get { return this.FirstName + " " + this.LastName; } }
+        public string FullName
+        {
+            get { return this.FirstName + " " + this.LastName; }
+            set { value = this.FirstName + " " + this.LastName; }
+        }
     }
 }

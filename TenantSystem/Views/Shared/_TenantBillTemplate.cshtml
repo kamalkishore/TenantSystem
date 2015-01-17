@@ -1,0 +1,115 @@
+﻿@model TenantSystem.Models.TenantBill
+
+<fieldset>
+    <legend>TenantBill</legend>
+
+    <div class="tenantbill-template-container">
+        <div class="display-tenantbill">
+        <div class="display-label-tenantbill">
+             @Html.DisplayNameFor(model => model.TenantId) : 
+        </div>
+        <div class="display-field-tenantbill">
+            @Html.DisplayFor(model => model.TenantId)
+        </div>
+        </div>
+    
+        <div class="display-tenantbill">
+            <div class="display-label-tenantbill">
+                 @Html.DisplayNameFor(model => model.PreviousMonthReading)
+            </div>
+            <div class="display-field-tenantbill">
+                @Html.DisplayFor(model => model.PreviousMonthReading)
+            </div>
+        </div>
+
+        <div class="display-tenantbill">
+            <div class="display-label-tenantbill">
+                 @Html.DisplayNameFor(model => model.CurrentMonthReading) : 
+            </div>
+            <div class="display-field-tenantbill">
+                @Html.DisplayFor(model => model.CurrentMonthReading)
+            </div>
+        </div>
+
+        <div class="display-tenantbill">
+            <div class="display-label-tenantbill">
+                 @Html.DisplayNameFor(model => model.CurrentMonthPayableAmount) : 
+            </div>
+            <div class="display-field-tenantbill">
+                @Html.DisplayFor(model => model.CurrentMonthPayableAmount)
+            </div>
+        </div>
+
+        <div class="display-tenantbill">
+            <div class="display-label-tenantbill">
+                 @Html.DisplayNameFor(model => model.LastPaidAmount) : 
+            </div>
+            <div class="display-field-tenantbill">
+                @Html.DisplayFor(model => model.LastPaidAmount)
+            </div>
+        </div>
+
+        <div class="display-tenantbill">
+            <div class="display-label-tenantbill">
+                 @Html.DisplayNameFor(model => model.LastPaidAmountDate) : 
+            </div>
+            <div class="display-field-tenantbill">
+                @Html.DisplayFor(model => model.LastPaidAmountDate)
+            </div>
+        </div>
+    </div>
+    
+
+    @*<div class="display-label">
+         @Html.DisplayNameFor(model => model.PreviousMonthReading)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PreviousMonthReading)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CurrentMonthReading)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CurrentMonthReading)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastPaidAmount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastPaidAmount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.LastPaidAmountDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastPaidAmountDate)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CurrentMonthPayableAmount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CurrentMonthPayableAmount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PreviousMonthPendingAmount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PreviousMonthPendingAmount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TotalPayableAmount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TotalPayableAmount)
+    </div>*@
+</fieldset>
+@*<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

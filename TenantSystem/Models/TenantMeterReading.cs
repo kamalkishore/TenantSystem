@@ -16,12 +16,15 @@ namespace TenantSystem.Models
         [Required]
         public decimal PerUnitPrice { get; set; }
         [Required]
-        [DataType(DataType.Text)]
-        public long MeterReading { get; set; }
-        public decimal AmountPayable { set { value = (this.MeterReading * this.PerUnitPrice); } }
+        [DataType(DataType.Currency)]
+        public long CurrentMeterReading { get; set; }
+        [DataType(DataType.Currency)]
+        public long PreviousMeterReading { get; set; }
+        public double AmountPayable { get; set; }
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateOfMeterReading { get; set; }
+        public bool DoesBillGenerated { get; set; }
         
     }
 }

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<TenantSystem.Models.TenantBill>
+
+@{
+    ViewBag.Title = "ShowTenantBills";
+}
+
+<br />
+<h2>Show Tenant Bills</h2><br /><br />
+
+@foreach (var item in Model) {
+    @Html.Partial("_TenantBillTemplate", item)    
+}
+
+
