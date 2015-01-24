@@ -81,7 +81,7 @@ namespace TenantSystem.Controllers
                 _db.SaveChanges();
             }
 
-            return AddTenantMeterReading();
+            return RedirectToAction("AddTenantMeterReading");
         }
 
         [HttpGet]
@@ -90,7 +90,6 @@ namespace TenantSystem.Controllers
             var tenant = _db.Tenant.Find(Id);
             var prevReading = tenant.MeterReading
                                     .OrderByDescending(x => x.Id)
-                                    //.Where(y => y.DoesBillGenerated)
                                     .Select(z => z.CurrentMeterReading)
                                     .FirstOrDefault();
             return Json(new { MeterReading = prevReading },JsonRequestBehavior.AllowGet);
@@ -119,31 +118,40 @@ namespace TenantSystem.Controllers
                 _db.SaveChanges();
 
             }
-            return AddTenantPayment();
+            return RedirectToAction("AddTenantPayment");
         }
 
         [HttpGet]
         public ActionResult ShowTenantBills()
-        {            
+        {
+            var sum = _db.Tenant.Find(4).MeterReading.Select(x => x.AmountPayable).Sum();
             var bill = _db.Tenant
                                 .Select(x => new
                                 {
                                     TenantId = x.Id,
-                                    FirstName = x.FirstName,
+                                    Name = x.FullName,
                                     MeterReadingDetails = x.MeterReading
                                                            .OrderBy(y=> y.Id)
                                                            .Where(z=>z.DoesBillGenerated != true).FirstOrDefault(),
-                                    LastPayment = x.Payments.OrderByDescending(y=>y.Id).FirstOrDefault()
+                                    LastPayment = x.Payments.OrderByDescending(y=>y.Id).FirstOrDefault(),
+                                    PreviousMonthPendingAmount = x.MeterReading.OrderByDescending(z=>z.Id).Skip(1).Select(y=>y.AmountPayable).DefaultIfEmpty().Sum() - 
+                                                                    x.Payments.Select(y=>y.Amount).DefaultIfEmpty().Sum()
                                 }).ToList();
 
-            var billdata = bill.Select(x => new TenantBill
+            var billdata = bill
+                            .Select(x => new TenantBill
                                                     {
                                                         TenantId = x.TenantId,                                                        
                                                         PreviousMonthReading = (x.MeterReadingDetails==null) ? 0 : x.MeterReadingDetails.PreviousMeterReading,
                                                         CurrentMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.CurrentMeterReading,
                                                         CurrentMonthPayableAmount = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.AmountPayable,
+                                                        CurrentMonthReadingDate = (x.MeterReadingDetails == null) ? DateTime.MinValue : x.MeterReadingDetails.DateOfMeterReading,
                                                         LastPaidAmount = (x.LastPayment == null) ? 0 : x.LastPayment.Amount,
-                                                        LastPaidAmountDate = (x.LastPayment == null) ? System.DateTime.MinValue : x.LastPayment.DateOfPayment //todo need to display the blank if date is not present
+                                                        LastPaidAmountDate = (x.LastPayment == null) ? System.DateTime.MinValue : x.LastPayment.DateOfPayment,//todo need to display the blank if date is not present
+                                                        PreviousMonthPendingAmount = x.PreviousMonthPendingAmount,
+                                                        TotalPayableAmount = x.PreviousMonthPendingAmount + x.MeterReadingDetails.AmountPayable,
+                                                        TenantName=x.Name,
+                                                        PerUnitPrice=x.MeterReadingDetails.PerUnitPrice
                                                     });
 
             return View(billdata);

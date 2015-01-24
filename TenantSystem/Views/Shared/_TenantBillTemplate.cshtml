@@ -1,115 +1,84 @@
 ﻿@model TenantSystem.Models.TenantBill
 
-<fieldset>
-    <legend>TenantBill</legend>
+<table class="tenant-bill-template">
+    <tr>        
+        <td colspan="3">
+            @Html.DisplayFor(model=>model.TenantName)
+        </td>        
+    </tr>
+    <tr class="border-tr">
+        <td colspan="3">
+            Electricity Bill for Month of
+        </td>
 
-    <div class="tenantbill-template-container">
-        <div class="display-tenantbill">
-        <div class="display-label-tenantbill">
-             @Html.DisplayNameFor(model => model.TenantId) : 
-        </div>
-        <div class="display-field-tenantbill">
-            @Html.DisplayFor(model => model.TenantId)
-        </div>
-        </div>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.CurrentMonthReading) (@Html.DisplayFor(model => model.CurrentMonthReadingDate))
+        </td>
+        <td class="arrow"></td>
+        <td>
+            @Html.DisplayFor(model => model.CurrentMonthReading)
+        </td>
+    </tr>
     
-        <div class="display-tenantbill">
-            <div class="display-label-tenantbill">
-                 @Html.DisplayNameFor(model => model.PreviousMonthReading)
-            </div>
-            <div class="display-field-tenantbill">
-                @Html.DisplayFor(model => model.PreviousMonthReading)
-            </div>
-        </div>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.PreviousMonthReading)
+        </td>
+        <td class="arrow"></td>
+        <td>
+            @Html.DisplayFor(model => model.PreviousMonthReading)
+        </td>
+        </tr>
 
-        <div class="display-tenantbill">
-            <div class="display-label-tenantbill">
-                 @Html.DisplayNameFor(model => model.CurrentMonthReading) : 
-            </div>
-            <div class="display-field-tenantbill">
-                @Html.DisplayFor(model => model.CurrentMonthReading)
-            </div>
-        </div>
+    <tr class="border-tr">
+        <td>
+            @Html.DisplayNameFor(model => model.CurrentMonthPayableAmount) (Rs @Html.DisplayFor(model => model.PerUnitPrice) Per Unit)
+        </td>
+        <td class="arrow"></td>
+        <td>
+            @Html.DisplayFor(model => model.CurrentMonthPayableAmount)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.PreviousMonthPendingAmount)
+        </td>
+        <td class="arrow"></td>
+        <td>
+            @Html.DisplayFor(model => model.PreviousMonthPendingAmount)
+        </td>
+    </tr>
+        <tr>
+        <td>
+            @Html.DisplayNameFor(model => model.LastPaidAmount) in @Html.DisplayFor(model => model.LastPaidAmountDate)
+        </td>
+        <td class="arrow"></td>
+        <td>
+            @Html.DisplayFor(model => model.LastPaidAmount)
+        </td>
+    </tr>
+    <tr class="border-tr">
+        <td>
+            @Html.DisplayNameFor(model => model.TotalPayableAmount)
+        </td>
+        <td class="arrow"></td>
+        <td>
+            @Html.DisplayFor(model => model.TotalPayableAmount)
+        </td>
+    </tr> 
+</table>
 
-        <div class="display-tenantbill">
-            <div class="display-label-tenantbill">
-                 @Html.DisplayNameFor(model => model.CurrentMonthPayableAmount) : 
-            </div>
-            <div class="display-field-tenantbill">
-                @Html.DisplayFor(model => model.CurrentMonthPayableAmount)
-            </div>
-        </div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-        <div class="display-tenantbill">
-            <div class="display-label-tenantbill">
-                 @Html.DisplayNameFor(model => model.LastPaidAmount) : 
-            </div>
-            <div class="display-field-tenantbill">
-                @Html.DisplayFor(model => model.LastPaidAmount)
-            </div>
-        </div>
+    <script type="text/javascript">
+        $(function () {
 
-        <div class="display-tenantbill">
-            <div class="display-label-tenantbill">
-                 @Html.DisplayNameFor(model => model.LastPaidAmountDate) : 
-            </div>
-            <div class="display-field-tenantbill">
-                @Html.DisplayFor(model => model.LastPaidAmountDate)
-            </div>
-        </div>
-    </div>
-    
+            alert("this is working");
 
-    @*<div class="display-label">
-         @Html.DisplayNameFor(model => model.PreviousMonthReading)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PreviousMonthReading)
-    </div>
+        });
+</script>
+}
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CurrentMonthReading)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CurrentMonthReading)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastPaidAmount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastPaidAmount)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastPaidAmountDate)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastPaidAmountDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.CurrentMonthPayableAmount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CurrentMonthPayableAmount)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PreviousMonthPendingAmount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PreviousMonthPendingAmount)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.TotalPayableAmount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TotalPayableAmount)
-    </div>*@
-</fieldset>
-@*<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>*@

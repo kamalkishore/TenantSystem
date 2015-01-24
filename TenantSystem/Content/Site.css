@@ -766,26 +766,98 @@ font-size : 30px;
 }
 
 /*---------------------------------------------------------------------------*/
-.tenantbill-template-container {
+/*.tenantbill-template-container {
 border: solid black 1px;
 margin-bottom: 50px;
 float:left;
 display:block;
+font-size:20px;
 }
 
 .display-tenantbill {
-width:400px;
+width:600px;
 overflow:auto;
 }
 
 .display-label-tenantbill {
 float:left;
 margin-right : 100px;
+border: solid black 1px;
+}*/
+
+.arrow:after {
+    font-weight:bold;
+    font-size:14px;
+    content:'\27A8';    
+    /*border:1px solid black;*/
+}
+
+/*.display-field-tenantbill {
+float:right;
+/*text-align:left;*/
+/*width:50px;*/
+/*border: solid black 1px;*/
+/*margin-right:10px;*/
+/*}*/
+
+.tenant-bill-template {
+border:2px solid black;
+margin-bottom:30px;
+margin-left:10px;
+width:700px;
+font-size:14px;
+}
+
+.tenant-bill-template tr:first-child {
+text-align:center;
+font-weight:bold;
+font-size:20px;
+}
+
+/*tenant-bill-template tr {
+font-weight:bold;
+}*/
+
+.border-tr {
+border:2px solid black;
+font-weight:bold;
+font-size:medium;
+}
+
+/*table.print-friendly tr td, table.print-friendly tr th {
+    page-break-inside: avoid;
+}*/
+
+table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    thead { display:table-header-group }
+    tfoot { display:table-footer-group }
+/*---------------------------------------------------------------------------*/
+.tenant-details-container {
+border: solid black 1px;
+margin-bottom: 50px;
+float:left;
+display:block;
+margin-left:10px;
+}
+
+.display-tenant {
+width:400px;
+overflow:auto;
+}
+
+.display-label-tenant {
+float:left;
+margin-right : 100px;
+font-weight:bold;
+font-size:20px;
 /*border: solid black 1px;*/
 }
 
-.display-field-tenantbill {
+.display-field-tenant {
 float:right;
+font-size:20px;
+font-weight:bold;
 /*text-align:left;*/
 /*width:50px;*/
 /*border: solid black 1px;*/

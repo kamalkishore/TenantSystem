@@ -3,40 +3,53 @@
 <fieldset>
     <legend>Tenant Details</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.FirstName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.FirstName)
-    </div>
+    <div class="tenant-details-container">
+        <div class="display-tenant">
+            <div class="display-label-tenant">
+                @Html.DisplayNameFor(model => model.FirstName)
+            </div>
+            <div class="display-field-tenant">
+                @Html.DisplayFor(model => model.FirstName)
+            </div>
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastName)
-    </div>
+        <div class="display-tenant">
+            <div class="display-label-tenant">
+                 @Html.DisplayNameFor(model => model.LastName)
+            </div>
+            <div class="display-field-tenant">
+                @Html.DisplayFor(model => model.LastName)
+            </div>
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.MiddleName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.MiddleName)
-    </div>
+        <div class="display-tenant">
+            <div class="display-label-tenant">
+                 @Html.DisplayNameFor(model => model.MiddleName)
+            </div>
+            <div class="display-field-tenant">
+                @Html.DisplayFor(model => model.MiddleName)
+            </div>
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.NickName)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.NickName)
-    </div>
+        <div class="display-tenant">
+            <div class="display-label-tenant">
+                 @Html.DisplayNameFor(model => model.NickName)
+            </div>
+            <div class="display-field-tenant">
+                @Html.DisplayFor(model => model.NickName)
+            </div>
+        </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.PhoneNumber)
+        <div class="display-tenant">
+            <div class="display-label-tenant">
+                 @Html.DisplayNameFor(model => model.PhoneNumber)
+            </div>
+            <div class="display-field-tenant">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </div>
+        </div>
     </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.PhoneNumber)
-    </div>
+    
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
