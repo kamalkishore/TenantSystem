@@ -20,6 +20,8 @@ namespace TenantSystem.Models
         public long CurrentMeterReading { get; set; }
         [DataType(DataType.Currency)]
         public long PreviousMeterReading { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime DateOfPreviousMonthMeterReading { get; set; }
         public double AmountPayable { get; set; }
         [Required]
         [DataType(DataType.Date)]

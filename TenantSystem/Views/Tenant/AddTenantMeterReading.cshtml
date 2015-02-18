@@ -46,8 +46,15 @@
         </div>
         <div class="editor-field">
             @Html.TextBoxFor(model=>model.PreviousMeterReading, new {@readonly = "readOnly"})
-
         </div>
+
+        <div class="editor-lable">
+            @Html.LabelFor(model=>model.DateOfPreviousMonthMeterReading)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model=>model.DateOfPreviousMonthMeterReading, new {@readonly = "readOnly"})
+        </div>
+
         <div class="editor-label">
             @Html.LabelFor(model=>model.PerUnitPrice)
         </div>
@@ -82,7 +89,7 @@
         </div>
         
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Create" id ="btnSubmit"/>
         </p>
     </fieldset>
 }
@@ -96,20 +103,20 @@
 
     <script type="text/javascript">
         $(function () {
-
-            $("#MeterId").val(1);
+              
+            $("#DateOfMeterReading").val(sessionStorage["DateOfMeterReading"]);
 
             $('#TenantId').change(function () {
-                console.log(this.value);                
-
                 var options = {
                     url: "GetPreviousMeterReading",
                     type : "get",                    
                     datatype: "json",
                     data: { Id: this.value },
                     success: function (data) {
-                        console.log(data.MeterReading);
+                        console.log(data.DateOfMeterReading);
                         $("#PreviousMeterReading").val(data.MeterReading);
+                        $("#MeterId").val(data.MeterId);
+                        $("#DateOfPreviousMonthMeterReading").val(new Date(parseInt(data.DateOfMeterReading.substr(6))).toDateString());
                     },
                     error: function (xhr, event) {
                         console.log(xhr + " " + event);
@@ -147,6 +154,11 @@
                 if (!$.isNumeric(perUnit) && (!$.isNumeric(meterReading)))
                 { $('.calculated-amount').text(calculatedAmount); }
             }
+
+            $("#btnSubmit").click(function (e) {
+                var dateOfMeterReading = $("#DateOfMeterReading").val();
+                sessionStorage.setItem("DateOfMeterReading", dateOfMeterReading);
+            });
 
         });
 </script>

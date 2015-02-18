@@ -37,7 +37,7 @@ namespace TenantSystem.Controllers
                 return AddBuilding();
             }
 
-            return View(building);
+            return RedirectToAction("AddBuilding");
         }
 
         [HttpGet]
@@ -55,7 +55,7 @@ namespace TenantSystem.Controllers
                 _db.ElectricMeter.Add(meter);
                 _db.SaveChanges();                
             }
-            return AddMeter();
+            return RedirectToAction("AddMeter");
         }
 
     }

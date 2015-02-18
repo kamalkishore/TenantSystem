@@ -1,14 +1,21 @@
 ﻿@model IEnumerable<TenantSystem.Models.TenantBill>
 
 @{
-    ViewBag.Title = "ShowTenantBills";
+    ViewBag.Title = "Approve Bills";
 }
 
 <br />
-<h2>Show Tenant Bills</h2><br /><br />
+<h2>Please Approve Bills</h2><br /><br />
 
-@foreach (var item in Model) {
+@using(@Html.BeginForm()){
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+foreach (var item in Model) {
     @Html.Partial("_TenantBillTemplate", item)    
+}
+
+<input type="submit" value="Approve" />
+
 }
 
 

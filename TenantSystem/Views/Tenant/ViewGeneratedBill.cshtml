@@ -1,0 +1,24 @@
+﻿@model IEnumerable<TenantSystem.Models.TenantBill>
+
+@{
+    ViewBag.Title = "Tenant Bills";
+}
+
+<h2>Tenant Bills</h2>
+
+
+@foreach(var item in Model){
+    @Html.Partial("_TenantBillTemplate", item)
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+           // alert("view generated bills");
+        });
+
+        
+</script>
+}

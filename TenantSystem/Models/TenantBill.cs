@@ -12,6 +12,8 @@ namespace TenantSystem.Models
         public long Id { get; set; }
         public int TenantId { get; set; }
         public string TenantName { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MMM-yyyy}")]
+        public DateTime PreviousMonthReadingDate { get; set; }
         [DisplayName("Previous Month Reading")]
         public long PreviousMonthReading { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MMM-yyyy}")]
@@ -29,5 +31,6 @@ namespace TenantSystem.Models
         [DisplayName("Total Amount Payable")]
         public double TotalPayableAmount { get; set; }
         public decimal PerUnitPrice { get; set; }
+        public string MonthName { get; set; } //todo find a better way to retrieve and display month name
     }
 }

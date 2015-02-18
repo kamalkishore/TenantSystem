@@ -243,6 +243,7 @@
     <Content Include="Views\Tenant\AddTenantPayment.cshtml" />
     <Content Include="Views\Tenant\ShowTenantBills.cshtml" />
     <Content Include="Views\Shared\_TenantBillTemplate.cshtml" />
+    <Content Include="Views\Tenant\ViewGeneratedBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

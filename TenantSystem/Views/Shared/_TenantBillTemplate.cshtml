@@ -8,7 +8,7 @@
     </tr>
     <tr class="border-tr">
         <td colspan="3">
-            Electricity Bill for Month of
+            Electricity Bill for Month of @Html.DisplayFor(model=>model.MonthName)
         </td>
 
     </tr>
@@ -24,7 +24,7 @@
     
     <tr>
         <td>
-            @Html.DisplayNameFor(model => model.PreviousMonthReading)
+            @Html.DisplayNameFor(model => model.PreviousMonthReading) (@Html.DisplayFor(model => model.PreviousMonthReadingDate))
         </td>
         <td class="arrow"></td>
         <td>
@@ -69,16 +69,4 @@
         </td>
     </tr> 
 </table>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
-    <script type="text/javascript">
-        $(function () {
-
-            alert("this is working");
-
-        });
-</script>
-}
 
