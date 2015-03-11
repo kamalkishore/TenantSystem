@@ -802,7 +802,7 @@ float:right;
 
 .tenant-bill-template {
 border:2px solid black;
-margin-bottom:30px;
+margin-bottom:35px;
 margin-left:10px;
 width:700px;
 font-size:14px;
@@ -862,4 +862,14 @@ font-weight:bold;
 /*width:50px;*/
 /*border: solid black 1px;*/
 margin-right:10px;
+}
+
+/*-----------------------------------------------------------*/
+.display-generated-bill {
+font-weight:bold;
+font-size:18px;
+}
+
+.show-button-generated-bill {
+    margin-left:620px;
 }

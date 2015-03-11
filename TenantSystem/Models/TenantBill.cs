@@ -12,6 +12,7 @@ namespace TenantSystem.Models
         public long Id { get; set; }
         public int TenantId { get; set; }
         public string TenantName { get; set; }
+        
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MMM-yyyy}")]
         public DateTime PreviousMonthReadingDate { get; set; }
         [DisplayName("Previous Month Reading")]

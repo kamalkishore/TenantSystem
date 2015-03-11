@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "ViewTenantHistory";
+}
+
+<h2>View Tenant History</h2>
+
+<div>
+    <div class="display-generated-bill">
+        Select Tenant   :    @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
+    </div>
+        
+    <div id="ContainerTenantHistory"></div>
+
+    <script id="TemplateTenantHistory" type="text/x-handlebars-template">
+       <div>
+           <div>{{TenantName}}</div>
+           <table class="tenant-history-template">               
+               <tr>
+                    <th>
+                        Current Month Reading Date
+                    </th>
+                   <th>
+                        Current Month Reading
+                    </th>
+                    <th>
+                        Previous Month Reading Date
+                    </th>
+                    <th>
+                       Previous Month Reading
+                    </th>
+                    <th>
+                        Amount Payable
+                    </th>
+                   <th>
+                       Payment Date
+                   </th>
+                   <th>
+                       Payment Amount
+                   </th>
+               </tr>
+               {{#each bills}}                
+                <tr class="border-tr">                    
+                    <td>
+                        {{formatdate CurrentMonthMeterReadingDate}}
+                    </td>
+                    <td>
+                        {{CurrentMonthMeterReading}}
+                    </td>
+                    <td>
+                        {{formatdate PreviousMonthMeterReadingDate}}
+                    </td>
+                    <td>
+                        {{PreviousMonthMeterReading}}
+                    </td>
+                    <td>
+                        {{AmountPayable}}
+                    </td>
+                    <td>
+                        {{formatdate PaymentDate}}
+                    </td>
+                    <td>
+                        {{PaymentAmount}}
+                    </td>
+                </tr>
+    
+               @* <tr>
+                    <td>
+                        Previous Month Reading {{formatdate PreviousMonthReadingDate}}
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{PreviousMonthReading}}
+                    </td>
+                    </tr>
+                <tr class="border-tr">
+                    <td>
+                        Amount Payable for the Month (Rs {{PerUnitPrice}} Per Unit)
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{CurrentMonthPayableAmount}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Previous Month Pending Amount
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{PreviousMonthPendingAmount}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Last Amount Paid in {{formatdate LastPaidAmountDate}}
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{LastPaidAmount}}
+                    </td>
+                </tr>
+                <tr class="border-tr">
+                    <td>
+                        Total Amount Payable
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{TotalPayableAmount}}
+                    </td>
+                </tr> *@
+                {{/each}}
+        </table>
+          
+       </div>
+    </script>
+</div>
+
+@section Scripts {    
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/handlebars")
+    @Scripts.Render("~/bundles/moment")
+    
+    <script type="text/javascript">
+        $(function () {
+            Handlebars.registerHelper("formatdate", function (pDate) {
+                var date = new Date(parseInt(pDate.substr(6)));
+                var minDate = new Date("Jan 01 1900");
+                if (date > minDate) {
+                    return moment(date).format("DD-MMM-YYYY");
+                }
+                else {
+                    return "";
+                }
+            });
+
+            $("#TenantId").change(function () {
+                fnGetTenantHistory();
+            });
+
+            function fnSuccess(data) {
+                console.log(data);
+                var template = $("#TemplateTenantHistory").html();
+                //compile the template
+                var rendered = Handlebars.compile(template);
+                //rendered result
+                var result = rendered(data);
+                $("#ContainerTenantHistory").html(result);
+            }
+
+            function fnGetTenantHistory() {
+                try {
+
+                    var selectedtenantId = $("#TenantId").val();
+
+                    if (selectedtenantId === "") {
+                        $("#ContainerTenantBill").html("");
+                        return;
+                    }
+
+                    var optionGetHistoryOfSelectedTenant = {
+                        url: "GetHistoryOfSelectedTenant",
+                        datatype: "json",
+                        data: { tenantId: selectedtenantId },
+                        type: "GET",
+                        success: fnSuccess,
+                        error: function (xhr, event) {
+                            console.log("error");
+                        }
+                    };
+
+                    $.ajax(optionGetHistoryOfSelectedTenant);
+
+                }
+                catch (err) {
+                    alert(err);
+                }
+            }
+        });
+    
+    </script>
+}

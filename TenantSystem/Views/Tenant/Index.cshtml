@@ -3,12 +3,15 @@
 @{
     ViewBag.Title = "Tenants";
 }
-
-<ul>
+<div class="container">
+    <h1>Tenant Options</h1>
+    <ul class="nav nav-pills nav-stacked">
     <li>@Html.ActionLink("Add Tenant", "AddTenant")</li>
     <li>@Html.ActionLink("Show Tenant Details", "ShowTenants")</li>
     <li>@Html.ActionLink("Add Tenant Meter Reading", "AddTenantMeterReading")</li>
     <li>@Html.ActionLink("Add Tenant Payment", "AddTenantPayment")</li>
-    <li>@Html.ActionLink("Approve Bill", "ShowTenantBills")</li>
+    <li>@Html.ActionLink("Approve Bill", "ApproveTenantBills")</li>
     <li>@Html.ActionLink("View Generated Bill","ViewGeneratedBill")</li>
+    <li>@Html.ActionLink("View Tenant History","ViewTenantHistory")</li>
 </ul>
+</div>

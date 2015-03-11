@@ -36,6 +36,18 @@
             @Html.EditorFor(model => model.DateOfPayment)
             @Html.ValidationMessageFor(model => model.DateOfPayment)
         </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PaymentType)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.PaymentType, (SelectList)ViewBag.PaymentType)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comments)
+        </div>
 
         <p>
             <input type="submit" value="Create" />

@@ -6,19 +6,205 @@
 
 <h2>Tenant Bills</h2>
 
+<div class="container">
+    <div class="display-generated-bill">
+        Select Month   :    <input type ="month" id ="txtMonth" required />
+    </div>
+    <div class="display-generated-bill">
+        Select Tenant   :    @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
+    </div>
+    @*<div class="show-button-generated-bill">
+        <input type="button" id="btnShowBill" value="Show Bill" />
+    </div>*@
+    
+    <div id="ContainerTenantBill"></div>
 
-@foreach(var item in Model){
-    @Html.Partial("_TenantBillTemplate", item)
-}
+    <script id="TemplateTenantBill" type="text/x-handlebars-template">
+       <div>
+           {{#each bills}}
+           <table class="tenant-bill-template">
+                <tr>        
+                    <td colspan="3">
+                        {{TenantName}}
+                    </td>        
+                </tr>
+                <tr class="border-tr">
+                    <td colspan="3">
+                        Electricity Bill for Month of {{MonthName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Current Month Reading  {{formatdate CurrentMonthReadingDate}}
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{CurrentMonthReading}}
+                    </td>
+                </tr>
+    
+                <tr>
+                    <td>
+                        Previous Month Reading {{formatdate PreviousMonthReadingDate}}
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{PreviousMonthReading}}
+                    </td>
+                    </tr>
+
+                <tr class="border-tr">
+                    <td>
+                        Amount Payable for the Month (Rs {{PerUnitPrice}} Per Unit)
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{CurrentMonthPayableAmount}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Previous Month Pending Amount
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{PreviousMonthPendingAmount}}
+                    </td>
+                </tr>
+                    <tr>
+                    <td>
+                        Last Amount Paid in {{formatdate LastPaidAmountDate}}
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{LastPaidAmount}}
+                    </td>
+                </tr>
+                <tr class="border-tr">
+                    <td>
+                        Total Amount Payable
+                    </td>
+                    <td class="arrow"></td>
+                    <td>
+                        {{TotalPayableAmount}}
+                    </td>
+                </tr> 
+        </table>
+           {{/each}}
+       </div>
+    </script>
+</div>
+    
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/handlebars")
+    @Scripts.Render("~/bundles/moment")
 
     <script type="text/javascript">
-        $(function () {
-           // alert("view generated bills");
-        });
+        $(function () {            
+            
+            Handlebars.registerHelper("formatdate", function (pDate) {
+                var date = new Date(parseInt(pDate.substr(6)));
+                var minDate = new Date("Jan 01 1900");
+                if (date > minDate) {                    
+                    return "(" + moment(date).format("DD-MMMM-YYYY") + ")";
+                }
+                else {
+                    return "";
+                }
+            });
 
-        
+            $("#btnShowBill").click(function () {
+                fnGetBillDetails();
+            });
+
+            $("#TenantId").change(function () {
+                fnGetBillDetails();
+            });
+
+            $("#txtMonth").change(function () {
+                fnGetBillDetails();
+            });
+
+            function fnSuccess(data) {
+                console.log("success");
+                var template = $("#TemplateTenantBill").html();
+                //compile the template
+                var rendered = Handlebars.compile(template);
+                //rendered result
+                var result = rendered(data);
+                $("#ContainerTenantBill").html(result);
+            }
+
+            function fnGetBillDetails() {
+                try {
+                    var selectedDateValue = $("#txtMonth").val();
+                    var selectedDate = $("#txtMonth").val().split("-");
+                    var selectedtenantId = $("#TenantId").val();
+
+                    if (selectedDateValue === "" && selectedtenantId === "") {                        
+                        $("#ContainerTenantBill").html("");
+                        return;
+                    }
+
+                    //console.log(selectedDate);
+                    var optionGetBillDetailsOfSelectedMonthAndTenant = {
+                        url: "GetBillDetailsOfSelectedMonthAndTenant",
+                        datatype: "json",
+                        data: { month: selectedDate[1], year: selectedDate[0], tenantId: selectedtenantId },
+                        type: "GET",
+                        success: fnSuccess,
+                        error: function (xhr, event) {
+                            console.log("error");
+                        }
+                    };
+
+                    var optionGetBillDetailsOfSelectedTenant = {
+                        url: "GetBillDetailsOfSelectedTenant",
+                        datatype: "json",
+                        data: { tenantId: selectedtenantId },
+                        type: "GET",
+                        success: fnSuccess,
+                        error: function (xhr, event) {
+                            console.log("error");
+                        }
+                    };
+
+                    var optionGetBillDetailsOfSelectedMonth = {
+                        url: "GetBillDetailsOfSelectedMonth",
+                        datatype: "json",
+                        data: { month: selectedDate[1], year: selectedDate[0] },
+                        type: "GET",
+                        success: fnSuccess,
+                        error: function (xhr, event) {
+                            console.log("error");
+                        }
+                    };
+
+                    if (selectedDateValue !== "" && selectedtenantId !== "") {
+                        $.ajax(optionGetBillDetailsOfSelectedMonthAndTenant);
+                    }
+                    else if (selectedtenantId !== "") {
+                        $.ajax(optionGetBillDetailsOfSelectedTenant);
+                    }
+                    else {
+                        $.ajax(optionGetBillDetailsOfSelectedMonth);
+                    }
+
+                }
+                catch (err) {
+                    alert(err);
+                }
+            }
+
+            $("#btnShowBillDetails").submit(function () {
+                var selectedMonth = $("#txtMonth").val();
+                $("#hdnSelectedMonth").val(selectedMonth);
+                alert(selectedMonth);
+            });
+
+        });        
 </script>
 }

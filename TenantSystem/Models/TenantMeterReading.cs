@@ -27,6 +27,7 @@ namespace TenantSystem.Models
         [DataType(DataType.Date)]
         public DateTime DateOfMeterReading { get; set; }
         public bool DoesBillGenerated { get; set; }
+        public long PaymentId { get; set; }
         
     }
 }
