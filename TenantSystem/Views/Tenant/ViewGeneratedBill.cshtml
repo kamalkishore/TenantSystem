@@ -143,11 +143,18 @@
                     var selectedDateValue = $("#txtMonth").val();
                     var selectedDate = $("#txtMonth").val().split("-");
                     var selectedtenantId = $("#TenantId").val();
+                    var todayDate = new Date();
+                    var fullYear = todayDate.getFullYear();
 
                     if (selectedDateValue === "" && selectedtenantId === "") {                        
-                        $("#ContainerTenantBill").html("");
+                        $("#ContainerTenantBill").html("<p>No Record Found</p>");
                         return;
                     }
+                    //else if (selectedDate[0] >= fullYear.toString() 
+                    //            || (selectedDate[1] > todayDate.getMonth().toString() && selectedDate[0] === fullYear.toString())) {
+                    //    alert("Future Date is Now Allowed");
+                    //    return;
+                    //}
 
                     //console.log(selectedDate);
                     var optionGetBillDetailsOfSelectedMonthAndTenant = {

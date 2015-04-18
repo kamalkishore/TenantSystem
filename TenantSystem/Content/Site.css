@@ -802,7 +802,7 @@ float:right;
 
 .tenant-bill-template {
 border:2px solid black;
-margin-bottom:35px;
+margin-top:65px;
 margin-left:10px;
 width:700px;
 font-size:14px;
@@ -829,9 +829,9 @@ font-size:medium;
 }*/
 
 table { page-break-inside:auto }
-    tr    { page-break-inside:avoid; page-break-after:auto }
+    /*tr    { page-break-inside:avoid; page-break-after:auto }
     thead { display:table-header-group }
-    tfoot { display:table-footer-group }
+    tfoot { display:table-footer-group }*/
 /*---------------------------------------------------------------------------*/
 .tenant-details-container {
 border: solid black 1px;
@@ -868,6 +868,7 @@ margin-right:10px;
 .display-generated-bill {
 font-weight:bold;
 font-size:18px;
+margin-bottom:10px;
 }
 
 .show-button-generated-bill {
