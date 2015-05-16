@@ -4,6 +4,8 @@
     ViewBag.Title = "Tenant Details";
 }
 
+<div class="container">
+
 <h2>Tenant Details</h2>
 
 <p>
@@ -13,3 +15,5 @@
 @foreach (var item in Model) {
     @Html.Partial("_TenantDetailsTemplate", item)
 }
+
+</div>

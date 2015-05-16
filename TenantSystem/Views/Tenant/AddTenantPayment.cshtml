@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "AddTenantPayment";
 }
-
+<div class="container">
 <h2>Add Tenant Payment</h2>
 
 @using (Html.BeginForm()) {
@@ -55,8 +55,10 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div>
+        @Html.ActionLink("Back to List", "Index", "Home")
+    </div>
+
 </div>
 
 @section Scripts {

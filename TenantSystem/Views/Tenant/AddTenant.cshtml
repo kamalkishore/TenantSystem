@@ -4,7 +4,8 @@
     ViewBag.Title = "Add Tenant Details";
 }
 
-<h2>AddTenant</h2>
+<div class="container">
+<h2>Add Tenant</h2>
 
 @using(@Html.BeginForm())
 {
@@ -47,10 +48,10 @@
     <p><input type="submit" value="Create" /></p>
 }
 
-<div>
-    @Html.ActionLink("Back", "Index")
+    <div>
+        @Html.ActionLink("Back", "Index", "Home")
+    </div>
 </div>
-
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
 }

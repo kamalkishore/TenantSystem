@@ -4,6 +4,8 @@
     ViewBag.Title = "Add Building Details";
 }
 
+<div class="container">
+
 <h2>Add Building</h2>
 
 @using (@Html.BeginForm())
@@ -34,8 +36,10 @@
         <input type="submit" value="Create" />
     </p>
 }
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
 </div>
 
 @section Scripts{

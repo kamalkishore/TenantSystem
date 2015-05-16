@@ -4,7 +4,9 @@
     ViewBag.Title = "Add Electric Meter Details";
 }
 
-<h2>AddMeter</h2>
+<div class="container">
+
+<h2>Add Meter Details</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -35,10 +37,10 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
