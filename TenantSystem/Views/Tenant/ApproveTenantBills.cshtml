@@ -5,7 +5,8 @@
 }
 
 <br />
-<h2>Please Approve Bills</h2><br /><br />
+<div class="container">
+<h2>Please Approve Bills</h2>
 
 @using(@Html.BeginForm()){
     @Html.AntiForgeryToken()
@@ -14,8 +15,9 @@ foreach (var item in Model) {
     @Html.Partial("_TenantBillTemplate", item)    
 }
 
+<br />
 <input type="submit" value="Approve" />
 
 }
-
+</div>
 

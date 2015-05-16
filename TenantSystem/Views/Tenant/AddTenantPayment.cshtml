@@ -61,4 +61,19 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+            $("#DateOfPayment").change(function () {
+                var selectedDate = new Date($("#DateOfPayment").val());
+                if (selectedDate > new Date()) {
+                    alert("Selected Date Should not be greater than today's date");
+                    $("#DateOfPayment").val("");
+                    return;
+                }
+                console.log(selectedDate);
+                console.log(new Date());
+            });
+        });
+</script>
 }

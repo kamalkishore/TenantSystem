@@ -4,7 +4,7 @@
     ViewBag.Title = "AddTenantMeterReading";
 }
 
-<h2>AddTenantMeterReading</h2>
+<h2>Add Tenant Meter Reading</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -24,22 +24,20 @@
         <div class="editor-label">
             @Html.Label("Tenant")
         </div>
-        @*@Html.BeginForm("GetPeviousMonthReading","Tenant")
-        {*@
-            <div class="editor-field">
-                @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
-                @Html.ValidationMessageFor(model => model.TenantId)
-            </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.MeterId)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(model => model.MeterId, new { @readonly = "readOnly" })
+        <div class="editor-field">
+            @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
+            @Html.ValidationMessageFor(model => model.TenantId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MeterId)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.MeterId, new { @readonly = "readOnly" })
                 
-                @Html.ValidationMessageFor(model => model.MeterId)
-            </div>
-        @*}*@
+            @Html.ValidationMessageFor(model => model.MeterId)
+        </div>
 
         <div class="editor-lable">
             @Html.LabelFor(model=>model.PreviousMeterReading)
@@ -103,8 +101,17 @@
 
     <script type="text/javascript">
         $(function () {
-              
+            
             $("#DateOfMeterReading").val(sessionStorage["DateOfMeterReading"]);
+
+            $("#DateOfMeterReading").change(function () {
+                var selectedDate = new Date($("#DateOfMeterReading").val());
+                if (selectedDate > new Date()) {
+                    alert("Selected Date Should not be greater than today's date");
+                    $("#DateOfMeterReading").val("");
+                    return;
+                }
+            });
 
             $('#TenantId').change(function () {
                 var options = {
@@ -123,10 +130,7 @@
                     }
                 };
 
-                $.ajax(options)
-                //$.ajax(options).done(function(data){
-                //    console.log(data);
-                //});
+                $.ajax(options);
 
                 $.ajaxError(function (event, xhr) {
                     console.log(xhr.status + " : " + event.status); 
