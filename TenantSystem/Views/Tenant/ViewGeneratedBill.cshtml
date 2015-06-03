@@ -6,6 +6,8 @@
 
 <h2>Tenant Bills</h2>
 
+<div id="loading" style="display:none;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;"><img src="~/Content/images/loading.gif" /><br>Loading..</div>
+
 <div class="container">
     <div class="display-generated-bill">
         Select Month   :    <input type ="month" id ="txtMonth" required />
@@ -210,6 +212,13 @@
                 var selectedMonth = $("#txtMonth").val();
                 $("#hdnSelectedMonth").val(selectedMonth);
                 alert(selectedMonth);
+            });
+
+            $(document).ajaxStart(function () {
+                $("#loading").css("display", "block");
+            });
+            $(document).ajaxComplete(function () {
+                $("#loading").css("display", "none");
             });
 
         });        

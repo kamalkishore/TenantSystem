@@ -7,6 +7,8 @@
 <div class="container">
 
 <h2>Add Tenant Meter Reading</h2>
+    
+<div id="loading" style="display:none;border:1px solid black;position:absolute;top:50%;left:50%;padding:2px;"><img src="~/Content/images/loading.gif" /><br>Loading..</div>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -101,6 +103,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/moment")
 
     <script type="text/javascript">
         $(function () {
@@ -117,27 +120,36 @@
             });
 
             $('#TenantId').change(function () {
-                var options = {
-                    url: "GetPreviousMeterReading",
-                    type : "get",                    
-                    datatype: "json",
-                    data: { Id: this.value },
-                    success: function (data) {
-                        console.log(data.DateOfMeterReading);
-                        $("#PreviousMeterReading").val(data.MeterReading);
-                        $("#MeterId").val(data.MeterId);
-                        $("#DateOfPreviousMonthMeterReading").val(new Date(parseInt(data.DateOfMeterReading.substr(6))).toDateString());
-                    },
-                    error: function (xhr, event) {
-                        console.log(xhr + " " + event);
-                    }
-                };
+                //setTimeout(function () { console.log("time out runs"); }, 3000);
+                //$('#loading').html('<img src="loading.gif"> loading...');
 
-                $.ajax(options);
+                if (this.value) {
 
-                $.ajaxError(function (event, xhr) {
-                    console.log(xhr.status + " : " + event.status); 
-                });
+                    var options = {
+                        url: "GetPreviousMeterReading",
+                        type: "get",
+                        datatype: "json",
+                        data: { Id: this.value },
+                        success: function (data) {
+                            console.log(data.DateOfMeterReading);
+                            $("#PreviousMeterReading").val(data.MeterReading);
+                            $("#MeterId").val(data.MeterId);
+                            $("#DateOfPreviousMonthMeterReading").val(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
+                            console.log(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
+                            $('#loading').html('loading complete');
+                        },
+                        error: function (xhr, event) {
+                            console.log("ajax error called");
+                            console.log(xhr + " " + event);
+                            ResetControls();
+                        }
+                    };
+
+                    $.ajax(options);
+                }
+                else {
+                    ResetControls();
+                }
             });
 
             $('#CurrentMeterReading').keyup(function (e) {
@@ -166,6 +178,28 @@
                 var dateOfMeterReading = $("#DateOfMeterReading").val();
                 sessionStorage.setItem("DateOfMeterReading", dateOfMeterReading);
             });
+
+            function ResetControls() {
+                $("#PreviousMeterReading").val("");
+                $("#MeterId").val("");
+                $("#DateOfPreviousMonthMeterReading").val("");
+            }
+
+            $(document).ajaxStart(function () {
+                $("#loading").css("display", "block");
+            });
+            $(document).ajaxComplete(function () {
+                $("#loading").css("display", "none");
+            });
+
+            //$('#loading')
+            //.hide()
+            //.ajaxStart(function () {
+            //    $(this).show();
+            //})
+            //.ajaxStop(function () {
+            //    $(this).hide();
+            //});
 
         });
 </script>
