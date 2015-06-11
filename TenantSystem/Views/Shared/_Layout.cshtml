@@ -9,14 +9,44 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <ul id="menu">
+    <div class="container">
+    <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("Welcome to Tenant System", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+     
+    <div class="horizontal-distance-master-page"></div>
+    @*<ul id="menu">
         <li>@Html.ActionLink("Home", "Index","Home")</li>
         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
         <li>@Html.ActionLink("About", "About", "Home")</li>
-    </ul>
+    </ul>*@
         
-    @RenderBody()
+    @RenderBody()    
+</div>
 
+    <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - Tenant  Application</p>
+                </div>
+            </div>
+        </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/handlebars")
     @Scripts.Render("~/bundles/bootstrap")

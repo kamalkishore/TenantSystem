@@ -28,6 +28,7 @@ namespace TenantSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult AddTenant()
         {
             var listOfMeters = _db.ElectricMeter.ToList().Select(x => new SelectListItem{
@@ -50,6 +51,7 @@ namespace TenantSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult AddTenantMeterReading()
         {
             ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
@@ -101,6 +103,7 @@ namespace TenantSystem.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public ActionResult AddTenantPayment()
         {
             ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
@@ -143,6 +146,7 @@ namespace TenantSystem.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult ApproveTenantBills()
         {
             var datebll = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);

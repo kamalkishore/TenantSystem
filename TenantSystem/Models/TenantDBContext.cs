@@ -11,6 +11,7 @@ namespace TenantSystem.Models
         public DbSet<ElectricMeter> ElectricMeter { get; set; }
         public DbSet<Building> Building { get; set; }
         public DbSet<Tenant> Tenant { get; set; }
+        public DbSet<UserProfile> UserProfile { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
