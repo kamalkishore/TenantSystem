@@ -5,7 +5,7 @@
 }
 
 
-<div class="container">
+<div class="container-fluid">
 
     <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
@@ -39,7 +39,9 @@
                 @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
             </li>
         </ol>
-        <input type="submit" value="Log in" />
+        <p class="button-margin">
+        <input type="submit" class="btn btn-lg btn-primary" value="Log in" />
+            </p>
     </fieldset>
     <p>
         @Html.ActionLink("Register", "Register") if you don't have an account.

@@ -867,7 +867,7 @@ margin-right:10px;
 .display-generated-bill {
 font-weight:bold;
 font-size:18px;
-margin-bottom:10px;
+margin-bottom:5px;
 }
 
 .show-button-generated-bill {
@@ -910,4 +910,8 @@ position:absolute;
 top:40%;
 left:40%;
 padding:2px;
+}
+
+.button-margin {
+margin-top:15px;
 }

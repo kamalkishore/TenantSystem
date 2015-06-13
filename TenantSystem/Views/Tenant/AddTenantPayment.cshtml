@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "AddTenantPayment";
 }
-<div class="container">
+<div class="container-fluid">
 
 <div class="page-header">
 <h3>Add Tenant Payment</h3>
@@ -52,8 +52,8 @@
             @Html.EditorFor(model => model.Comments)
         </div>
 
-        <p>
-            <input type="submit" value="Create" />
+        <p class="button-margin">
+            <input type="submit" class="btn btn-lg btn-primary" value="Add Payment" />
         </p>
     </fieldset>
 }

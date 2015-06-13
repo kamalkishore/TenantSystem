@@ -4,7 +4,7 @@
     ViewBag.Title = "Add Building Details";
 }
 
-<div class="container">
+<div class="container-fluid">
 <div class="page-header">
 <h3>Add Building</h3>
 </div>
@@ -33,8 +33,8 @@
             @Html.ValidationMessageFor(model=>model.NumberOfFloors)
         </div>
     </fieldset>
-    <p>
-        <input type="submit" value="Create" />
+    <p class="button-margin">
+        <input type="submit" class="btn btn-lg btn-primary" value="Add Building" />
     </p>
 }
     <div>

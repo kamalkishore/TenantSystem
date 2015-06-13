@@ -4,7 +4,7 @@
 }
 
 
-<div class="container">
+<div class="container-fluid">
 
     <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
@@ -37,7 +37,9 @@
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
         </ol>
-        <input type="submit" value="Register" />
+        <p class="button-margin">
+            <input type="submit" class="btn btn-lg btn-primary" value="Register" />
+        </p>
     </fieldset>
 }
 
