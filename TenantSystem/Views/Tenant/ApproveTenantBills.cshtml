@@ -7,20 +7,22 @@
 <br />
 <div class="container-fluid">
 
-<div class="page-header">
-<h3>Please Approve Bills</h3>
-</div>
+    <div class="page-header">
+        <h3>Please Approve Bills</h3>
+    </div>
 
-@using(@Html.BeginForm()){
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-foreach (var item in Model) {
-    @Html.Partial("_TenantBillTemplate", item)    
-}
+    @using (@Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        foreach (var item in Model)
+        {
+        @Html.Partial("_TenantBillTemplate", item)    
+        }
 
-<p class="button-margin">
-<input type="submit" class="btn btn-lg btn-primary" value="Approve Bill" />
-    </p>
-}
+        <p class="button-margin">
+            <input type="submit" class="btn btn-lg btn-primary" value="Approve Bill" />
+        </p>
+    }
 </div>
 

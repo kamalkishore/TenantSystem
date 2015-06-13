@@ -3,139 +3,77 @@
 }
 
 <div class="page-header">
-<h3>View Tenant History</h3>
+    <h3>View Tenant History</h3>
 </div>
 
 <div>
     <div class="display-generated-bill">
         Select Tenant   :    @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
     </div>
-    
-    <div id="loading"><img src="~/Content/images/loading.gif" /><br>Loading..</div>    
+
+    <div id="loading">
+        <img src="~/Content/images/loading.gif" /><br>
+        Loading..</div>
 
     <div id="ContainerTenantHistory"></div>
 
     <script id="TemplateTenantHistory" type="text/x-handlebars-template">
-       <div>
-           <h1>{{TenantName}}</h1>
-           <table class="tenant-history-template table-bordered table-striped1">               
-               <tr>
-                    <th>
-                        Current Month Date
-                    </th>
-                   <th>
-                        Current Month Reading
-                    </th>
-                    <th>
-                        Previous Month Date
-                    </th>
-                    <th>
-                       Previous Month Reading
-                    </th>
-                   <th>
-                       Unit Price
-                   </th>
-                    <th>
-                        Amount Payable
-                    </th>
-                   <th>
-                       Payment Date
-                   </th>
-                   <th>
-                       Payment Amount
-                   </th>
-                   <th>
-                       Amount Payable
-                   </th>
-               </tr>
-               {{#each bills}}                
-                <tr class="border-tr1">                    
-                    <td>
-                        {{formatdate CurrentMonthMeterReadingDate}}
-                    </td>
-                    <td>
-                        {{CurrentMonthMeterReading}}
-                    </td>
-                    <td>
-                        {{formatdate PreviousMonthMeterReadingDate}}
-                    </td>
-                    <td>
-                        {{PreviousMonthMeterReading}}
-                    </td>
-                    <td>
-                        {{PerUnitPrice}}
-                    </td>
-                    <td>
-                        {{AmountPayable}}
-                    </td>
-                    <td>
-                        {{formatdate PaymentDate}}
-                    </td>
-                    <td>
-                        {{PaymentAmount}}
-                    </td>
-                    <td>
-                        {{TotalAmountPayable}}
-                    </td>
-                </tr>
-    
-               @* <tr>
-                    <td>
-                        Previous Month Reading {{formatdate PreviousMonthReadingDate}}
-                    </td>
-                    <td class="arrow"></td>
-                    <td>
-                        {{PreviousMonthReading}}
-                    </td>
-                    </tr>
-                <tr class="border-tr">
-                    <td>
-                        Amount Payable for the Month (Rs {{PerUnitPrice}} Per Unit)
-                    </td>
-                    <td class="arrow"></td>
-                    <td>
-                        {{CurrentMonthPayableAmount}}
-                    </td>
-                </tr>
+        <div>
+            <h1>{{TenantName}}</h1>
+            <table class="tenant-history-template table-bordered table-striped1">
                 <tr>
-                    <td>
-                        Previous Month Pending Amount
+                    <th>Current Month Date
+                    </th>
+                    <th>Current Month Reading
+                    </th>
+                    <th>Previous Month Date
+                    </th>
+                    <th>Previous Month Reading
+                    </th>
+                    <th>Unit Price
+                    </th>
+                    <th>Amount Payable
+                    </th>
+                    <th>Payment Date
+                    </th>
+                    <th>Payment Amount
+                    </th>
+                    <th>Amount Payable
+                    </th>
+                </tr>
+                {{#each bills}}                
+                <tr class="border-tr1">
+                    <td>{{formatdate CurrentMonthMeterReadingDate}}
                     </td>
-                    <td class="arrow"></td>
-                    <td>
-                        {{PreviousMonthPendingAmount}}
+                    <td>{{CurrentMonthMeterReading}}
+                    </td>
+                    <td>{{formatdate PreviousMonthMeterReadingDate}}
+                    </td>
+                    <td>{{PreviousMonthMeterReading}}
+                    </td>
+                    <td>{{PerUnitPrice}}
+                    </td>
+                    <td>{{AmountPayable}}
+                    </td>
+                    <td>{{formatdate PaymentDate}}
+                    </td>
+                    <td>{{PaymentAmount}}
+                    </td>
+                    <td>{{TotalAmountPayable}}
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        Last Amount Paid in {{formatdate LastPaidAmountDate}}
-                    </td>
-                    <td class="arrow"></td>
-                    <td>
-                        {{LastPaidAmount}}
-                    </td>
-                </tr>
-                <tr class="border-tr">
-                    <td>
-                        Total Amount Payable
-                    </td>
-                    <td class="arrow"></td>
-                    <td>
-                        {{TotalPayableAmount}}
-                    </td>
-                </tr> *@
                 {{/each}}
-        </table>
-          
-       </div>
+            </table>
+
+        </div>
     </script>
 </div>
 
-@section Scripts {    
+@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/handlebars")
     @Scripts.Render("~/bundles/moment")
-    
+
     <script type="text/javascript">
         $(function () {
             Handlebars.registerHelper("formatdate", function (pDate) {
@@ -199,6 +137,6 @@
                 $("#loading").css("display", "none");
             });
         });
-    
+
     </script>
 }

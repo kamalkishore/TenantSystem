@@ -5,38 +5,39 @@
 }
 
 <div class="container-fluid">
-<div class="page-header">
-<h3>Add Meter Details</h3>
-</div>
+    <div class="page-header">
+        <h3>Add Meter Details</h3>
+    </div>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>ElectricMeter</legend>
-                
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MeterType)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.MeterType, (SelectList)ViewBag.MeterType)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>        
+        <fieldset>
+            <legend>ElectricMeter</legend>
 
-        <p class="button-margin">
-            <input type="submit" class="btn btn-lg btn-primary" value="Add Meter" />
-        </p>
-    </fieldset>
-}
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.MeterType)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.MeterType, (SelectList)ViewBag.MeterType)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+
+            <p class="button-margin">
+                <input type="submit" class="btn btn-lg btn-primary" value="Add Meter" />
+            </p>
+        </fieldset>
+    }
 
     <div>
         @Html.ActionLink("Back to List", "Index")

@@ -5,58 +5,59 @@
 }
 <div class="container-fluid">
 
-<div class="page-header">
-<h3>Add Tenant Payment</h3>
-</div>
+    <div class="page-header">
+        <h3>Add Tenant Payment</h3>
+    </div>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Tenant Payment</legend>
+        <fieldset>
+            <legend>Tenant Payment</legend>
 
-        <div class="editor-label">
-            @Html.Label("Tenant")
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
-            @Html.ValidationMessageFor(model=>model.TenantId)
-        </div>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Amount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Amount)
-            @Html.ValidationMessageFor(model => model.Amount)
-        </div>
+            <div class="editor-label">
+                @Html.Label("Tenant")
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
+                @Html.ValidationMessageFor(model => model.TenantId)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DateOfPayment)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DateOfPayment)
-            @Html.ValidationMessageFor(model => model.DateOfPayment)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PaymentType)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.PaymentType, (SelectList)ViewBag.PaymentType)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Comments)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Comments)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Amount)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Amount)
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
 
-        <p class="button-margin">
-            <input type="submit" class="btn btn-lg btn-primary" value="Add Payment" />
-        </p>
-    </fieldset>
-}
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfPayment)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.DateOfPayment)
+                @Html.ValidationMessageFor(model => model.DateOfPayment)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PaymentType)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.PaymentType, (SelectList)ViewBag.PaymentType)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Comments)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Comments)
+            </div>
+
+            <p class="button-margin">
+                <input type="submit" class="btn btn-lg btn-primary" value="Add Payment" />
+            </p>
+        </fieldset>
+    }
 
     <div>
         @Html.ActionLink("Back to List", "Index", "Home")
@@ -80,5 +81,5 @@
                 console.log(new Date());
             });
         });
-</script>
+    </script>
 }

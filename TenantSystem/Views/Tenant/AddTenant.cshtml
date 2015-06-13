@@ -8,46 +8,47 @@
     <div class="page-header">
         <h3>Please Add Tenant Details</h3>
     </div>
-@using(@Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @using (@Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
 
-    <fieldset>
-        <legend>Add Tenant Details</legend>
+        <fieldset>
+            <legend>Add Tenant Details</legend>
 
-        <div class="editor-label">
-            @Html.LabelFor(model=>model.FirstName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model=>model.FirstName)
-            @Html.ValidationMessageFor(model=>model.FirstName)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model=>model.LastName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model=>model.LastName)
-            @Html.ValidationMessageFor(model=>model.LastName)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model=>model.PhoneNumber)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model=>model.PhoneNumber)
-            @Html.ValidationMessageFor(model=>model.PhoneNumber)
-        </div>
-        <div class="editor-label">
-            @Html.LabelFor(model=>model.Meter)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("MeterId", (IEnumerable<SelectListItem>)ViewBag.Meter,"Select")
-            @Html.ValidationMessageFor(model=>model.MeterId)
-        </div>
-    </fieldset>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.FirstName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.FirstName)
+                @Html.ValidationMessageFor(model => model.FirstName)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.LastName)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.LastName)
+                @Html.ValidationMessageFor(model => model.LastName)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PhoneNumber)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
+            </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Meter)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("MeterId", (IEnumerable<SelectListItem>)ViewBag.Meter, "Select")
+                @Html.ValidationMessageFor(model => model.MeterId)
+            </div>
+        </fieldset>
 
-    <p class="button-margin"><input type="submit" class="btn btn-lg btn-primary" value="Add Tenant Details" /></p>
-}
+        <p class="button-margin">
+            <input type="submit" class="btn btn-lg btn-primary" value="Add Tenant Details" /></p>
+    }
 
     <div>
         @Html.ActionLink("Back", "Index", "Home")

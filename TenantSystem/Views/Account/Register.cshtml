@@ -7,41 +7,41 @@
 <div class="container-fluid">
 
     <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    @*<h2>Create a new account.</h2>*@
-</hgroup>
+        <h1>@ViewBag.Title.</h1>
+    </hgroup>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary()
 
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-            </li>
-            <li>
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-            </li>
-            <li>
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-        </ol>
-        <p class="button-margin">
-            <input type="submit" class="btn btn-lg btn-primary" value="Register" />
-        </p>
-    </fieldset>
-}
+        <fieldset>
+            <legend>Registration Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.UserName)
+                </li>
+                <li>
+                    @Html.TextBoxFor(m => m.UserName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                </li>
+                <li>
+                    @Html.PasswordFor(m => m.Password)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                </li>
+                <li>
+                    @Html.PasswordFor(m => m.ConfirmPassword)
+                </li>
+            </ol>
+            <p class="button-margin">
+                <input type="submit" class="btn btn-lg btn-primary" value="Register" />
+            </p>
+        </fieldset>
+    }
 
 </div>
 

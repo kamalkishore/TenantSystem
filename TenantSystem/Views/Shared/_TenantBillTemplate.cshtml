@@ -2,14 +2,13 @@
 
 
 <table class="tenant-bill-template">
-    <tr>        
+    <tr>
         <td colspan="3">
-            @Html.DisplayFor(model=>model.TenantName)
-        </td>        
+            @Html.DisplayFor(model => model.TenantName)
+        </td>
     </tr>
     <tr class="border-tr">
-        <td colspan="3">
-            Electricity Bill for Month of @Html.DisplayFor(model=>model.MonthName)
+        <td colspan="3">Electricity Bill for Month of @Html.DisplayFor(model => model.MonthName)
         </td>
 
     </tr>
@@ -22,7 +21,7 @@
             @Html.DisplayFor(model => model.CurrentMonthReading)
         </td>
     </tr>
-    
+
     <tr>
         <td>
             @Html.DisplayNameFor(model => model.PreviousMonthReading) (@Html.DisplayFor(model => model.PreviousMonthReadingDate))
@@ -31,7 +30,7 @@
         <td>
             @Html.DisplayFor(model => model.PreviousMonthReading)
         </td>
-        </tr>
+    </tr>
 
     <tr class="border-tr">
         <td>
@@ -51,7 +50,7 @@
             @Html.DisplayFor(model => model.PreviousMonthPendingAmount)
         </td>
     </tr>
-        <tr>
+    <tr>
         <td>
             @Html.DisplayNameFor(model => model.LastPaidAmount) in @Html.DisplayFor(model => model.LastPaidAmountDate)
         </td>
@@ -68,6 +67,6 @@
         <td>
             @Html.DisplayFor(model => model.TotalPayableAmount)
         </td>
-    </tr> 
+    </tr>
 </table>
 

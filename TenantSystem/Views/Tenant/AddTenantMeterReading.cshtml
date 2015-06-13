@@ -5,96 +5,98 @@
 }
 
 <div class="container-fluid">
-<div class="page-header">
-<h3>Add Tenant Meter Reading</h3>
-</div>
-<div id="loading"><img src="~/Content/images/loading.gif" /><br>Loading..</div>
+    <div class="page-header">
+        <h3>Add Tenant Meter Reading</h3>
+    </div>
+    <div id="loading">
+        <img src="~/Content/images/loading.gif" /><br>
+        Loading..</div>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>TenantMeterReading</legend>
-                
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DateOfMeterReading)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DateOfMeterReading)
-            @Html.ValidationMessageFor(model => model.DateOfMeterReading)
-        </div>
+        <fieldset>
+            <legend>TenantMeterReading</legend>
 
-        <div class="editor-label">
-            @Html.Label("Tenant")
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.DateOfMeterReading)
+                @Html.ValidationMessageFor(model => model.DateOfMeterReading)
+            </div>
 
-        <div class="editor-field">
-            @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
-            @Html.ValidationMessageFor(model => model.TenantId)
-        </div>
+            <div class="editor-label">
+                @Html.Label("Tenant")
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.MeterId)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.MeterId, new { @readonly = "readOnly" })
-                
-            @Html.ValidationMessageFor(model => model.MeterId)
-        </div>
+            <div class="editor-field">
+                @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
+                @Html.ValidationMessageFor(model => model.TenantId)
+            </div>
 
-        <div class="editor-lable">
-            @Html.LabelFor(model=>model.PreviousMeterReading)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model=>model.PreviousMeterReading, new {@readonly = "readOnly"})
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.MeterId)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.MeterId, new { @readonly = "readOnly" })
 
-        <div class="editor-lable">
-            @Html.LabelFor(model=>model.DateOfPreviousMonthMeterReading)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model=>model.DateOfPreviousMonthMeterReading, new {@readonly = "readOnly"})
-        </div>
+                @Html.ValidationMessageFor(model => model.MeterId)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model=>model.PerUnitPrice)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model=>model.PerUnitPrice,(SelectList)ViewBag.PricePerUnit, "Select")
-            @Html.ValidationMessageFor(model=>model.PerUnitPrice)
-        </div>
+            <div class="editor-lable">
+                @Html.LabelFor(model => model.PreviousMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.PreviousMeterReading, new { @readonly = "readOnly" })
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CurrentMeterReading)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CurrentMeterReading)
-            @Html.ValidationMessageFor(model => model.CurrentMeterReading)
-        </div>
+            <div class="editor-lable">
+                @Html.LabelFor(model => model.DateOfPreviousMonthMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DateOfPreviousMonthMeterReading, new { @readonly = "readOnly" })
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.AmountPayable)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.AmountPayable, new{ @readonly = "readOnly"})
-            @Html.ValidationMessageFor(model => model.AmountPayable)
-        </div>
-        
-        <div class="calculated-amount-label">Amount Payable :  </div>
-        <div class="calculated-amount">            
-            0
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PerUnitPrice)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.PerUnitPrice, (SelectList)ViewBag.PricePerUnit, "Select")
+                @Html.ValidationMessageFor(model => model.PerUnitPrice)
+            </div>
 
-        <div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.CurrentMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.CurrentMeterReading)
+                @Html.ValidationMessageFor(model => model.CurrentMeterReading)
+            </div>
 
-        </div>
-        
-        <p class="button-margin">
-            <input type="submit" value="Add Meter Reading Details" class="btn btn-lg btn-primary" id ="btnSubmit"/>
-        </p>
-    </fieldset>
-}
+            <div class="editor-label">
+                @Html.LabelFor(model => model.AmountPayable)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.AmountPayable, new { @readonly = "readOnly" })
+                @Html.ValidationMessageFor(model => model.AmountPayable)
+            </div>
+
+            <div class="calculated-amount-label">Amount Payable :  </div>
+            <div class="calculated-amount">
+                0
+            </div>
+
+            <div>
+            </div>
+
+            <p class="button-margin">
+                <input type="submit" value="Add Meter Reading Details" class="btn btn-lg btn-primary" id="btnSubmit" />
+            </p>
+        </fieldset>
+    }
 
     <div>
         @Html.ActionLink("Back to List", "Index", "Home")
@@ -107,7 +109,7 @@
 
     <script type="text/javascript">
         $(function () {
-            
+
             $("#DateOfMeterReading").val(sessionStorage["DateOfMeterReading"]);
 
             $("#DateOfMeterReading").change(function () {
@@ -120,8 +122,6 @@
             });
 
             $('#TenantId').change(function () {
-                //setTimeout(function () { console.log("time out runs"); }, 3000);
-                //$('#loading').html('<img src="loading.gif"> loading...');
 
                 if (this.value) {
 
@@ -167,7 +167,7 @@
                 var calculatedAmount = perUnit * meterReading;
                 console.log("Amount payable : " + calculatedAmount);
 
-                $('.calculated-amount').text(meterReading + " * " + perUnit + " : " +calculatedAmount);
+                $('.calculated-amount').text(meterReading + " * " + perUnit + " : " + calculatedAmount);
                 $("#AmountPayable").val(calculatedAmount);
 
                 if (!$.isNumeric(perUnit) && (!$.isNumeric(meterReading)))
@@ -192,16 +192,7 @@
                 $("#loading").css("display", "none");
             });
 
-            //$('#loading')
-            //.hide()
-            //.ajaxStart(function () {
-            //    $(this).show();
-            //})
-            //.ajaxStop(function () {
-            //    $(this).hide();
-            //});
-
         });
-</script>
+    </script>
 }
 
