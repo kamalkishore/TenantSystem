@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,7 @@ namespace TenantSystem.Models
         [Required]
         [DataType(DataType.Text)]
         public string Name { get; set; }
+        [DisplayName("Meter Type")]
         public ElecticityMeterType MeterType { get; set; }
     }
 

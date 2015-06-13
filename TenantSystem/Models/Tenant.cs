@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -11,13 +12,16 @@ namespace TenantSystem.Models
         public int Id { get; set; }
         [Required]
         [DataType(DataType.Text)]
+        [DisplayName("First Name")]
         public string FirstName { get; set; }
 
         [DataType(DataType.Text)]
+        [DisplayName("MiddleName")]
         public string MiddleName { get; set; }        
         
         [Required]
-        [DataType(DataType.Text)]        
+        [DataType(DataType.Text)]
+        [DisplayName("Last Name")]
         public string LastName { get; set; }        
         
         [DataType(DataType.Text)]
@@ -25,6 +29,7 @@ namespace TenantSystem.Models
 
         [Required]
         [DataType(DataType.PhoneNumber)]
+        [DisplayName("Phone Number")]
         public string PhoneNumber { get; set; }
         
         public int MeterId { get; set; }
