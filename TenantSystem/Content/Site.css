@@ -802,8 +802,7 @@ float:right;
 
 .tenant-bill-template {
 border:2px solid black;
-margin-top:55px;
-margin-left:10px;
+margin-top:45px;
 width:700px;
 font-size:14px;
 }
@@ -879,4 +878,26 @@ margin-bottom:10px;
 height:30px;
 display:block;
 margin-top:50px;
+}
+
+/* make sidebar nav vertical */ 
+@media (min-width: 768px) {
+  .sidebar-nav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+  }
+  .sidebar-nav .navbar ul {
+    float: none;
+  }
+  .sidebar-nav .navbar ul:not {
+    display: block;
+  }
+  .sidebar-nav .navbar li {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav .navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
 }

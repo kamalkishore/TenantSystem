@@ -2,7 +2,9 @@
     ViewBag.Title = "ViewTenantHistory";
 }
 
-<h2>View Tenant History</h2>
+<div class="page-header">
+<h3>View Tenant History</h3>
+</div>
 
 <div>
     <div class="display-generated-bill">
@@ -13,21 +15,24 @@
 
     <script id="TemplateTenantHistory" type="text/x-handlebars-template">
        <div>
-           <div>{{TenantName}}</div>
-           <table class="tenant-history-template">               
+           <h1>{{TenantName}}</h1>
+           <table class="tenant-history-template table-bordered table-striped1">               
                <tr>
                     <th>
-                        Current Month Reading Date
+                        Current Month Date
                     </th>
                    <th>
                         Current Month Reading
                     </th>
                     <th>
-                        Previous Month Reading Date
+                        Previous Month Date
                     </th>
                     <th>
                        Previous Month Reading
                     </th>
+                   <th>
+                       Unit Price
+                   </th>
                     <th>
                         Amount Payable
                     </th>
@@ -37,9 +42,12 @@
                    <th>
                        Payment Amount
                    </th>
+                   <th>
+                       Amount Payable
+                   </th>
                </tr>
                {{#each bills}}                
-                <tr class="border-tr">                    
+                <tr class="border-tr1">                    
                     <td>
                         {{formatdate CurrentMonthMeterReadingDate}}
                     </td>
@@ -53,6 +61,9 @@
                         {{PreviousMonthMeterReading}}
                     </td>
                     <td>
+                        {{PerUnitPrice}}
+                    </td>
+                    <td>
                         {{AmountPayable}}
                     </td>
                     <td>
@@ -60,6 +71,9 @@
                     </td>
                     <td>
                         {{PaymentAmount}}
+                    </td>
+                    <td>
+                        {{TotalAmountPayable}}
                     </td>
                 </tr>
     

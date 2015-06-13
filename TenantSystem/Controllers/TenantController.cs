@@ -353,7 +353,9 @@ namespace TenantSystem.Controllers
                              CurrentMonthMeterReading = reading.CurrentMeterReading,
                              CurrentMonthMeterReadingDate = reading.DateOfMeterReading,
                              PreviousMonthMeterReadingDate = reading.DateOfPreviousMonthMeterReading,
-                             PreviousMonthMeterReading = reading.PreviousMeterReading
+                             PreviousMonthMeterReading = reading.PreviousMeterReading,
+                             AmountPayable = reading.AmountPayable,
+                             PerUnitPrice = reading.PerUnitPrice
                          };
 
             //billList = _db.Tenant
