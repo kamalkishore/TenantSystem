@@ -169,6 +169,7 @@ namespace TenantSystem.Controllers
                                                     {
                                                         TenantId = x.TenantId,                                                        
                                                         PreviousMonthReading = (x.MeterReadingDetails==null) ? 0 : x.MeterReadingDetails.PreviousMeterReading,
+                                                        PreviousMonthReadingDate = (x.MeterReadingDetails == null) ? DateTime.MinValue : x.MeterReadingDetails.DateOfPreviousMonthMeterReading,
                                                         CurrentMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.CurrentMeterReading,
                                                         CurrentMonthPayableAmount = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.AmountPayable,
                                                         CurrentMonthReadingDate = (x.MeterReadingDetails == null) ? DateTime.MinValue : x.MeterReadingDetails.DateOfMeterReading,
@@ -339,29 +340,40 @@ namespace TenantSystem.Controllers
             
             var tenant = _db.Tenant.Where(x => x.Id.ToString() == tenantId).FirstOrDefault();
 
+            var tenantBills = tenant.Bills.ToList();
             var meterReadings = tenant.MeterReading.ToList();
             var payment = tenant.Payments.ToList();
-            var result = from reading in meterReadings
-                         join pay in payment
-                         on reading.PaymentId equals pay.Id into eGroup
-                         from pay in eGroup.DefaultIfEmpty()
+            //var result = from reading in meterReadings
+            //             join pay in payment
+            //             on reading.PaymentId equals pay.Id into eGroup
+            //             from pay in eGroup.DefaultIfEmpty()
+            //             select new
+            //             {
+            //                 TenantId = reading.TenantId,
+            //                 PaymentAmount = pay == null ? 0 : pay.Amount,
+            //                 PaymentDate = pay == null ? DateTime.MinValue : pay.DateOfPayment,
+            //                 CurrentMonthMeterReading = reading.CurrentMeterReading,
+            //                 CurrentMonthMeterReadingDate = reading.DateOfMeterReading,
+            //                 PreviousMonthMeterReadingDate = reading.DateOfPreviousMonthMeterReading,
+            //                 PreviousMonthMeterReading = reading.PreviousMeterReading,
+            //                 AmountPayable = reading.AmountPayable,
+            //                 PerUnitPrice = reading.PerUnitPrice
+            //             };
+
+            var result = from bill in tenantBills
                          select new
                          {
-                             TenantId = reading.TenantId,
-                             PaymentAmount = pay == null ? 0 : pay.Amount,
-                             PaymentDate = pay == null ? DateTime.MinValue : pay.DateOfPayment,
-                             CurrentMonthMeterReading = reading.CurrentMeterReading,
-                             CurrentMonthMeterReadingDate = reading.DateOfMeterReading,
-                             PreviousMonthMeterReadingDate = reading.DateOfPreviousMonthMeterReading,
-                             PreviousMonthMeterReading = reading.PreviousMeterReading,
-                             AmountPayable = reading.AmountPayable,
-                             PerUnitPrice = reading.PerUnitPrice
+                             TenantId = bill.TenantId,
+                             PaymentAmount = bill.LastPaidAmount,
+                             PaymentDate = bill.LastPaidAmountDate,
+                             CurrentMonthMeterReading = bill.CurrentMonthReading,
+                             CurrentMonthMeterReadingDate = bill.CurrentMonthReadingDate,
+                             PreviousMonthMeterReadingDate = bill.PreviousMonthReadingDate,
+                             PreviousMonthMeterReading = bill.PreviousMonthReading,
+                             AmountPayable = bill.CurrentMonthPayableAmount,
+                             PerUnitPrice = bill.PerUnitPrice,
+                             TotalAmountPayable = bill.TotalPayableAmount
                          };
-
-            //billList = _db.Tenant
-            //                .Where(x => x.Id.ToString() == tenantId)
-            //                .FirstOrDefault()
-            //                .Bills.ToList().Join(;
 
             return Json(new { bills = result, TenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
         }

@@ -901,3 +901,13 @@ margin-top:50px;
     padding-bottom: 12px;
   }
 }
+
+
+#loading {
+display:none;
+border:1px solid black;
+position:absolute;
+top:40%;
+left:40%;
+padding:2px;
+}

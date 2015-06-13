@@ -10,7 +10,9 @@
     <div class="display-generated-bill">
         Select Tenant   :    @Html.DropDownList("TenantId", (IEnumerable<SelectListItem>)ViewBag.Tenant, "Select")
     </div>
-        
+    
+    <div id="loading"><img src="~/Content/images/loading.gif" /><br>Loading..</div>    
+
     <div id="ContainerTenantHistory"></div>
 
     <script id="TemplateTenantHistory" type="text/x-handlebars-template">
@@ -167,7 +169,7 @@
                     var selectedtenantId = $("#TenantId").val();
 
                     if (selectedtenantId === "") {
-                        $("#ContainerTenantBill").html("");
+                        $("#ContainerTenantHistory").html("");
                         return;
                     }
 
@@ -189,6 +191,13 @@
                     alert(err);
                 }
             }
+
+            $(document).ajaxStart(function () {
+                $("#loading").css("display", "block");
+            });
+            $(document).ajaxComplete(function () {
+                $("#loading").css("display", "none");
+            });
         });
     
     </script>
