@@ -146,9 +146,10 @@
                     };
 
                     $.ajax(options);
+                    ResetTenantPayableAmount();
                 }
                 else {
-                    ResetControls();
+                    ResetTenantPriviousMeterReadingDetails();
                 }
             });
 
@@ -179,10 +180,17 @@
                 sessionStorage.setItem("DateOfMeterReading", dateOfMeterReading);
             });
 
-            function ResetControls() {
+            function ResetTenantPriviousMeterReadingDetails() {
                 $("#PreviousMeterReading").val("");
                 $("#MeterId").val("");
                 $("#DateOfPreviousMonthMeterReading").val("");
+                ResetTenantPayableAmount();
+            }
+
+            function ResetTenantPayableAmount() {
+                $("#CurrentMeterReading").val("");
+                $("#AmountPayable").val("");
+                $('.calculated-amount').text("0");
             }
 
             $(document).ajaxStart(function () {
