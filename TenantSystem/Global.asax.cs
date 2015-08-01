@@ -17,7 +17,7 @@ namespace TenantSystem
     {
         protected void Application_Start()
         {
-            WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+            WebSecurity.InitializeDatabaseConnection("TenantSystem.Models.TenantDBContext", "UserProfile", "UserId", "UserName", autoCreateTables: true);
 
             AreaRegistration.RegisterAllAreas();
 
