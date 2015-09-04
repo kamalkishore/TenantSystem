@@ -8,6 +8,11 @@ namespace TenantSystem.Models
 {
     public class TenantDBContext : DbContext
     {
+        public TenantDBContext()
+            : base("name=DefaultConnection")
+        {
+        }
+
         public DbSet<ElectricMeter> ElectricMeter { get; set; }
         public DbSet<Building> Building { get; set; }
         public DbSet<Tenant> Tenant { get; set; }
