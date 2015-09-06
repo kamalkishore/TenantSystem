@@ -31,6 +31,10 @@ namespace TenantSystem.Models
             modelBuilder.Entity<TenantBill>()
                         .Property(p => p.LastPaidAmountDate)
                         .HasColumnType("datetime2");
+
+            modelBuilder.Entity<TenantMeterReading>()
+                        .Property(p => p.DateOfPreviousMonthMeterReading)
+                        .HasColumnType("datetime2");
         }
         //public DbSet<TenantMeterReading> TenantMeterReading { get; set; }
 

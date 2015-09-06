@@ -90,7 +90,7 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetPreviousMeterReading(int Id)
         {
-            var tenant = _db.Tenant.Find(Id);
+            var tenant = _db.Tenant.Where(t=>t.Id.Equals(Id)).FirstOrDefault();
             var prevReading = tenant.MeterReading
                                     .OrderByDescending(x => x.Id)
                                     .FirstOrDefault();
@@ -150,7 +150,13 @@ namespace TenantSystem.Controllers
         public ActionResult ApproveTenantBills()
         {
             var datebll = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
-            var bill = _db.Tenant
+
+            var tenantWithPendingBills = _db.Tenant.Where(t => t.MeterReading
+                                                                .OrderBy(y => y.Id)
+                                                                .Where(z => z.DoesBillGenerated != true).Count() > 0)
+                                                                .ToList();
+
+            var bill = tenantWithPendingBills
                                 .Select(x => new
                                 {
                                     TenantId = x.Id,
@@ -189,8 +195,12 @@ namespace TenantSystem.Controllers
         [HttpPost]
         public ActionResult ApproveTenantBills(IEnumerable<TenantBill> tenantBill)
         {
+            var tenantWithPendingBills = _db.Tenant.Where(t => t.MeterReading
+                                                                .OrderBy(y => y.Id)
+                                                                .Where(z => z.DoesBillGenerated != true).Count() > 0)
+                                                                .ToList();
 
-            var bill = _db.Tenant
+            var bill = tenantWithPendingBills
                                 .Select(x => new
                                 {
                                     TenantId = x.Id,
@@ -225,18 +235,19 @@ namespace TenantSystem.Controllers
                                                                                      .GetMonthName(x.MeterReadingDetails.DateOfMeterReading.Month)
                             });
 
-            for (int i = 1; i <= _db.Tenant.Count(); i++)
+            foreach (var tenant in tenantWithPendingBills)
             {
-                var currentTenant = _db.Tenant.Find(i);
+                var currentTenant = _db.Tenant.Where(t=>t.Id.Equals(tenant.Id)).FirstOrDefault();
                 var currentTenantBill = billdata.Where(x => x.TenantId == currentTenant.Id).FirstOrDefault();
                 currentTenant.Bills.Add(currentTenantBill);
                 currentTenant.MeterReading
                     .OrderBy(x => x.Id)
                     .Where(y => y.DoesBillGenerated != true)
                     .FirstOrDefault().DoesBillGenerated = true;
-
-                _db.SaveChanges();
+                _db.SaveChanges();                
             }
+
+            
             return RedirectToAction("Index");
         }
 
@@ -245,15 +256,6 @@ namespace TenantSystem.Controllers
         {
             List<TenantBill> bills = new List<TenantBill>();
 
-            for (int i = 1; i <= _db.Tenant.Count(); i++)
-            {
-                var currentTenant = _db.Tenant.Find(i);
-                var bill = currentTenant.Bills.OrderByDescending(x => x.Id).FirstOrDefault();
-                if (bill != null)
-                {
-                    bills.Add(bill);
-                }
-            }
 
             ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
             {
