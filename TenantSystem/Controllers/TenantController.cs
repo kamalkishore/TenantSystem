@@ -186,42 +186,7 @@ namespace TenantSystem.Controllers
                                                                 .Where(z => z.DoesBillGenerated != true).Count() > 0)
                                                                 .ToList();
 
-            var bill = tenantWithPendingBills
-                                .Select(x => new
-                                {
-                                    TenantId = x.Id,
-                                    Name = x.FullName,
-                                    MeterReadingDetails = x.MeterReading
-                                                           .OrderBy(y => y.Id)
-                                                           .Where(z => z.DoesBillGenerated != true)
-                                                           .FirstOrDefault(),
-                                    LastPayment = x.Payments
-                                                    .Where(z => z.PaymentType != PaymentType.BadDebt)
-                                                    .OrderByDescending(y => y.Id)
-                                                    .FirstOrDefault(),
-                                    PreviousMonthPendingAmount = x.MeterReading.OrderByDescending(z => z.Id).Skip(1)
-                                                                  .Select(y => y.AmountPayable).DefaultIfEmpty().Sum() -
-                                                                  x.Payments.Select(y => y.Amount).DefaultIfEmpty().Sum()
-                                }).ToList();
-
-            var billdata = bill
-                            .Select(x => new TenantBill
-                            {
-                                TenantId = x.TenantId,
-                                PreviousMonthReading = x.MeterReadingDetails.PreviousMeterReading,
-                                CurrentMonthReading = x.MeterReadingDetails.CurrentMeterReading,
-                                CurrentMonthPayableAmount = x.MeterReadingDetails.AmountPayable,
-                                CurrentMonthReadingDate = x.MeterReadingDetails.DateOfMeterReading,
-                                UnitConsumed = x.MeterReadingDetails.CurrentMeterReading - x.MeterReadingDetails.PreviousMeterReading,
-                                LastPaidAmount = (x.LastPayment == null) ? 0 : x.LastPayment.Amount,
-                                LastPaidAmountDate = (x.LastPayment == null) ? DateTime.MinValue : x.LastPayment.DateOfPayment,//todo need to display the blank if date is not present
-                                PreviousMonthPendingAmount = x.PreviousMonthPendingAmount,
-                                TotalPayableAmount = x.PreviousMonthPendingAmount + x.MeterReadingDetails.AmountPayable,
-                                TenantName = x.Name,
-                                PerUnitPrice = x.MeterReadingDetails.PerUnitPrice,
-                                MonthName = CultureInfo.CurrentCulture.DateTimeFormat
-                                                                                     .GetMonthName(x.MeterReadingDetails.DateOfMeterReading.Month)
-                            });
+            var billdata = GetPendingBillsOf(tenantWithPendingBills);
 
             foreach (var tenant in tenantWithPendingBills)
             {
@@ -355,6 +320,13 @@ namespace TenantSystem.Controllers
                                                                 .Where(z => z.DoesBillGenerated != true).Count() > 0)
                                                                 .ToList();
 
+            var billdata = GetPendingBillsOf(tenantWithPendingBills);
+
+            return Json(new { tenantPendingBills = billdata }, JsonRequestBehavior.AllowGet);
+        }
+
+        private static IEnumerable<TenantBill> GetPendingBillsOf(List<Tenant> tenantWithPendingBills)
+        {
             var bill = tenantWithPendingBills
                                 .Select(x => new
                                 {
@@ -368,7 +340,7 @@ namespace TenantSystem.Controllers
                                                     .Where(z => z.PaymentType != PaymentType.BadDebt)
                                                     .OrderByDescending(y => y.Id)
                                                     .FirstOrDefault(),
-                                    PreviousMonthPendingAmount = x.MeterReading.OrderByDescending(z => z.Id).Skip(1)
+                                    PreviousMonthPendingAmount = x.MeterReading.Where(z => z.DoesBillGenerated == true)
                                                                   .Select(y => y.AmountPayable).DefaultIfEmpty().Sum() -
                                                                   x.Payments.Select(y => y.Amount).DefaultIfEmpty().Sum()
                                 }).ToList();
@@ -391,8 +363,7 @@ namespace TenantSystem.Controllers
                                 MonthName = CultureInfo.CurrentCulture.DateTimeFormat
                                                                                      .GetMonthName(x.MeterReadingDetails.DateOfMeterReading.Month)
                             });
-
-            return Json(new { tenantPendingBills = billdata }, JsonRequestBehavior.AllowGet);
+            return billdata;
         }
     }
 }

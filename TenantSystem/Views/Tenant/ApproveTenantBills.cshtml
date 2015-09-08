@@ -10,15 +10,16 @@
         <h3>Please Approve Bills</h3>
     </div>
 
-    <div id="loading">
-        <img src="~/Content/images/loading.gif" /><br>
-        Loading..
-    </div>
-
+    
     @using (@Html.BeginForm())
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
+
+        <div id="loading">
+            <img src="~/Content/images/loading.gif" /><br>
+            Loading..
+        </div>
 
         <div id="ContainerTenantBill"></div>
 
