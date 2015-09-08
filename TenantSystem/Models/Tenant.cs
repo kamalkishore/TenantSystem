@@ -38,6 +38,7 @@ namespace TenantSystem.Models
         public virtual ICollection<TenantMeterReading> MeterReading { get; set; }
         public virtual ICollection<TenantPayment> Payments { get; set; }
         public virtual ICollection<TenantBill> Bills { get; set; }
+        public virtual ICollection<TenantPreviousReadingDetails> PreviousReadingDetails { get; set; }
 
         public string FullName
         {

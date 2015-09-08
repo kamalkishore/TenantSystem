@@ -81,6 +81,34 @@ namespace TenantSystem.Controllers
             {
                 var tenant = _db.Tenant.Find(tenantMeterReading.TenantId);
                 tenant.MeterReading.Add(tenantMeterReading);
+
+                var previousReading = tenant.PreviousReadingDetails.FirstOrDefault();
+
+                //todo add the default values in order to remove null logic
+                if(previousReading != null)
+                {
+                    previousReading.AmountPayable = tenantMeterReading.AmountPayable;
+                    previousReading.DateOfPreviousMonthMeterReading = tenantMeterReading.DateOfMeterReading;
+                    previousReading.MeterId = tenantMeterReading.MeterId;
+                    previousReading.PreviousMeterReading = tenantMeterReading.CurrentMeterReading;
+                    previousReading.PerUnitPrice = tenantMeterReading.PerUnitPrice;
+                    
+                }
+                else
+                {
+                    previousReading = new TenantPreviousReadingDetails
+                    {
+                        TenantId = tenantMeterReading.TenantId,
+                        AmountPayable = tenantMeterReading.AmountPayable,
+                        MeterId = tenantMeterReading.MeterId,
+                        DateOfPreviousMonthMeterReading = tenantMeterReading.DateOfMeterReading,
+                        PreviousMeterReading = tenantMeterReading.CurrentMeterReading,
+                        PerUnitPrice = tenantMeterReading.PerUnitPrice
+                    };
+
+                    tenant.PreviousReadingDetails.Add(previousReading);
+                }
+
                 _db.SaveChanges();
             }
 
@@ -91,15 +119,13 @@ namespace TenantSystem.Controllers
         public ActionResult GetPreviousMeterReading(int Id)
         {
             var tenant = _db.Tenant.Where(t=>t.Id.Equals(Id)).FirstOrDefault();
-            var prevReading = tenant.MeterReading
-                                    .OrderByDescending(x => x.Id)
-                                    .FirstOrDefault();
+            var prevReading = tenant.PreviousReadingDetails.FirstOrDefault();
 
             return Json(new
             {
-                MeterReading = (prevReading == null) ? 0 : prevReading.CurrentMeterReading,
+                MeterReading = (prevReading == null) ? 0 : prevReading.PreviousMeterReading,
                 MeterId = tenant.MeterId,
-                DateOfMeterReading = (prevReading == null) ? DateTime.MinValue : prevReading.DateOfMeterReading.Date
+                DateOfMeterReading = (prevReading == null) ? DateTime.MinValue : prevReading.DateOfPreviousMonthMeterReading.Date
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -165,9 +191,11 @@ namespace TenantSystem.Controllers
                                 {
                                     TenantId = x.Id,
                                     Name = x.FullName,
+                                    PreviousReadingDetails = x.PreviousReadingDetails,
                                     MeterReadingDetails = x.MeterReading
                                                            .OrderBy(y => y.Id)
-                                                           .Where(z => z.DoesBillGenerated != true).FirstOrDefault(),
+                                                           .Where(z => z.DoesBillGenerated != true)
+                                                           .FirstOrDefault(),
                                     LastPayment = x.Payments
                                                     .Where(z => z.PaymentType != PaymentType.BadDebt)
                                                     .OrderByDescending(y => y.Id)
@@ -181,17 +209,17 @@ namespace TenantSystem.Controllers
                             .Select(x => new TenantBill
                             {
                                 TenantId = x.TenantId,
-                                PreviousMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.PreviousMeterReading,
-                                CurrentMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.CurrentMeterReading,
-                                CurrentMonthPayableAmount = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.AmountPayable,
-                                CurrentMonthReadingDate = (x.MeterReadingDetails == null) ? DateTime.MinValue : x.MeterReadingDetails.DateOfMeterReading,
+                                PreviousMonthReading = x.PreviousReadingDetails.FirstOrDefault().PreviousMeterReading,
+                                CurrentMonthReading = x.MeterReadingDetails.CurrentMeterReading,
+                                CurrentMonthPayableAmount = x.MeterReadingDetails.AmountPayable,
+                                CurrentMonthReadingDate = x.MeterReadingDetails.DateOfMeterReading,
                                 LastPaidAmount = (x.LastPayment == null) ? 0 : x.LastPayment.Amount,
                                 LastPaidAmountDate = (x.LastPayment == null) ? DateTime.MinValue : x.LastPayment.DateOfPayment,//todo need to display the blank if date is not present
                                 PreviousMonthPendingAmount = x.PreviousMonthPendingAmount,
                                 TotalPayableAmount = x.PreviousMonthPendingAmount + x.MeterReadingDetails.AmountPayable,
                                 TenantName = x.Name,
                                 PerUnitPrice = x.MeterReadingDetails.PerUnitPrice,
-                                MonthName = (x.MeterReadingDetails == null) ? null : CultureInfo.CurrentCulture.DateTimeFormat
+                                MonthName = CultureInfo.CurrentCulture.DateTimeFormat
                                                                                      .GetMonthName(x.MeterReadingDetails.DateOfMeterReading.Month)
                             });
 
@@ -279,7 +307,6 @@ namespace TenantSystem.Controllers
 
             return Json(new { bills = billList }, JsonRequestBehavior.AllowGet);
         }
-
 
         [HttpGet]
         public ActionResult ViewTenantHistory()
