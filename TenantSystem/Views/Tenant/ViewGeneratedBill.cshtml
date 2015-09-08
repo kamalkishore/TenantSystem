@@ -1,6 +1,4 @@
-﻿@model IEnumerable<TenantSystem.Models.TenantBill>
-
-@{
+﻿@{
     ViewBag.Title = "Tenant Bills";
 }
 
@@ -48,6 +46,16 @@
                    </td>
                    <td class="arrow"></td>
                    <td>{{PreviousMonthReading}}
+                   </td>
+               </tr>
+
+               <tr>
+                   <td>
+                       Total Unit Consumed
+                   </td>
+                   <td class="arrow"></td>
+                   <td>
+                       {{UnitConsumed}}
                    </td>
                </tr>
 

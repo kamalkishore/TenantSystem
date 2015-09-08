@@ -191,7 +191,6 @@ namespace TenantSystem.Controllers
                                 {
                                     TenantId = x.Id,
                                     Name = x.FullName,
-                                    PreviousReadingDetails = x.PreviousReadingDetails,
                                     MeterReadingDetails = x.MeterReading
                                                            .OrderBy(y => y.Id)
                                                            .Where(z => z.DoesBillGenerated != true)
@@ -209,10 +208,11 @@ namespace TenantSystem.Controllers
                             .Select(x => new TenantBill
                             {
                                 TenantId = x.TenantId,
-                                PreviousMonthReading = x.PreviousReadingDetails.FirstOrDefault().PreviousMeterReading,
+                                PreviousMonthReading = x.MeterReadingDetails.PreviousMeterReading,
                                 CurrentMonthReading = x.MeterReadingDetails.CurrentMeterReading,
                                 CurrentMonthPayableAmount = x.MeterReadingDetails.AmountPayable,
                                 CurrentMonthReadingDate = x.MeterReadingDetails.DateOfMeterReading,
+                                UnitConsumed = x.MeterReadingDetails.CurrentMeterReading - x.MeterReadingDetails.PreviousMeterReading,
                                 LastPaidAmount = (x.LastPayment == null) ? 0 : x.LastPayment.Amount,
                                 LastPaidAmountDate = (x.LastPayment == null) ? DateTime.MinValue : x.LastPayment.DateOfPayment,//todo need to display the blank if date is not present
                                 PreviousMonthPendingAmount = x.PreviousMonthPendingAmount,
@@ -235,23 +235,19 @@ namespace TenantSystem.Controllers
                 _db.SaveChanges();                
             }
 
-
             return RedirectToAction("ApproveTenantBills");
         }
 
         [HttpGet]
         public ActionResult ViewGeneratedBill()
         {
-            List<TenantBill> bills = new List<TenantBill>();
-
-
             ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.FullName
             });
 
-            return View(bills);
+            return View();
         }
 
         [HttpGet]
@@ -354,8 +350,6 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetPendingTenantBills()
         {
-            var datebll = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month);
-
             var tenantWithPendingBills = _db.Tenant.Where(t => t.MeterReading
                                                                 .OrderBy(y => y.Id)
                                                                 .Where(z => z.DoesBillGenerated != true).Count() > 0)
@@ -368,8 +362,12 @@ namespace TenantSystem.Controllers
                                     Name = x.FullName,
                                     MeterReadingDetails = x.MeterReading
                                                            .OrderBy(y => y.Id)
-                                                           .Where(z => z.DoesBillGenerated != true).FirstOrDefault(),
-                                    LastPayment = x.Payments.OrderByDescending(y => y.Id).FirstOrDefault(),
+                                                           .Where(z => z.DoesBillGenerated != true)
+                                                           .FirstOrDefault(),
+                                    LastPayment = x.Payments
+                                                    .Where(z => z.PaymentType != PaymentType.BadDebt)
+                                                    .OrderByDescending(y => y.Id)
+                                                    .FirstOrDefault(),
                                     PreviousMonthPendingAmount = x.MeterReading.OrderByDescending(z => z.Id).Skip(1)
                                                                   .Select(y => y.AmountPayable).DefaultIfEmpty().Sum() -
                                                                   x.Payments.Select(y => y.Amount).DefaultIfEmpty().Sum()
@@ -379,18 +377,18 @@ namespace TenantSystem.Controllers
                             .Select(x => new TenantBill
                             {
                                 TenantId = x.TenantId,
-                                PreviousMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.PreviousMeterReading,
-                                PreviousMonthReadingDate = (x.MeterReadingDetails == null) ? DateTime.MinValue : x.MeterReadingDetails.DateOfPreviousMonthMeterReading,
-                                CurrentMonthReading = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.CurrentMeterReading,
-                                CurrentMonthPayableAmount = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.AmountPayable,
-                                CurrentMonthReadingDate = (x.MeterReadingDetails == null) ? DateTime.MinValue : x.MeterReadingDetails.DateOfMeterReading,
+                                PreviousMonthReading = x.MeterReadingDetails.PreviousMeterReading,
+                                CurrentMonthReading = x.MeterReadingDetails.CurrentMeterReading,
+                                CurrentMonthPayableAmount = x.MeterReadingDetails.AmountPayable,
+                                CurrentMonthReadingDate = x.MeterReadingDetails.DateOfMeterReading,
+                                UnitConsumed = x.MeterReadingDetails.CurrentMeterReading - x.MeterReadingDetails.PreviousMeterReading,
                                 LastPaidAmount = (x.LastPayment == null) ? 0 : x.LastPayment.Amount,
                                 LastPaidAmountDate = (x.LastPayment == null) ? DateTime.MinValue : x.LastPayment.DateOfPayment,//todo need to display the blank if date is not present
                                 PreviousMonthPendingAmount = x.PreviousMonthPendingAmount,
-                                TotalPayableAmount = (x.MeterReadingDetails == null) ? 0 : x.PreviousMonthPendingAmount + x.MeterReadingDetails.AmountPayable,
+                                TotalPayableAmount = x.PreviousMonthPendingAmount + x.MeterReadingDetails.AmountPayable,
                                 TenantName = x.Name,
-                                PerUnitPrice = (x.MeterReadingDetails == null) ? 0 : x.MeterReadingDetails.PerUnitPrice,
-                                MonthName = (x.MeterReadingDetails == null) ? null : CultureInfo.CurrentCulture.DateTimeFormat
+                                PerUnitPrice = x.MeterReadingDetails.PerUnitPrice,
+                                MonthName = CultureInfo.CurrentCulture.DateTimeFormat
                                                                                      .GetMonthName(x.MeterReadingDetails.DateOfMeterReading.Month)
                             });
 

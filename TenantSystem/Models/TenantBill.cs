@@ -21,6 +21,7 @@ namespace TenantSystem.Models
         public DateTime CurrentMonthReadingDate { get; set; }
         [DisplayName("Current Month Reading")]
         public long CurrentMonthReading { get; set; }
+        public long UnitConsumed { get; set; }
         [DisplayName("Last Amount Paid")]
         public double LastPaidAmount { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MMM-yyyy}")]
