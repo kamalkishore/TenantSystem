@@ -30,7 +30,7 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult AddTenant()
         {
-            var listOfMeters = _db.ElectricMeter.ToList().Select(x => new SelectListItem
+            var listOfMeters = _db.ElectricMeter.Where(em=>em.IsOccupied == false).ToList().Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name

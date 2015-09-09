@@ -18,6 +18,7 @@ namespace TenantSystem.Models
         public string Name { get; set; }
         [DisplayName("Meter Type")]
         public ElecticityMeterType MeterType { get; set; }
+        public bool IsOccupied { get; set; }
     }
 
     public enum ElecticityMeterType
