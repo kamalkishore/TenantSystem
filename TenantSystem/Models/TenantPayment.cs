@@ -18,6 +18,7 @@ namespace TenantSystem.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayName("Date Of Payment")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfPayment { get; set; }        
         public string Comments { get; set; }
         [Required]

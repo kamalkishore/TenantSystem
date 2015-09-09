@@ -325,6 +325,61 @@ namespace TenantSystem.Controllers
             return Json(new { tenantPendingBills = billdata }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult ViewPayments()
+        {
+            ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.FullName
+            });
+
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult EditPayment(int id, int tenantId)
+        {
+            var tenant = _db.Tenant.Where(x => x.Id == tenantId).FirstOrDefault();
+            ViewBag.TenantName = tenant.FullName;
+
+            var payment = tenant.Payments.Where(y=>y.Id == id).FirstOrDefault();
+
+            return View(payment);
+        }
+
+        [HttpPost]
+        public ActionResult EditPayment(TenantPayment payment)
+        {
+            if (ModelState.IsValid)
+            {
+                var tenantPayment =_db.Tenant.
+                    Where(x=>x.Id == payment.TenantId)
+                    .FirstOrDefault()
+                    .Payments
+                    .Where(y=>y.Id == payment.Id)
+                    .FirstOrDefault();
+
+                tenantPayment.DateOfPayment = payment.DateOfPayment;
+                tenantPayment.Amount = payment.Amount;
+                tenantPayment.Comments = payment.Comments;
+                tenantPayment.PaymentType = payment.PaymentType;
+
+                _db.SaveChanges();
+            }
+
+            return RedirectToAction("ViewPayments");
+        }
+
+        [HttpGet]
+        public ActionResult GetTenantPayments(int tenantId)
+        {
+            var tenant = _db.Tenant.Where(t => t.Id == tenantId).FirstOrDefault();
+            var tenantPayments = tenant.Payments.ToList();
+
+            return Json(new { payments = tenantPayments, tenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
+        }
+
         private static IEnumerable<TenantBill> GetPendingBillsOf(List<Tenant> tenantWithPendingBills)
         {
             var bill = tenantWithPendingBills

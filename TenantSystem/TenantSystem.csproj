@@ -145,9 +145,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509050553546_Initial.cs" />
-    <Compile Include="Migrations\201509050553546_Initial.Designer.cs">
-      <DependentUpon>201509050553546_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201509050619075_Initial.cs" />
+    <Compile Include="Migrations\201509050619075_Initial.Designer.cs">
+      <DependentUpon>201509050619075_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509050626493_Initial1.cs" />
+    <Compile Include="Migrations\201509050626493_Initial1.Designer.cs">
+      <DependentUpon>201509050626493_Initial1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Building.cs" />
@@ -157,6 +161,7 @@
     <Compile Include="Models\Tenant.cs" />
     <Compile Include="Models\TenantDBContext.cs" />
     <Compile Include="Models\TenantMeterReading.cs" />
+    <Compile Include="Models\TenantPreviousReadingDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +257,9 @@
     <Content Include="Views\Shared\_TenantBillTemplate.cshtml" />
     <Content Include="Views\Tenant\ViewGeneratedBill.cshtml" />
     <Content Include="Views\Tenant\ViewTenantHistory.cshtml" />
+    <Content Include="Views\Tenant\ViewPayments.cshtml" />
+    <Content Include="Views\Tenant\EditPayments.cshtml" />
+    <Content Include="Views\Tenant\EditPayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -261,8 +269,11 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509050553546_Initial.resx">
-      <DependentUpon>201509050553546_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201509050619075_Initial.resx">
+      <DependentUpon>201509050619075_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509050626493_Initial1.resx">
+      <DependentUpon>201509050626493_Initial1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
