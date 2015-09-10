@@ -380,6 +380,35 @@ namespace TenantSystem.Controllers
             return Json(new { payments = tenantPayments, tenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult EditTenantDetails(int tenantId)
+        {
+            var tenant = _db.Tenant.Find(tenantId);
+            var listOfMeters = _db.ElectricMeter.Where(em => em.IsOccupied == false).ToList().Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            });
+            ViewBag.Meter = listOfMeters;
+
+            return View(tenant);
+        }
+
+        [HttpPost]
+        public ActionResult EditTenantDetails(Tenant modifiedTenant)
+        {
+            var tenant = _db.Tenant.Find(modifiedTenant.Id);
+
+            tenant.FirstName = modifiedTenant.FirstName;
+            tenant.LastName = modifiedTenant.LastName;
+            tenant.PhoneNumber = modifiedTenant.PhoneNumber;
+            tenant.MeterId = modifiedTenant.MeterId;
+
+            _db.SaveChanges();
+
+            return View("ShowTenants");
+        }
+
         private static IEnumerable<TenantBill> GetPendingBillsOf(List<Tenant> tenantWithPendingBills)
         {
             var bill = tenantWithPendingBills

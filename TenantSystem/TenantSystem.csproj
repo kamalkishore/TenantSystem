@@ -260,6 +260,7 @@
     <Content Include="Views\Tenant\ViewPayments.cshtml" />
     <Content Include="Views\Tenant\EditPayments.cshtml" />
     <Content Include="Views\Tenant\EditPayment.cshtml" />
+    <Content Include="Views\Tenant\EditTenantDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
