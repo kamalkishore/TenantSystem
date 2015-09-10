@@ -24,9 +24,9 @@
     <div id="ContainerTenantPayment"></div>
 
     <script id="TemplateTenantPayment" type="text/x-handlebars-template">
-        <div>
+        <div class="table-responsive">
             <h1>{{tenantName}}</h1>
-            <table class="tenant-history-template table-bordered table-striped1">
+            <table class="table">
                 <tr>
                     <th>
                         Date Of Payment
@@ -41,10 +41,7 @@
                         Payment Type
                     </th>
                     <th>
-                        
-                    </th>
-                    <th>
-                        
+
                     </th>
                 </tr>
                 {{#each payments}}
@@ -62,10 +59,7 @@
                         {{PaymentType}}
                     </td>
                     <td>
-                        <a href="/Tenant/EditPayment?Id={{Id}}&tenantId={{TenantId}}">Edit</a>
-                    </td>
-                    <td>
-                        Delete
+                        <a href="/Tenant/EditPayment?Id={{Id}}&tenantId={{TenantId}}" class=" btn btn-default ">Edit</a>
                     </td>
                 </tr>
                 {{/each}}

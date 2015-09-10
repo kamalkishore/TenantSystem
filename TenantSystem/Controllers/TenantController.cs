@@ -155,10 +155,10 @@ namespace TenantSystem.Controllers
                                     .Where(y => y.DoesBillGenerated == true)
                                                 .FirstOrDefault();
 
-                if (meterReading.PaymentId > 0)
-                {
-                    throw new Exception("payment already made");
-                }
+                //if (meterReading.PaymentId > 0)
+                //{
+                //    throw new Exception("payment already made");
+                //}
 
                 tenant.Payments.Add(payment);
 
@@ -342,6 +342,7 @@ namespace TenantSystem.Controllers
         {
             var tenant = _db.Tenant.Where(x => x.Id == tenantId).FirstOrDefault();
             ViewBag.TenantName = tenant.FullName;
+            ViewBag.PaymentType = new SelectList(new[] { PaymentType.Cash, PaymentType.Cheque, PaymentType.BadDebt });
 
             var payment = tenant.Payments.Where(y=>y.Id == id).FirstOrDefault();
 
@@ -351,31 +352,44 @@ namespace TenantSystem.Controllers
         [HttpPost]
         public ActionResult EditPayment(TenantPayment payment)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var tenantPayment =_db.Tenant.
-                    Where(x=>x.Id == payment.TenantId)
-                    .FirstOrDefault()
-                    .Payments
-                    .Where(y=>y.Id == payment.Id)
-                    .FirstOrDefault();
-
-                tenantPayment.DateOfPayment = payment.DateOfPayment;
-                tenantPayment.Amount = payment.Amount;
-                tenantPayment.Comments = payment.Comments;
-                tenantPayment.PaymentType = payment.PaymentType;
-
-                _db.SaveChanges();
+                return View(payment);
             }
 
+            var tenantPayment = _db.Tenant.
+                    Where(x => x.Id == payment.TenantId)
+                    .FirstOrDefault()
+                    .Payments
+                    .Where(y => y.Id == payment.Id)
+                    .FirstOrDefault();
+
+            tenantPayment.DateOfPayment = payment.DateOfPayment;
+            tenantPayment.Amount = payment.Amount;
+            tenantPayment.Comments = payment.Comments;
+            tenantPayment.PaymentType = payment.PaymentType;
+
+            _db.SaveChanges();
+
             return RedirectToAction("ViewPayments");
+
+            
         }
 
         [HttpGet]
         public ActionResult GetTenantPayments(int tenantId)
         {
             var tenant = _db.Tenant.Where(t => t.Id == tenantId).FirstOrDefault();
-            var tenantPayments = tenant.Payments.ToList();
+            var tenantPayments = tenant.Payments.Select(x => new
+                                                        {
+                                                            Id = x.Id,
+                                                            Amount = x.Amount,
+                                                            DateOfPayment = x.DateOfPayment,
+                                                            Comments = x.Comments,
+                                                            TenantId = x.TenantId,
+                                                            PaymentType = x.PaymentType.ToString()
+                                                        })
+                                                        .ToList();
 
             return Json(new { payments = tenantPayments, tenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
         }
@@ -389,6 +403,7 @@ namespace TenantSystem.Controllers
                 Value = x.Id.ToString(),
                 Text = x.Name
             });
+            
             ViewBag.Meter = listOfMeters;
 
             return View(tenant);

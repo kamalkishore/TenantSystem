@@ -258,7 +258,6 @@
     <Content Include="Views\Tenant\ViewGeneratedBill.cshtml" />
     <Content Include="Views\Tenant\ViewTenantHistory.cshtml" />
     <Content Include="Views\Tenant\ViewPayments.cshtml" />
-    <Content Include="Views\Tenant\EditPayments.cshtml" />
     <Content Include="Views\Tenant\EditPayment.cshtml" />
     <Content Include="Views\Tenant\EditTenantDetails.cshtml" />
   </ItemGroup>

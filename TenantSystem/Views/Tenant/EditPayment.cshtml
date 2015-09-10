@@ -5,54 +5,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Edit Payment of @ViewBag.TenantName</h3>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">        
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateOfPayment, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfPayment, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateOfPayment, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+<div class="container-fluid">
+    <div class="page-header">
+        <h3>Edit Payment of @ViewBag.TenantName</h3>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Amount)                
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Amount)
+                @Html.ValidationMessageFor(model => model.Amount)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfPayment)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.DateOfPayment)
+                @Html.ValidationMessageFor(model => model.DateOfPayment)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Comments)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Comments)
+                @Html.ValidationMessageFor(model => model.Comments)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.PaymentType)
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("PaymentType", (IEnumerable<SelectListItem>)ViewBag.PaymentType)
+                @Html.ValidationMessageFor(model => model.PaymentType)
+            </div>            
+
+                <p class="button-margin">
+                    <input type="submit" value="Update Payment" class="btn btn-lg btn-primary" />
+                </p>
+        </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
