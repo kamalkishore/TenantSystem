@@ -75,7 +75,12 @@ namespace TenantSystem.Controllers
                                                                                      .ToString(),
                                                                             Text = x.Id.ToString()
                                                                         });
-            ViewBag.PricePerUnit = new SelectList(new[] { 7, 6.5, 5 });
+            ViewBag.PricePerUnit = _db.ElectricityMeterPerUnitPrices
+                                                    .OrderByDescending(y=>y.Value)
+                                                    .Select(x=> new SelectListItem{
+                                                                                    Value = x.Value.ToString(),
+                                                                                    Text = x.Value.ToString()
+                                                                        });
 
             GetMessage();
 
@@ -446,6 +451,50 @@ namespace TenantSystem.Controllers
             AddMessage("Tenant Details updated Successfully");
 
             return RedirectToAction("ShowTenants");
+        }
+
+        [HttpGet]
+        public ActionResult AddElectricityUnitPrice()
+        {
+            GetMessage();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddElectricityUnitPrice(ElectricityMeterPerUnitPrices electricityMeterPerUnitPrices)
+        {
+            _db.ElectricityMeterPerUnitPrices.Add(electricityMeterPerUnitPrices);
+            _db.SaveChanges();
+
+            AddMessage("Price Added Successfully");
+
+            return RedirectToAction("AddElectricityUnitPrice");
+        }
+
+        [HttpGet]
+        public ActionResult ViewElectricityUnitPrice()
+        {
+            GetMessage();
+            return View(_db.ElectricityMeterPerUnitPrices.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult EditElectricityMeterUnitPrice(int id)
+        {
+            return View(_db.ElectricityMeterPerUnitPrices.Find(id));
+        }
+
+        [HttpPost]
+        public ActionResult EditElectricityMeterUnitPrice(ElectricityMeterPerUnitPrices electricityMeterPerUnitPrices)
+        {
+            if(ModelState.IsValid)
+            {
+                var item = _db.ElectricityMeterPerUnitPrices.Find(electricityMeterPerUnitPrices.Id);
+                item.Value = electricityMeterPerUnitPrices.Value;
+                _db.SaveChanges();
+                AddMessage("Price Updated Successfully");
+            }
+            return RedirectToAction("ViewElectricityUnitPrice");
         }
 
         private static IEnumerable<TenantBill> GetPendingBillsOf(List<Tenant> tenantWithPendingBills)

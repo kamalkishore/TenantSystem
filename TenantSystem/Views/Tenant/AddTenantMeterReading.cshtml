@@ -68,7 +68,8 @@
                 @Html.LabelFor(model => model.PerUnitPrice)
             </div>
             <div class="editor-field">
-                @Html.DropDownListFor(model => model.PerUnitPrice, (SelectList)ViewBag.PricePerUnit, "Select")
+               @* @Html.DropDownListFor(model => model.PerUnitPrice, (SelectList)ViewBag.PricePerUnit, "Select")*@
+                @Html.DropDownList("PerUnitPrice", (IEnumerable<SelectListItem>)ViewBag.PricePerUnit, "Select")
                 @Html.ValidationMessageFor(model => model.PerUnitPrice)
             </div>
 

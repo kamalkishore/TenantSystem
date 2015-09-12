@@ -20,6 +20,12 @@ namespace TenantSystem.Migrations
                 new Building { Name = "Home", NumberOfFloors = 4 }
                 );
 
+            context.ElectricityMeterPerUnitPrices.AddOrUpdate(p => p.Value,
+                new ElectricityMeterPerUnitPrices { Value = 5},
+                new ElectricityMeterPerUnitPrices { Value = 6.5},
+                new ElectricityMeterPerUnitPrices { Value = 7}
+                );
+
             context.ElectricMeter.AddOrUpdate(em => em.Id,
                 new ElectricMeter { Id = 1, Name = "Hall First Floor Meter 1", MeterType = ElecticityMeterType.SubMeter },
                 new ElectricMeter { Id = 2, Name = "Hall Second Floor Meter 1", MeterType = ElecticityMeterType.SubMeter },

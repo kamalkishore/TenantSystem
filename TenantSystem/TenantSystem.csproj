@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Building.cs" />
+    <Compile Include="Models\ElectricityMeterPerUnitPrices.cs" />
     <Compile Include="Models\ElectricMeter.cs" />
     <Compile Include="Models\TenantBill.cs" />
     <Compile Include="Models\TenantPayment.cs" />
@@ -260,6 +261,9 @@
     <Content Include="Views\Tenant\ViewPayments.cshtml" />
     <Content Include="Views\Tenant\EditPayment.cshtml" />
     <Content Include="Views\Tenant\EditTenantDetails.cshtml" />
+    <Content Include="Views\Tenant\AddElectricityUnitPrice.cshtml" />
+    <Content Include="Views\Tenant\ViewElectricityUnitPrice.cshtml" />
+    <Content Include="Views\Tenant\EditElectricityMeterUnitPrice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
