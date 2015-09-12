@@ -22,8 +22,10 @@ namespace TenantSystem.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult ShowTenants()
         {
+            GetMessage();
             return View(_db.Tenant.ToList());
         }
 
@@ -36,6 +38,8 @@ namespace TenantSystem.Controllers
                 Text = x.Name
             });
             ViewBag.Meter = listOfMeters;
+            GetMessage();
+
             return View();
         }
 
@@ -47,6 +51,8 @@ namespace TenantSystem.Controllers
                 _db.Tenant.Add(tenant);
                 _db.SaveChanges();
             }
+
+            AddMessage("Tenant Added Successfully");
 
             return RedirectToAction("AddTenant");
         }
@@ -70,6 +76,9 @@ namespace TenantSystem.Controllers
                                                                             Text = x.Id.ToString()
                                                                         });
             ViewBag.PricePerUnit = new SelectList(new[] { 7, 6.5, 5 });
+
+            GetMessage();
+
             return View();
         }
 
@@ -109,11 +118,14 @@ namespace TenantSystem.Controllers
                     tenant.PreviousReadingDetails.Add(previousReading);
                 }
 
+                AddMessage("Meter Reading Added Successfully");
+
                 _db.SaveChanges();
             }
 
             return RedirectToAction("AddTenantMeterReading");
         }
+        
 
         [HttpGet]
         public ActionResult GetPreviousMeterReading(int Id)
@@ -141,6 +153,8 @@ namespace TenantSystem.Controllers
 
             ViewBag.PaymentType = new SelectList(new[] { PaymentType.Cash, PaymentType.Cheque, PaymentType.BadDebt });
 
+            GetMessage();
+
             return View();
         }
 
@@ -166,6 +180,7 @@ namespace TenantSystem.Controllers
                 meterReading.PaymentId = tenant.Payments
                                                 .OrderByDescending(x => x.Id)
                                                 .Select(y => y.Id).FirstOrDefault();
+                AddMessage("Payment Added Successfully");
                 _db.SaveChanges();
 
             }
@@ -175,6 +190,7 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult ApproveTenantBills()
         {
+            GetMessage();
             return View();
         }
 
@@ -199,6 +215,8 @@ namespace TenantSystem.Controllers
                     .FirstOrDefault().DoesBillGenerated = true;
                 _db.SaveChanges();                
             }
+
+            AddMessage("Bills Approved Successfully");
 
             return RedirectToAction("ApproveTenantBills");
         }
@@ -334,6 +352,8 @@ namespace TenantSystem.Controllers
                 Text = x.FullName
             });
 
+            GetMessage();
+
             return View();
         }
 
@@ -370,6 +390,8 @@ namespace TenantSystem.Controllers
             tenantPayment.PaymentType = payment.PaymentType;
 
             _db.SaveChanges();
+
+            AddMessage("Payment updated Successfully");
 
             return RedirectToAction("ViewPayments");
 
@@ -421,7 +443,9 @@ namespace TenantSystem.Controllers
 
             _db.SaveChanges();
 
-            return View("ShowTenants");
+            AddMessage("Tenant Details updated Successfully");
+
+            return RedirectToAction("ShowTenants");
         }
 
         private static IEnumerable<TenantBill> GetPendingBillsOf(List<Tenant> tenantWithPendingBills)
@@ -464,6 +488,17 @@ namespace TenantSystem.Controllers
                                                                                      .GetMonthName(x.MeterReadingDetails.DateOfMeterReading.Month)
                             });
             return billdata;
+        }
+
+        private void AddMessage(string message)
+        {
+            TempData["message"] = string.IsNullOrEmpty(message) ? " Data Submitted SuccessFully" : " " + message;
+        }
+
+        private void GetMessage()
+        {
+            ViewBag.Message = TempData["message"];
+            TempData["message"] = "";
         }
     }
 }

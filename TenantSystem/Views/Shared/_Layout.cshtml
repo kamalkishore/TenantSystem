@@ -90,6 +90,13 @@
                 </div>
             </div>
             <div class="col-sm-9 well well-lg">
+                @if (!string.IsNullOrEmpty(ViewBag.Message))
+                {
+                    <div class="alert alert-success">
+                        <a class="close" data-dismiss="alert">×</a>
+                        <strong>Success!</strong>@ViewBag.Message
+                    </div>
+                }
                 @RenderBody()
             </div>
         </div>

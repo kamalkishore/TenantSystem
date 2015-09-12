@@ -12,6 +12,10 @@
         <img src="~/Content/images/loading.gif" /><br>
         Loading..</div>
 
+    <div class="alert alert-danger fade in" id="errorMessage">
+    </div>
+    
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -111,13 +115,19 @@
         $(function () {
 
             $("#DateOfMeterReading").val(sessionStorage["DateOfMeterReading"]);
+            $('#errorMessage').hide();
 
             $("#DateOfMeterReading").change(function () {
                 var selectedDate = new Date($("#DateOfMeterReading").val());
                 if (selectedDate > new Date()) {
-                    alert("Selected Date Should not be greater than today's date");
+                    //alert("Selected Date Should not be greater than today's date");
+                    var message = "<strong>Error! </strong>Current Date Should not be greater than today's date.";
+                    showErrorMessage(message);
                     $("#DateOfMeterReading").val("");
                     return;
+                }
+                else {
+                    hideErrorMessage();
                 }
             });
 
@@ -129,28 +139,7 @@
 
                 if (this.value) {
 
-                    var options = {
-                        url: "GetPreviousMeterReading",
-                        type: "get",
-                        datatype: "json",
-                        data: { Id: this.value },
-                        success: function (data) {
-                            console.log(data.DateOfMeterReading);
-                            $("#PreviousMeterReading").val(data.MeterReading);
-                            $("#MeterId").val(data.MeterId);
-                            $("#DateOfPreviousMonthMeterReading").val(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
-                            console.log(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
-                            $('#loading').html('loading complete');
-                        },
-                        error: function (xhr, event) {
-                            console.log("ajax error called");
-                            console.log(xhr + " " + event);
-                            resetTenantPriviousMeterReadingDetails();
-                        }
-                    };
-
-                    $.ajax(options);
-                    resetTenantPayableAmount();
+                    getPreviousReadingDetails(this.value);
                 }
                 else {
                     resetTenantPriviousMeterReadingDetails();
@@ -180,7 +169,10 @@
             }
 
             $("#btnSubmit").click(function (e) {
-                if(!validateCurrentMeterReadingDate()) return;
+                if (!validateCurrentMeterReadingDate()) {
+                    e.preventDefault();
+                    return;
+                }
                 var dateOfMeterReading = $("#DateOfMeterReading").val();
                 sessionStorage.setItem("DateOfMeterReading", dateOfMeterReading);
             });
@@ -202,22 +194,62 @@
             {
                 var currentReading = parseInt($("#CurrentMeterReading").val());
                 var previousReading = parseInt($("#PreviousMeterReading").val());
+                
                 if (currentReading < previousReading) {
-                    alert("Current Reading must be greater than the Previous Reading");
-                    $("#CurrentMeterReading").val("");
+                    var message = "<strong>Error! </strong>Current Reading must be greater than the Previous Reading";
+                    showErrorMessage(message);
                     return;
+                }
+                else {
+                    hideErrorMessage();
                 }
             }
 
             function validateCurrentMeterReadingDate() {
                 var result = moment($("#DateOfMeterReading").val()).isAfter($("#DateOfPreviousMonthMeterReading").val());
                 if (!result) {
-                    alert("Current Date Should be greater than Previous Reading Date");
-                    $("#DateOfMeterReading").val("");
+                    var message = "<strong>Error! </strong>Current Date Should be greater than Previous Reading Date";
+                    showErrorMessage(message);
                     return false;
+                }
+                else {
+                    hideErrorMessage();
                 }
 
                 return true;
+            }
+
+            function getPreviousReadingDetails(tenantId) {
+                var options = {
+                    url: "GetPreviousMeterReading",
+                    type: "get",
+                    datatype: "json",
+                    data: { Id: tenantId },
+                    success: function (data) {
+                        console.log(data.DateOfMeterReading);
+                        $("#PreviousMeterReading").val(data.MeterReading);
+                        $("#MeterId").val(data.MeterId);
+                        $("#DateOfPreviousMonthMeterReading").val(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
+                        console.log(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
+                        $('#loading').html('loading complete');
+                    },
+                    error: function (xhr, event) {
+                        console.log("ajax error called");
+                        console.log(xhr + " " + event);
+                        resetTenantPriviousMeterReadingDetails();
+                    }
+                };
+
+                $.ajax(options);
+                resetTenantPayableAmount();
+            }
+            
+            function showErrorMessage(message) {
+                $('#errorMessage').html(message).show();
+            }
+
+            function hideErrorMessage() {
+                $('#errorMessage').hide();
             }
 
             $(document).ajaxStart(function () {
