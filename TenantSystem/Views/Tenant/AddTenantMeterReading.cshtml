@@ -121,6 +121,10 @@
                 }
             });
 
+            $("#CurrentMeterReading").change(function () {
+                validateCurrentMeterReading();
+            });
+
             $('#TenantId').change(function () {
 
                 if (this.value) {
@@ -141,27 +145,27 @@
                         error: function (xhr, event) {
                             console.log("ajax error called");
                             console.log(xhr + " " + event);
-                            ResetControls();
+                            resetTenantPriviousMeterReadingDetails();
                         }
                     };
 
                     $.ajax(options);
-                    ResetTenantPayableAmount();
+                    resetTenantPayableAmount();
                 }
                 else {
-                    ResetTenantPriviousMeterReadingDetails();
+                    resetTenantPriviousMeterReadingDetails();
                 }
             });
 
             $('#CurrentMeterReading').keyup(function (e) {
-                CalculateAmount();
+                calculateAmount();
             });
 
             $("#PerUnitPrice").change(function () {
-                CalculateAmount();
+                calculateAmount();
             });
 
-            function CalculateAmount() {
+            function calculateAmount() {
                 var perUnit = $('#PerUnitPrice').val();
                 var meterReading = $('#CurrentMeterReading').val() - $('#PreviousMeterReading').val();
                 console.log(meterReading);
@@ -176,21 +180,44 @@
             }
 
             $("#btnSubmit").click(function (e) {
+                if(!validateCurrentMeterReadingDate()) return;
                 var dateOfMeterReading = $("#DateOfMeterReading").val();
                 sessionStorage.setItem("DateOfMeterReading", dateOfMeterReading);
             });
 
-            function ResetTenantPriviousMeterReadingDetails() {
+            function resetTenantPriviousMeterReadingDetails() {
                 $("#PreviousMeterReading").val("");
                 $("#MeterId").val("");
                 $("#DateOfPreviousMonthMeterReading").val("");
-                ResetTenantPayableAmount();
+                resetTenantPayableAmount();
             }
 
-            function ResetTenantPayableAmount() {
+            function resetTenantPayableAmount() {
                 $("#CurrentMeterReading").val("");
                 $("#AmountPayable").val("");
                 $('.calculated-amount').text("0");
+            }
+
+            function validateCurrentMeterReading()
+            {
+                var currentReading = parseInt($("#CurrentMeterReading").val());
+                var previousReading = parseInt($("#PreviousMeterReading").val());
+                if (currentReading < previousReading) {
+                    alert("Current Reading must be greater than the Previous Reading");
+                    $("#CurrentMeterReading").val("");
+                    return;
+                }
+            }
+
+            function validateCurrentMeterReadingDate() {
+                var result = moment($("#DateOfMeterReading").val()).isAfter($("#DateOfPreviousMonthMeterReading").val());
+                if (!result) {
+                    alert("Current Date Should be greater than Previous Reading Date");
+                    $("#DateOfMeterReading").val("");
+                    return false;
+                }
+
+                return true;
             }
 
             $(document).ajaxStart(function () {

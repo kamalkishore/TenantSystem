@@ -24,7 +24,7 @@
         <div id="ContainerTenantBill"></div>
 
         <p class="button-margin">
-            <input type="submit" class="btn btn-lg btn-primary" value="Approve Bill" />
+            <input type="submit" class="btn btn-lg btn-primary" value="Approve Bill" id="btnSubmit"/>
         </p>
     }
 
@@ -135,12 +135,22 @@
 
             function fnSuccess(data) {
                 console.log("success");
-                var template = $("#TemplateTenantBill").html();
-                //compile the template
-                var rendered = Handlebars.compile(template);
-                //rendered result
-                var result = rendered(data);
-                $("#ContainerTenantBill").html(result);
+                var itemCount = data.tenantPendingBills.length;
+                if (itemCount <= 0)
+                {
+                    $("#ContainerTenantBill").html("<p>No Pending Bills</p>")
+                    $('#btnSubmit').prop('disabled', true);
+                }
+                else {
+                    var template = $("#TemplateTenantBill").html();
+                    //compile the template
+                    var rendered = Handlebars.compile(template);
+                    //rendered result
+                    var result = rendered(data);
+                    $("#ContainerTenantBill").html(result);
+                    $('#btnSubmit').prop('disabled', false);
+                }
+                
             }
 
             function fnGetBillDetails() {

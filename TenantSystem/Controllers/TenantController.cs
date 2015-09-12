@@ -449,6 +449,7 @@ namespace TenantSystem.Controllers
                             {
                                 TenantId = x.TenantId,
                                 PreviousMonthReading = x.MeterReadingDetails.PreviousMeterReading,
+                                PreviousMonthReadingDate = x.MeterReadingDetails.DateOfPreviousMonthMeterReading,
                                 CurrentMonthReading = x.MeterReadingDetails.CurrentMeterReading,
                                 CurrentMonthPayableAmount = x.MeterReadingDetails.AmountPayable,
                                 CurrentMonthReadingDate = x.MeterReadingDetails.DateOfMeterReading,
