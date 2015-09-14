@@ -33,6 +33,22 @@
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
 
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfMeterInstalled)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.DateOfMeterInstalled)
+                @Html.ValidationMessageFor(model => model.DateOfMeterInstalled)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.InitialReading)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.InitialReading)
+                @Html.ValidationMessageFor(model => model.InitialReading)
+            </div>
+
             <p class="button-margin">
                 <input type="submit" class="btn btn-lg btn-primary" value="Add Meter" />
             </p>

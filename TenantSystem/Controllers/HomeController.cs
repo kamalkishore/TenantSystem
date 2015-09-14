@@ -48,14 +48,60 @@ namespace TenantSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddMeter(ElectricMeter meter)
+        public ActionResult AddMeter(ElectricMeter electricMeter)
         {            
             if (ModelState.IsValid)
-            {                
-                _db.ElectricMeter.Add(meter);
+            {
+                _db.ElectricMeter.Add(electricMeter);
                 _db.SaveChanges();                
             }
             return RedirectToAction("AddMeter");
+        }
+
+        [HttpGet]
+        public ActionResult ViewMeters()
+        {
+            GetMessage();
+            return View(_db.ElectricMeter.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult EditMeter(int Id)
+        {
+            ViewBag.MeterType = new SelectList(new[] { ElecticityMeterType.SubMeter, ElecticityMeterType.MainMeter });
+            var meter = _db.ElectricMeter.Find(Id);
+
+            return View(meter);
+        }
+
+        [HttpPost]
+        public ActionResult EditMeter(ElectricMeter electricMeter)
+        {
+            if (ModelState.IsValid)
+            {
+                var updateMeter = _db.ElectricMeter.Find(electricMeter.Id);
+                updateMeter.Name = electricMeter.Name;
+                updateMeter.MeterType = electricMeter.MeterType;
+                updateMeter.IsOccupied = electricMeter.IsOccupied;
+                updateMeter.InitialReading = electricMeter.InitialReading;
+                updateMeter.DateOfMeterInstalled = electricMeter.DateOfMeterInstalled;
+
+                AddMessage("Meter Details Updated Successfully");
+                
+                _db.SaveChanges();
+            }
+            return RedirectToAction("ViewMeters");
+        }
+
+        private void AddMessage(string message)
+        {
+            TempData["message"] = string.IsNullOrEmpty(message) ? " Data Submitted SuccessFully" : " " + message;
+        }
+
+        private void GetMessage()
+        {
+            ViewBag.Message = TempData["message"];
+            TempData["message"] = "";
         }
 
     }

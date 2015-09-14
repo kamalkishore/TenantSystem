@@ -137,12 +137,13 @@ namespace TenantSystem.Controllers
         {
             var tenant = _db.Tenant.Where(t=>t.Id.Equals(Id)).FirstOrDefault();
             var prevReading = tenant.PreviousReadingDetails.FirstOrDefault();
+            var meter = _db.ElectricMeter.Find(tenant.MeterId);
 
             return Json(new
             {
-                MeterReading = (prevReading == null) ? 0 : prevReading.PreviousMeterReading,
+                MeterReading = (prevReading == null) ? meter.InitialReading : prevReading.PreviousMeterReading,
                 MeterId = tenant.MeterId,
-                DateOfMeterReading = (prevReading == null) ? DateTime.MinValue : prevReading.DateOfPreviousMonthMeterReading.Date
+                DateOfMeterReading = (prevReading == null) ? meter.DateOfMeterInstalled : prevReading.DateOfPreviousMonthMeterReading.Date
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -425,7 +426,7 @@ namespace TenantSystem.Controllers
         public ActionResult EditTenantDetails(int tenantId)
         {
             var tenant = _db.Tenant.Find(tenantId);
-            var listOfMeters = _db.ElectricMeter.Where(em => em.IsOccupied == false).ToList().Select(x => new SelectListItem
+            var listOfMeters = _db.ElectricMeter.Where(em => em.IsOccupied == false || em.Id == tenant.MeterId).ToList().Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name

@@ -11,7 +11,6 @@ namespace TenantSystem.Models
     public class ElectricMeter
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         [Required]
         [DataType(DataType.Text)]
@@ -19,6 +18,12 @@ namespace TenantSystem.Models
         [DisplayName("Meter Type")]
         public ElecticityMeterType MeterType { get; set; }
         public bool IsOccupied { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayName("Date Of Meter Installed")]
+        public DateTime DateOfMeterInstalled { get; set; }
+        [DisplayName("Initial Reading")]
+        public long InitialReading { get; set; }
     }
 
     public enum ElecticityMeterType

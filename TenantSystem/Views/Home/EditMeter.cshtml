@@ -1,0 +1,64 @@
+﻿@model TenantSystem.Models.ElectricMeter
+
+@{
+    ViewBag.Title = "Edit Meter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Meter Details</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)            
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsOccupied)
+            <div class="editor-field">
+                @Html.EditorFor(model => model.IsOccupied)
+                @Html.ValidationMessageFor(model => model.IsOccupied)
+            </div>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DateOfMeterInstalled)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateOfMeterInstalled)
+            @Html.ValidationMessageFor(model => model.DateOfMeterInstalled)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.InitialReading)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.InitialReading)
+            @Html.ValidationMessageFor(model => model.InitialReading)
+        </div>
+
+        <p class="button-margin">
+            <input type="submit" value="Update Meter Details" class="btn btn-lg btn-primary" id="btnSubmit" />
+        </p>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
