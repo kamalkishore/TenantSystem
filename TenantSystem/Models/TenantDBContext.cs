@@ -36,6 +36,14 @@ namespace TenantSystem.Models
             modelBuilder.Entity<TenantMeterReading>()
                         .Property(p => p.DateOfPreviousMonthMeterReading)
                         .HasColumnType("datetime2");
+
+            modelBuilder.Entity<ElectricMeter>()
+                        .Property(p => p.DateOfCurrentMeterReading)
+                        .HasColumnType("datetime2");
+
+            modelBuilder.Entity<ElectricMeter>()
+                        .Property(p => p.DateOfMeterInstalled)
+                        .HasColumnType("datetime2");
         }
         //public DbSet<TenantMeterReading> TenantMeterReading { get; set; }
 

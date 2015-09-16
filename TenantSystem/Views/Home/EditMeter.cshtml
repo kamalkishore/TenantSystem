@@ -25,29 +25,75 @@
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IsOccupied)
-            <div class="editor-field">
-                @Html.EditorFor(model => model.IsOccupied)
-                @Html.ValidationMessageFor(model => model.IsOccupied)
+        @if (Model.IsOccupied)
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfMeterInstalled)
             </div>
-        </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DateOfMeterInstalled, new { @readonly = "readOnly" })
+                @Html.ValidationMessageFor(model => model.DateOfMeterInstalled)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.DateOfMeterInstalled)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.DateOfMeterInstalled)
-            @Html.ValidationMessageFor(model => model.DateOfMeterInstalled)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.InitialReading)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.InitialReading, new { @readonly = "readOnly" })
+                @Html.ValidationMessageFor(model => model.InitialReading)
+            </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.InitialReading)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.InitialReading)
-            @Html.ValidationMessageFor(model => model.InitialReading)
-        </div>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfCurrentMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.DateOfCurrentMeterReading, new { @readonly = "readOnly" })
+                @Html.ValidationMessageFor(model => model.DateOfCurrentMeterReading)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.CurrentMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.CurrentMeterReading, new { @readonly = "readOnly" })
+                @Html.ValidationMessageFor(model => model.CurrentMeterReading)
+            </div>
+        }
+        else
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfMeterInstalled)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.DateOfMeterInstalled)
+                @Html.ValidationMessageFor(model => model.DateOfMeterInstalled)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.InitialReading)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.InitialReading)
+                @Html.ValidationMessageFor(model => model.InitialReading)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.DateOfCurrentMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.DateOfCurrentMeterReading)
+                @Html.ValidationMessageFor(model => model.DateOfCurrentMeterReading)
+            </div>
+
+            <div class="editor-label">
+                @Html.LabelFor(model => model.CurrentMeterReading)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.CurrentMeterReading)
+                @Html.ValidationMessageFor(model => model.CurrentMeterReading)
+            </div>
+        }
+        
 
         <p class="button-margin">
             <input type="submit" value="Update Meter Details" class="btn btn-lg btn-primary" id="btnSubmit" />

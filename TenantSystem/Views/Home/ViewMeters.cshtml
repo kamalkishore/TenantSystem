@@ -10,7 +10,7 @@
 <p>
     @Html.ActionLink("Create New", "AddMeter")
 </p>
-<table class="table">
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -23,6 +23,12 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.InitialReading)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfCurrentMeterReading)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CurrentMeterReading)
         </th>
         <th></th>
     </tr>
@@ -42,8 +48,13 @@
             @Html.DisplayFor(modelItem => item.InitialReading)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditMeter", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.DisplayFor(modelItem => item.DateOfCurrentMeterReading)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentMeterReading)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditMeter", new { id = item.Id }, new { @class = "btn btn-default" })
         </td>
     </tr>
 }

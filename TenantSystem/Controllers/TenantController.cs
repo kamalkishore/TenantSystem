@@ -49,6 +49,10 @@ namespace TenantSystem.Controllers
             if (ModelState.IsValid)
             {
                 _db.Tenant.Add(tenant);
+
+                var electricMeter = _db.ElectricMeter.Find(tenant.MeterId);
+                electricMeter.IsOccupied = true;
+                
                 _db.SaveChanges();
             }
 
@@ -96,6 +100,12 @@ namespace TenantSystem.Controllers
                 var tenant = _db.Tenant.Find(tenantMeterReading.TenantId);
                 tenant.MeterReading.Add(tenantMeterReading);
 
+                var electricMeter = _db.ElectricMeter.Find(tenantMeterReading.MeterId);
+
+                //update meter
+                electricMeter.DateOfCurrentMeterReading = tenantMeterReading.DateOfMeterReading;
+                electricMeter.CurrentMeterReading = tenantMeterReading.CurrentMeterReading;
+
                 var previousReading = tenant.PreviousReadingDetails.FirstOrDefault();
 
                 //todo add the default values in order to remove null logic
@@ -135,15 +145,15 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetPreviousMeterReading(int Id)
         {
-            var tenant = _db.Tenant.Where(t=>t.Id.Equals(Id)).FirstOrDefault();
-            var prevReading = tenant.PreviousReadingDetails.FirstOrDefault();
+            var tenant = _db.Tenant.Find(Id);
             var meter = _db.ElectricMeter.Find(tenant.MeterId);
 
             return Json(new
             {
-                MeterReading = (prevReading == null) ? meter.InitialReading : prevReading.PreviousMeterReading,
-                MeterId = tenant.MeterId,
-                DateOfMeterReading = (prevReading == null) ? meter.DateOfMeterInstalled : prevReading.DateOfPreviousMonthMeterReading.Date
+                MeterReading = meter.CurrentMeterReading,
+                MeterId = meter.Id,
+                MeterName = meter.Name,
+                DateOfMeterReading = meter.DateOfCurrentMeterReading
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -444,7 +454,18 @@ namespace TenantSystem.Controllers
 
             tenant.FirstName = modifiedTenant.FirstName;
             tenant.LastName = modifiedTenant.LastName;
-            tenant.PhoneNumber = modifiedTenant.PhoneNumber;
+            tenant.PhoneNumber = modifiedTenant.PhoneNumber;            
+
+            if(tenant.MeterId != modifiedTenant.MeterId)
+            {
+                var oldMeter = _db.ElectricMeter.Find(tenant.MeterId);
+                var newMeter = _db.ElectricMeter.Find(modifiedTenant.MeterId);
+
+                oldMeter.IsOccupied = false;
+
+                newMeter.IsOccupied = true;
+            }
+
             tenant.MeterId = modifiedTenant.MeterId;
 
             _db.SaveChanges();

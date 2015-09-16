@@ -52,6 +52,8 @@ namespace TenantSystem.Controllers
         {            
             if (ModelState.IsValid)
             {
+                electricMeter.DateOfCurrentMeterReading = electricMeter.DateOfMeterInstalled;
+                electricMeter.CurrentMeterReading = electricMeter.InitialReading;
                 _db.ElectricMeter.Add(electricMeter);
                 _db.SaveChanges();                
             }
@@ -75,16 +77,18 @@ namespace TenantSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditMeter(ElectricMeter electricMeter)
+        public ActionResult EditMeter(ElectricMeter updatedMeter)
         {
             if (ModelState.IsValid)
             {
-                var updateMeter = _db.ElectricMeter.Find(electricMeter.Id);
-                updateMeter.Name = electricMeter.Name;
-                updateMeter.MeterType = electricMeter.MeterType;
-                updateMeter.IsOccupied = electricMeter.IsOccupied;
-                updateMeter.InitialReading = electricMeter.InitialReading;
-                updateMeter.DateOfMeterInstalled = electricMeter.DateOfMeterInstalled;
+                var electricMeter = _db.ElectricMeter.Find(updatedMeter.Id);
+                electricMeter.Name = electricMeter.Name;
+                electricMeter.MeterType = electricMeter.MeterType;
+                electricMeter.IsOccupied = electricMeter.IsOccupied;
+                electricMeter.InitialReading = electricMeter.InitialReading;
+                electricMeter.DateOfMeterInstalled = electricMeter.DateOfMeterInstalled;
+                electricMeter.CurrentMeterReading = electricMeter.CurrentMeterReading;
+                electricMeter.DateOfCurrentMeterReading = electricMeter.DateOfCurrentMeterReading;
 
                 AddMessage("Meter Details Updated Successfully");
                 

@@ -41,13 +41,18 @@
                 @Html.ValidationMessageFor(model => model.TenantId)
             </div>
 
-            <div class="editor-label">
+            @*<div class="editor-label">
                 @Html.LabelFor(model => model.MeterId)
+            </div>*@
+            <div class="editor-field">
+                @Html.HiddenFor(model => model.MeterId)
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Tenant Meter")
             </div>
             <div class="editor-field">
-                @Html.TextBoxFor(model => model.MeterId, new { @readonly = "readOnly" })
-
-                @Html.ValidationMessageFor(model => model.MeterId)
+                @Html.TextBox("MeterName","", new { @readonly = "readOnly" })
             </div>
 
             <div class="editor-lable">
@@ -230,6 +235,7 @@
                         console.log(data.DateOfMeterReading);
                         $("#PreviousMeterReading").val(data.MeterReading);
                         $("#MeterId").val(data.MeterId);
+                        $("#MeterName").val(data.MeterName);
                         $("#DateOfPreviousMonthMeterReading").val(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
                         console.log(moment(new Date(parseInt(data.DateOfMeterReading.substr(6)))).format("DD-MMMM-YYYY"));
                         $('#loading').html('loading complete');

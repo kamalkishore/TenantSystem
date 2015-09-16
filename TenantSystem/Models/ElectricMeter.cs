@@ -23,7 +23,13 @@ namespace TenantSystem.Models
         [DisplayName("Date Of Meter Installed")]
         public DateTime DateOfMeterInstalled { get; set; }
         [DisplayName("Initial Reading")]
-        public long InitialReading { get; set; }
+        public long InitialReading { get; set; }        
+        [DisplayName("Current Meter Reading")]
+        public long CurrentMeterReading { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayName("Date of Current Reading")]
+        public DateTime DateOfCurrentMeterReading { get; set; }
     }
 
     public enum ElecticityMeterType

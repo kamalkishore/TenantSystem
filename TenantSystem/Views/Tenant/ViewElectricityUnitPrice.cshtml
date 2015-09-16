@@ -10,7 +10,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-hover">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Value)
@@ -24,8 +24,8 @@
             @Html.DisplayFor(modelItem => item.Value)
         </td>
         <td>
-            @Html.ActionLink("Edit", "EditElectricityMeterUnitPrice", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "EditElectricityMeterUnitPrice", new { id = item.Id }, new { @class = "btn btn-default" }) 
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
         </td>
     </tr>
 }
