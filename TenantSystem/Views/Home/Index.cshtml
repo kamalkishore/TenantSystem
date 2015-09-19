@@ -2,6 +2,118 @@
     ViewBag.Title = "Index";
 }
 
-<div>
-    Please select the option from the left menu
+<div class="container-fluid">
+    @*<div>
+        Please select the option from the left menu
+    </div>*@
+
+    <div id="ContainerAmountReceivable"></div>
+
+    <script id="TemplateAmountReceivable" type="text/x-handlebars-template">
+        <div class="table-responsive">
+            @*<h1>{{tenantName}}</h1>*@
+            <table class="table table-hover">
+                <tr>
+                    <th>
+                        Tenant Name
+                    </th>
+                    <th>
+                        Amount Receivable
+                    </th>
+                    <th>Percentage</th>                    
+                </tr>
+                {{#each amountReceivable}}
+                <tr class="border-tr1">
+                    <td>
+                        {{name}}
+                    </td>
+                    <td>
+                        {{amount}}
+                    </td>  
+                    <td>{{percentage}}</td>                  
+                </tr>
+                {{/each}}
+            </table>
+
+        </div>
+
+        <h2>Total Amount Receivable {{totalAmount}}</h2>
+        <h3></h3>
+    </script>
+
+    <div id="containerPieChart" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
 </div>
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/handlebars")
+@Scripts.Render("~/bundles/moment")
+@Scripts.Render("~/bundles/highcharts")
+
+    <script type="text/javascript">
+
+        $(function () {
+            var optionGetAmountReceivable = {
+                url: 'Tenant/GetTenantAmountReceivable',
+                dataType: "Json",
+                type: "Get",
+                success: fnSuccess,
+                error: function (xhr, event) {
+                    console.log("error");
+                }
+            };
+
+            $.ajax(optionGetAmountReceivable);
+
+            function fnSuccess(data) {
+                console.log("success");
+                console.log(data);
+                var template = $("#TemplateAmountReceivable").html();
+                //compile the template
+                var rendered = Handlebars.compile(template);
+                //rendered result
+                var result = rendered(data);
+                $("#ContainerAmountReceivable").html(result);
+
+                if (data.amountReceivable.length > 0) {
+                    createPieChart(data.amountReceivable)
+                };
+            }
+
+            function createPieChart(amountPayableData) {
+                // Build the chart
+                $('#containerPieChart').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Tenant Bill Amount Receivable'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        name: "Brands",
+                        colorByPoint: true,
+                        data: amountPayableData
+                    }]
+                });
+            }            
+
+        });
+
+    </script>
+}

@@ -145,14 +145,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201509050619075_Initial.cs" />
-    <Compile Include="Migrations\201509050619075_Initial.Designer.cs">
-      <DependentUpon>201509050619075_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201509050626493_Initial1.cs" />
-    <Compile Include="Migrations\201509050626493_Initial1.Designer.cs">
-      <DependentUpon>201509050626493_Initial1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\ElectricityMeterPerUnitPrices.cs" />
@@ -214,6 +206,46 @@
     <Content Include="Scripts\handlebars-v3.0.0.js" />
     <None Include="Properties\PublishProfiles\tenantsystem.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\adapters\standalone-framework.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\adapters\standalone-framework.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\highcharts-3d.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\highcharts-3d.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\highcharts-more.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\highcharts-more.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\highcharts.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\highcharts.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\boost.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\boost.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\broken-axis.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\broken-axis.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\canvas-tools.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\canvas-tools.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\data.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\data.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\drilldown.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\drilldown.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\exporting.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\exporting.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\funnel.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\funnel.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\heatmap.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\heatmap.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\no-data-to-display.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\no-data-to-display.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\offline-exporting.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\offline-exporting.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\solid-gauge.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\solid-gauge.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\treemap.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\modules\treemap.src.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\dark-blue.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\dark-green.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\dark-unica.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\gray.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\grid-light.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\grid.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\sand-signika.js" />
+    <Content Include="Scripts\Highcharts-4.1.8\js\themes\skies.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
@@ -273,14 +305,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201509050619075_Initial.resx">
-      <DependentUpon>201509050619075_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201509050626493_Initial1.resx">
-      <DependentUpon>201509050626493_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

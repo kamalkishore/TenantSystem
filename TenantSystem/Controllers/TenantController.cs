@@ -519,6 +519,32 @@ namespace TenantSystem.Controllers
             return RedirectToAction("ViewElectricityUnitPrice");
         }
 
+        [HttpGet]
+        public ActionResult GetTenantAmountReceivable()
+        {
+            var tenants = _db.Tenant.ToList();
+
+            var amountReceivables = tenants
+                                        .Select(x => 
+                                            new { TenantName = x.FullName, 
+                                                  AmountReceivable = x.GetAmountReceivable() })
+                                        .Where(y=>y.AmountReceivable > 0).ToList();
+            
+            var totalAmountReceivable = amountReceivables.Sum(x=>x.AmountReceivable);
+
+            var listOfAmountReceivables = amountReceivables
+                .Select(x => 
+                    new { name = x.TenantName, 
+                          amount = x.AmountReceivable,
+                          percentage = ((x.AmountReceivable / totalAmountReceivable) * 100).ToString("#.##"),
+                          y = ((x.AmountReceivable / totalAmountReceivable) * 100)
+                    }
+                        );
+
+
+            return Json(new { amountReceivable = listOfAmountReceivables, totalAmount = totalAmountReceivable }, JsonRequestBehavior.AllowGet);
+        }
+
         private static IEnumerable<TenantBill> GetPendingBillsOf(List<Tenant> tenantWithPendingBills)
         {
             var bill = tenantWithPendingBills

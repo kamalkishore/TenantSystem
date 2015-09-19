@@ -45,5 +45,14 @@ namespace TenantSystem.Models
             get { return this.FirstName + " " + this.LastName; }
             set { value = this.FirstName + " " + this.LastName; }
         }
+
+        public double GetAmountReceivable()
+        {
+            return Bills.
+                Select(x=>x.CurrentMonthPayableAmount)
+                .DefaultIfEmpty()
+                .Sum() - Payments.Select(x=>x.Amount).DefaultIfEmpty().Sum();
+
+        }
     }
 }
