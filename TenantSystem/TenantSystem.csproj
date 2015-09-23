@@ -298,6 +298,7 @@
     <Content Include="Views\Tenant\EditElectricityMeterUnitPrice.cshtml" />
     <Content Include="Views\Home\ViewMeters.cshtml" />
     <Content Include="Views\Home\EditMeter.cshtml" />
+    <Content Include="Views\Tenant\EditPendingBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

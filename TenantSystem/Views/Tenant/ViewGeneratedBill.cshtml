@@ -30,7 +30,7 @@
                    </td>
                </tr>
                <tr class="border-tr">
-                   <td colspan="3">Electricity Bill for Month of {{MonthName}}
+                   <td colspan="3">Electricity Bill for Month of {{formatMonthYear PreviousMonthReadingDate}}
                    </td>
                </tr>
                <tr>
@@ -108,6 +108,17 @@
                 var minDate = new Date("Jan 01 1900");
                 if (date > minDate) {
                     return "(" + moment(date).format("DD-MMMM-YYYY") + ")";
+                }
+                else {
+                    return "";
+                }
+            });
+
+            Handlebars.registerHelper("formatMonthYear", function (pDate) {
+                var date = new Date(parseInt(pDate.substr(6)));
+                var minDate = new Date("Jan 01 1900");
+                if (date > minDate) {
+                    return moment(date).format("MMMM-YYYY");
                 }
                 else {
                     return "";

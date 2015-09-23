@@ -26,6 +26,7 @@ namespace TenantSystem.Models
         [DisplayName("Previous Meter Reading")]
         public long PreviousMeterReading { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DisplayName("Previous Month Reading Date")]
         public DateTime DateOfPreviousMonthMeterReading { get; set; }
         [DisplayName("Amount Payable")]
@@ -33,6 +34,7 @@ namespace TenantSystem.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayName("Date of Current Month Reading")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfMeterReading { get; set; }
         public bool DoesBillGenerated { get; set; }
         public long PaymentId { get; set; }

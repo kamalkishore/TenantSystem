@@ -1,0 +1,191 @@
+﻿@model TenantSystem.Models.TenantMeterReading
+
+@{
+    ViewBag.Title = "EditPendingBill";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Pending Bill @ViewBag.TenantName</h2>
+
+<div class="alert alert-danger fade in" id="errorMessage">
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-lable">
+            @Html.LabelFor(model => model.DateOfMeterReading)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.DateOfMeterReading)
+        </div>
+        
+        <div class="editor-lable">
+            @Html.LabelFor(model => model.PreviousMeterReading)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.PreviousMeterReading, new { @readonly = "readOnly" })
+        </div>
+
+        <div class="editor-field">
+            @Html.HiddenFor(model => model.TenantId)
+        </div>
+
+        <div class="editor-lable">
+            @Html.LabelFor(model => model.DateOfPreviousMonthMeterReading)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.DateOfPreviousMonthMeterReading, new { @readonly = "readOnly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PerUnitPrice)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("PerUnitPrice", (IEnumerable<SelectListItem>)ViewBag.PricePerUnit, "Select")
+            @Html.ValidationMessageFor(model => model.PerUnitPrice)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CurrentMeterReading)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CurrentMeterReading)
+            @Html.ValidationMessageFor(model => model.CurrentMeterReading)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AmountPayable)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.AmountPayable, new { @readonly = "readOnly" })
+            @Html.ValidationMessageFor(model => model.AmountPayable)
+        </div>
+
+        <div class="calculated-amount-label">Amount Payable :  </div>
+        <div class="calculated-amount">
+            0
+        </div>
+
+        <div>
+        </div>
+
+        <p class="button-margin">
+            <input type="submit" value="Update Meter Reading Details" class="btn btn-lg btn-primary" id="btnSubmit" />
+        </p>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/moment")
+
+    <script type="text/javascript">
+        $(function () {
+            
+            $('#errorMessage').hide();
+
+            function formatDateField(){
+                var dateValue = moment(new Date(parseInt($("#DateOfPreviousMonthMeterReading").val().substr(6)))).format("DD-MMMM-YYYY");
+                $("#DateOfPreviousMonthMeterReading").val(dateValue);
+            }
+            
+            formatDateField();
+
+            $("#DateOfMeterReading").change(function () {
+                var selectedDate = new Date($("#DateOfMeterReading").val());
+                if (selectedDate > new Date()) {
+                    //alert("Selected Date Should not be greater than today's date");
+                    var message = "<strong>Error! </strong>Current Date Should not be greater than today's date.";
+                    showErrorMessage(message);
+                    $("#DateOfMeterReading").val("");
+                    return;
+                }
+                else {
+                    hideErrorMessage();
+                }
+            });
+
+            $("#CurrentMeterReading").change(function () {
+                validateCurrentMeterReading();
+            });
+
+            $('#CurrentMeterReading').keyup(function (e) {
+                calculateAmount();
+            });
+
+            $("#PerUnitPrice").change(function () {
+                calculateAmount();
+            });
+
+            function calculateAmount() {
+                var perUnit = $('#PerUnitPrice').val();
+                var meterReading = $('#CurrentMeterReading').val() - $('#PreviousMeterReading').val();
+                console.log(meterReading);
+                var calculatedAmount = perUnit * meterReading;
+                console.log("Amount payable : " + calculatedAmount);
+
+                $('.calculated-amount').text(meterReading + " * " + perUnit + " : " + calculatedAmount);
+                $("#AmountPayable").val(calculatedAmount);
+
+                if (!$.isNumeric(perUnit) && (!$.isNumeric(meterReading)))
+                { $('.calculated-amount').text(calculatedAmount); }
+            }
+
+            $("#btnSubmit").click(function (e) {
+                if (!validateCurrentMeterReadingDate()) {
+                    e.preventDefault();
+                    return;
+                }
+            });
+
+            function validateCurrentMeterReading()
+            {
+                var currentReading = parseInt($("#CurrentMeterReading").val());
+                var previousReading = parseInt($("#PreviousMeterReading").val());
+
+                if (currentReading < previousReading) {
+                    var message = "<strong>Error! </strong>Current Reading must be greater than the Previous Reading";
+                    showErrorMessage(message);
+                    return;
+                }
+                else {
+                    hideErrorMessage();
+                }
+            }
+
+            function validateCurrentMeterReadingDate() {
+                var result = moment($("#DateOfMeterReading").val()).isAfter($("#DateOfPreviousMonthMeterReading").val());
+                if (!result) {
+                    var message = "<strong>Error! </strong>Current Date Should be greater than Previous Reading Date";
+                    showErrorMessage(message);
+                    return false;
+                }
+                else {
+                    hideErrorMessage();
+                }
+
+                return true;
+            }
+
+            function showErrorMessage(message) {
+                $('#errorMessage').html(message).show();
+            }
+
+            function hideErrorMessage() {
+                $('#errorMessage').hide();
+            }
+
+        });
+    </script>
+}
