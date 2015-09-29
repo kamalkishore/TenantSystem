@@ -67,24 +67,26 @@ namespace TenantSystem.Models
             return MeterReading.OrderBy(y => y.Id).Where(z => z.DoesBillGenerated != true).FirstOrDefault();
         }
 
-        public TenantPayment GetLastPaymentDetails()
+        public TenantPayment GetLastPaymentDetailsBefore(DateTime date)
         {
-            return Payments.Where(z => z.PaymentType != PaymentType.BadDebt)
-                                    .OrderByDescending(y => y.Id)
+            return Payments.Where(z => z.PaymentType != PaymentType.BadDebt && z.DateOfPayment < date)
+                                    .OrderByDescending(y => y.DateOfPayment)
                                     .FirstOrDefault();
         }
 
-        public double GetPreviousPendingAmount()
+        public double GetPreviousPendingAmount(DateTime date)
         {
-            return Bills
-                        .Select(y => y.CurrentMonthPayableAmount).DefaultIfEmpty().Sum() -
-                        Payments.Select(y => y.Amount).DefaultIfEmpty().Sum();
+            return MeterReading
+                        .Where(x=>x.DateOfMeterReading < date)
+                        .Select(y => y.AmountPayable).DefaultIfEmpty().Sum() -
+                        Payments.Where(x=>x.DateOfPayment < date).Select(y => y.Amount).DefaultIfEmpty().Sum();
         }
 
         public dynamic GetPendingBillToApprove()
         {
             var meterReadingDetails = GetMeterReadingDetails();
-            var lastPaymentDetails = GetLastPaymentDetails();
+            var previousPendingAmount = GetPreviousPendingAmount(meterReadingDetails.DateOfMeterReading);
+            var lastPaymentDetails = GetLastPaymentDetailsBefore(meterReadingDetails.DateOfMeterReading);
 
             return  new 
                             {
@@ -98,12 +100,12 @@ namespace TenantSystem.Models
                                 UnitConsumed = meterReadingDetails.CurrentMeterReading - meterReadingDetails.PreviousMeterReading,
                                 LastPaidAmount = (lastPaymentDetails == null) ? 0 : lastPaymentDetails.Amount,
                                 LastPaidAmountDate = (lastPaymentDetails == null) ? DateTime.MinValue : lastPaymentDetails.DateOfPayment,//todo need to display the blank if date is not present
-                                PreviousMonthPendingAmount = this.GetPreviousPendingAmount(),
-                                TotalPayableAmount = this.GetPreviousPendingAmount() + meterReadingDetails.AmountPayable,
+                                PreviousMonthPendingAmount = previousPendingAmount,
+                                TotalPayableAmount = previousPendingAmount + meterReadingDetails.AmountPayable,
                                 TenantName = this.FullName,
                                 PerUnitPrice = meterReadingDetails.PerUnitPrice,
                                 MonthName = CultureInfo.CurrentCulture.DateTimeFormat
-                                                                                     .GetMonthName(meterReadingDetails.DateOfMeterReading.Month)
+                                                                                     .GetMonthName(meterReadingDetails.DateOfPreviousMonthMeterReading.Month)
                             };
         }
 
@@ -112,7 +114,7 @@ namespace TenantSystem.Models
         public TenantBill GetBillDetailsOf(string month, string year)
         {
             return Bills
-                    .Where(x => (x.CurrentMonthReadingDate.Month == int.Parse(month))
+                    .Where(x => (x.PreviousMonthReadingDate.Month == int.Parse(month))
                                 && (x.CurrentMonthReadingDate.Year.ToString() == year))
                     .FirstOrDefault();
         }

@@ -175,20 +175,12 @@ namespace TenantSystem.Controllers
                                     .OrderByDescending(x => x.Id)
                                     .Where(y => y.DoesBillGenerated == true)
                                                 .FirstOrDefault();
-
-                //if (meterReading.PaymentId > 0)
-                //{
-                //    throw new Exception("payment already made");
-                //}
-
+                
                 tenant.Payments.Add(payment);
 
                 _db.SaveChanges();
-                meterReading.PaymentId = tenant.Payments
-                                                .OrderByDescending(x => x.Id)
-                                                .Select(y => y.Id).FirstOrDefault();
+
                 AddMessage("Payment Added Successfully");
-                _db.SaveChanges();
 
             }
             return RedirectToAction("AddTenantPayment");
@@ -432,7 +424,8 @@ namespace TenantSystem.Controllers
         public ActionResult GetTenantPayments(int tenantId)
         {
             var tenant = _db.Tenant.Where(t => t.Id == tenantId).FirstOrDefault();
-            var tenantPayments = tenant.Payments.Select(x => new
+            var tenantPayments = tenant.Payments.OrderByDescending(y=>y.DateOfPayment)
+                                                .Select(x => new
                                                         {
                                                             Id = x.Id,
                                                             Amount = x.Amount,
@@ -442,8 +435,8 @@ namespace TenantSystem.Controllers
                                                             PaymentType = x.PaymentType.ToString()
                                                         })
                                                         .ToList();
-
-            return Json(new { payments = tenantPayments, tenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
+            var totalAmount = tenantPayments.Select(x => x.Amount).DefaultIfEmpty().Sum();
+            return Json(new { payments = tenantPayments, tenantName = tenant.FullName, totalAmountPaid = totalAmount }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
