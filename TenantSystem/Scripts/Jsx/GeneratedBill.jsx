@@ -139,7 +139,7 @@ class SelectControl extends React.Component {
                 return (
                     <table key={bill.Id} className="tenant-bill-template">
                         <ThreeColSpanRow rowText1={bill.TenantName} />
-                        <ThreeColSpanRow classValue="border-tr" rowText1="Electricity Bill for Month for" rowText2={bill.PreviousMonthReadingDate} />
+                        <ThreeColSpanRow classValue="border-tr" rowText1="Electricity Bill for Month for" rowText2={bill.CurrentMonthReadingDate} />
                         <BillRow textValue="Current Month Reading" dateValue={bill.CurrentMonthReadingDate} numberValue={bill.CurrentMonthReading} />
                         <BillRow textValue="Previous Month Reading" dateValue={bill.PreviousMonthReadingDate} numberValue={bill.PreviousMonthReading} />
                         <BillRow textValue="Total Unit Consumed" dateValue="" numberValue={bill.UnitConsumed} />
@@ -158,17 +158,21 @@ class SelectControl extends React.Component {
     }
 
 function ThreeColSpanRow(props) {
+    if (props.rowText2) {
+        var dateValue = moment(props.rowText2).format("MMMM-YYYY");
+    }
     return (
         <tr className={props.classValue}>
-            <td colSpan="3">{props.rowText1} {props.rowText2}</td>
+            <td colSpan="3">{props.rowText1} {dateValue}</td>
         </tr>
     );
 }
 
 function BillRow(props) {
+    var dateValue = moment(props.dateValue).format("DD-MMMM-YYYY");
     return (
         <tr className={props.classValue}>
-            <td> {props.textValue} {props.dateValue}
+            <td> {props.textValue} {dateValue}
             </td>
             <td className="arrow"></td>
             <td>{props.numberValue}
