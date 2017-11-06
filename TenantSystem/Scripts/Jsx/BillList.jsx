@@ -41,7 +41,9 @@ function ThreeColSpanRow(props) {
 }
 
 function BillRow(props) {
-    var dateValue = moment(props.dateValue).format("DD-MMMM-YYYY");
+    if (props.dateValue) {
+        var dateValue = moment(props.dateValue).format("DD-MMMM-YYYY");
+    }
     return (
         <tr className={props.classValue}>
             <td> {props.textValue} {dateValue}
