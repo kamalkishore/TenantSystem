@@ -29,7 +29,7 @@
             }
         };
 
-        var optionGetBillDetailsOfSelectedMonthAndTenant = {
+        let optionGetBillDetailsOfSelectedMonthAndTenant = {
             url: "GetBillDetailsOfSelectedMonthAndTenant",
             datatype: "json",
             data: { month: selectedDate[1], year: selectedDate[0], tenantId: tenantId },
@@ -51,10 +51,12 @@
             }
         };
 
-        if (selectedDateValue !== "" && tenantId !== "") {
+        let tenantAndDateBothSelected = (selectedDateValue !== "" && tenantId !== "" && tenantId !== 0);
+
+        if (tenantAndDateBothSelected) {
             $.ajax(optionGetBillDetailsOfSelectedMonthAndTenant);
         }
-        else if (tenantId !== "") {
+        else if (tenantId !== "" && tenantId !== 0) {
             $.ajax(optionGetBillDetailsOfSelectedTenant);
         }
         else {
@@ -81,33 +83,14 @@
     render() {
         return (
             <div>
-                <SelectControl onSelectedItemChange={tenantId => this.onTenantSelection(tenantId)} /><br />
-                <DateControl onMonthSelect={month => this.onMonthSelection(month)}/><br />
+                <DateControl onMonthSelect={month => this.onMonthSelection(month)} /><br />
+                <SelectControl onSelectedItemChange={tenantId => this.onTenantSelection(tenantId)} /><br />                
                 <BillList bills={this.state.bills} />
             </div>
         );
     }
 }
 
-
-class DateControl extends React.Component {
-    constructor(){
-        super()
-    }
-
-    onDateChange(data) {
-        this.props.onMonthSelect(data);
-    }
-
-    render() {
-        return (
-            <div className="display-generated-bill">
-                Select Month   :
-            <input type="month" id="txtMonth" required onChange={ev => this.onDateChange(ev.target.value)} />
-            </div>
-        );
-    }
-    }
 React.render(
     <SearchControl />,
     document.getElementById('generatedBillContainer')

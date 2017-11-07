@@ -31,7 +31,6 @@
     }
 
     onSelectItem(tenantId) {
-        console.log("select control selected id : " + tenantId);
         this.setState({
             selectedTenantId: tenantId
         });
@@ -47,7 +46,7 @@
 
         return (
             <div className="display-generated-bill">
-                Select Tenant   :
+                Select Tenant {'   :   '}
                 <select onChange={ev => this.onSelectItem(ev.target.value)} >
                     <option key="0" value="0">Select </option>)
                     {options}

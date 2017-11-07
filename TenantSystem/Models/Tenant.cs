@@ -114,7 +114,7 @@ namespace TenantSystem.Models
         public TenantBill GetBillDetailsOf(string month, string year)
         {
             return Bills
-                    .Where(x => (x.PreviousMonthReadingDate.Month == int.Parse(month))
+                    .Where(x => (x.CurrentMonthReadingDate.Month == int.Parse(month))
                                 && (x.CurrentMonthReadingDate.Year.ToString() == year))
                     .FirstOrDefault();
         }
