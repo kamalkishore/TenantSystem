@@ -223,12 +223,6 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult ViewGeneratedBill()
         {
-            ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.FullName
-            });
-
             return View();
         }
 
