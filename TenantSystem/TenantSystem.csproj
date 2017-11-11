@@ -54,6 +54,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="JavaScriptEngineSwitcher.ChakraCore, Version=2.4.10.0, Culture=neutral, PublicKeyToken=c608b2a8cc9e4472, processorArchitecture=MSIL">
       <HintPath>..\packages\JavaScriptEngineSwitcher.ChakraCore.2.4.10\lib\net45\JavaScriptEngineSwitcher.ChakraCore.dll</HintPath>
     </Reference>
@@ -78,6 +84,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="React.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=9aed67b161f7db78, processorArchitecture=MSIL">
       <HintPath>..\packages\React.Core.3.2.0\lib\net40\React.Core.dll</HintPath>
@@ -372,6 +381,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TenantSystem.BLL\TenantSystem.BLL.csproj">
+      <Project>{2B8441E9-BA3D-421E-86C8-625DDEC9F6A7}</Project>
+      <Name>TenantSystem.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TenantSystem.Infrastructure\TenantSystem.Infrastructure.csproj">
+      <Project>{d3ac5208-d96c-41e7-bfb8-0be7df4ddd29}</Project>
+      <Name>TenantSystem.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TenantSystem.Model\TenantSystem.Model.csproj">
+      <Project>{901c032d-ca62-4f6b-ba6a-728386d9ac58}</Project>
+      <Name>TenantSystem.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

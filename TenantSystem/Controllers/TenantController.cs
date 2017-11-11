@@ -4,6 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TenantSystem.BLL;
+using TenantSystem.Infrastructure;
+using TenantSystem.Infrastructure.Repository;
+using TenantSystem.Model.Interface;
 using TenantSystem.Models;
 
 namespace TenantSystem.Controllers
@@ -11,10 +15,17 @@ namespace TenantSystem.Controllers
     public class TenantController : Controller
     {
         private TenantDBContext _db;
+        private BillLogic _billLogic;
+        private ITenantRepository _tenantRepo;
 
         public TenantController()
         {
             _db = new TenantDBContext();
+
+
+            var session = SqlServerSessionFactory.CreateSessionFactory().OpenSession();
+            _tenantRepo = new TenantRepository(session);
+            _billLogic = new BillLogic(new BillRepository(session));
         }
 
         public ActionResult Index()
@@ -229,62 +240,37 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetBillDetailsOfSelectedMonthAndTenant(string month, string year, string tenantId)
         {
-            var billList = new List<TenantBill>();
+            var tenant = _tenantRepo.Get(int.Parse(tenantId));
 
-            var billTempList = _db.Tenant
-                                .Where(x => x.Id.ToString() == tenantId)
-                                .FirstOrDefault()
-                                .Bills.Where(x => (x.CurrentMonthReadingDate.Month == int.Parse(month))
-                                            && (x.CurrentMonthReadingDate.Year.ToString() == year))
-                                .FirstOrDefault(); ;
-
-            if (billTempList != null)
+            if (tenant == null)
             {
-                billList.Add(billTempList);
+                return Json(new { bills = new List<dynamic>() }, JsonRequestBehavior.AllowGet);
             }
-
-
-            return Json(new { bills = GetGeneratedBills(billList) }, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return Json(new { bills = _billLogic.GetAllBillsFor(tenant, month, year) }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]
         public ActionResult GetBillDetailsOfSelectedTenant(string tenantId)
         {
-            var billList = new List<TenantBill>();
-            var tenant = _db.Tenant
-                            .Where(x => x.Id.ToString() == tenantId)
-                            .FirstOrDefault();
+            var tenant = _tenantRepo.Get(int.Parse(tenantId));
 
             if(tenant == null)
             {
-                return Json(new { bills = GetGeneratedBills(billList) }, JsonRequestBehavior.AllowGet);
+                return Json(new { bills = new List<dynamic>()}, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                billList = tenant.Bills.ToList();
-                return Json(new { bills = GetGeneratedBills(billList) }, JsonRequestBehavior.AllowGet);
+                return Json(new { bills = _billLogic.GetAllBillsFor(tenant) }, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpGet]
         public ActionResult GetBillDetailsOfSelectedMonth(string month, string year)
         {
-            var billList = new List<TenantBill>();
-            TenantBill tenantBill;
-
-            var tenantList = _db.Tenant.ToList();
-
-            foreach (Tenant tenant in tenantList)
-            {
-                tenantBill = _db.Tenant.Find(tenant.Id).GetBillDetailsOf(month, year);
-
-                if (tenantBill != null)
-                {
-                    billList.Add(tenantBill);
-                }
-            }
-
-            return Json(new { bills = GetGeneratedBills(billList) }, JsonRequestBehavior.AllowGet);
+            return Json(new { bills = _billLogic.GetAllBillsFor(month, year) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -298,30 +284,6 @@ namespace TenantSystem.Controllers
             ).OrderBy(y=>y.Id).ToList();
 
             return Json(new { tenants = _db.Tenant.ToList() }, JsonRequestBehavior.AllowGet);
-        }
-
-        private IEnumerable<dynamic> GetGeneratedBills(IEnumerable<TenantBill> bills)
-        {
-            return bills.Select(x => new
-            {
-              Id = x.Id,
-              TenantName =x.TenantName,
-              MonthName = x.MonthName,
-              CurrentMonthReadingDate = x.CurrentMonthReadingDate,
-              CurrentMonthReading = x.CurrentMonthReading,
-              PreviousMonthReadingDate = x.PreviousMonthReadingDate,
-              PreviousMonthReading = x.PreviousMonthReading,
-              UnitConsumed = x.UnitConsumed,
-              PerUnitPrice = x.PerUnitPrice,
-              CurrentMonthPayableAmount = x.CurrentMonthPayableAmount,
-              PreviousMonthPendingAmount = x.PreviousMonthPendingAmount,
-              LastPaidAmountDate = x.LastPaidAmountDate,
-              LastPaidAmount = x.LastPaidAmount,
-              TotalPayableAmount = x.TotalPayableAmount,
-              Year = x.CurrentMonthReadingDate.Year
-            })
-            .OrderByDescending(y=>y.CurrentMonthReadingDate)
-            .ToList();
         }
 
         [HttpGet]

@@ -54,6 +54,8 @@
         let tenantAndDateBothSelected = (selectedDateValue !== "" && tenantId !== "" && tenantId !== 0);
 
         if (tenantAndDateBothSelected) {
+            console.log("tenantId !== 0 : " + (tenantId !== 0));
+            console.log("tenantId : " + tenantId );
             $.ajax(optionGetBillDetailsOfSelectedMonthAndTenant);
         }
         else if (tenantId !== "" && tenantId !== 0) {
