@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BillLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TenantLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TenantSystem.Model\TenantSystem.Model.csproj">

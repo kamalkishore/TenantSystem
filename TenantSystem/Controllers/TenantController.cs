@@ -16,6 +16,7 @@ namespace TenantSystem.Controllers
     {
         private TenantDBContext _db;
         private BillLogic _billLogic;
+        private TenantLogic _tenantLogic;
         private ITenantRepository _tenantRepo;
 
         public TenantController()
@@ -26,6 +27,7 @@ namespace TenantSystem.Controllers
             var session = SqlServerSessionFactory.CreateSessionFactory().OpenSession();
             _tenantRepo = new TenantRepository(session);
             _billLogic = new BillLogic(new BillRepository(session));
+            _tenantLogic = new TenantLogic(_billLogic, _tenantRepo);
         }
 
         public ActionResult Index()
@@ -276,14 +278,14 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetTenants()
         {
-            var listOfTenants = _db.Tenant.Select(x => new
+            var listOfTenants = _tenantRepo.GetAll().Select(x => new
                 {
                     Id = x.Id,
                     FullName = x.FullName
                 }
             ).OrderBy(y=>y.Id).ToList();
 
-            return Json(new { tenants = _db.Tenant.ToList() }, JsonRequestBehavior.AllowGet);
+            return Json(new { tenants = listOfTenants }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -303,30 +305,9 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetHistoryOfSelectedTenant(string tenantId)
         {
-            var billList = new List<TenantPayment>();
+            var tenant = _tenantRepo.Get(int.Parse(tenantId));
 
-            var tenant = _db.Tenant.Where(x => x.Id.ToString() == tenantId).FirstOrDefault();
-
-            var tenantBills = tenant.Bills.ToList();
-            var meterReadings = tenant.MeterReading.ToList();
-            var payment = tenant.Payments.ToList();
-
-            var result = from bill in tenantBills
-                         select new
-                         {
-                             TenantId = bill.TenantId,
-                             PaymentAmount = bill.LastPaidAmount,
-                             PaymentDate = bill.LastPaidAmountDate,
-                             CurrentMonthMeterReading = bill.CurrentMonthReading,
-                             CurrentMonthMeterReadingDate = bill.CurrentMonthReadingDate,
-                             PreviousMonthMeterReadingDate = bill.PreviousMonthReadingDate,
-                             PreviousMonthMeterReading = bill.PreviousMonthReading,
-                             AmountPayable = bill.CurrentMonthPayableAmount,
-                             PerUnitPrice = bill.PerUnitPrice,
-                             TotalAmountPayable = bill.TotalPayableAmount
-                         };
-
-            return Json(new { bills = result, TenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
+            return Json(new { bills = _tenantLogic.GetTenantHistory(tenant), TenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

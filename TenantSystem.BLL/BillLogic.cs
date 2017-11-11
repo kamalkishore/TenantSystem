@@ -69,5 +69,10 @@ namespace TenantSystem.BLL
         {
             return _billRepo.GetAll();
         }
+
+        public IEnumerable<Bill> GetBillsFor(Tenant tenant)
+        {
+            return _billRepo.GetAll(tenant);
+        }
     }
 }
