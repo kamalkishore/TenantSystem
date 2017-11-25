@@ -18,6 +18,9 @@ namespace TenantSystem.Controllers
         private BillLogic _billLogic;
         private TenantLogic _tenantLogic;
         private ITenantRepository _tenantRepo;
+        private IMeterReadingRepository _meterReadingRepo;
+        private IPreviousReadingDetailRepository _previousReadingRepo;
+        private IElectricMeterRepository _electricMeterRepo;
 
         public TenantController()
         {
@@ -26,8 +29,15 @@ namespace TenantSystem.Controllers
 
             var session = SqlServerSessionFactory.CreateSessionFactory().OpenSession();
             _tenantRepo = new TenantRepository(session);
+            _meterReadingRepo = new MeterReadingRepository(session);
+            _previousReadingRepo = new PreviousReadingDetailRepository(session);
             _billLogic = new BillLogic(new BillRepository(session));
-            _tenantLogic = new TenantLogic(_billLogic, _tenantRepo);
+            _electricMeterRepo = new ElectricMeterRepository(session);
+            _tenantLogic = new TenantLogic(_billLogic,
+                                           _tenantRepo,
+                                           _meterReadingRepo,
+                                           _electricMeterRepo,
+                                           _previousReadingRepo);
         }
 
         public ActionResult Index()
@@ -77,10 +87,10 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult AddTenantMeterReading()
         {
-            ViewBag.Tenant = _db.Tenant.Select(x => new SelectListItem
+            ViewBag.Tenant = _tenantLogic.GetTenants().Select(x => new SelectListItem
                                                                     {
                                                                         Value = x.Id.ToString(),
-                                                                        Text = x.FullName
+                                                                        Text = x.Name
                                                                     });
 
             ViewBag.PricePerUnit = _db.ElectricityMeterPerUnitPrices
@@ -278,11 +288,11 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetTenants()
         {
-            var listOfTenants = _tenantRepo.GetAll().Select(x => new
-                {
-                    Id = x.Id,
-                    FullName = x.FullName
-                }
+            var listOfTenants = _tenantLogic.GetTenants().Select(x => new
+            {
+                Id = x.Id,
+                FullName = x.Name
+            }
             ).OrderBy(y=>y.Id).ToList();
 
             return Json(new { tenants = listOfTenants }, JsonRequestBehavior.AllowGet);
@@ -305,9 +315,9 @@ namespace TenantSystem.Controllers
         [HttpGet]
         public ActionResult GetHistoryOfSelectedTenant(string tenantId)
         {
-            var tenant = _tenantRepo.Get(int.Parse(tenantId));
+            var tenant = _tenantLogic.GetTenant(int.Parse(tenantId));
 
-            return Json(new { bills = _tenantLogic.GetTenantHistory(tenant), TenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
+            return Json(new { bills = _tenantLogic.GetTenantHistory(tenant), TenantName = tenant.Name }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TenantSystem.BLL;
+using TenantSystem.BLL.ViewModel;
+using TenantSystem.Infrastructure;
+using TenantSystem.Infrastructure.Repository;
 using TenantSystem.Models;
 
 namespace TenantSystem.Controllers
@@ -10,10 +14,14 @@ namespace TenantSystem.Controllers
     public class HomeController : Controller
     {
         private TenantDBContext _db;
+        private ElectricMeterService _meterService;
 
         public HomeController()
         {
             _db = new TenantDBContext();
+            var session = SqlServerSessionFactory.CreateSessionFactory().OpenSession();
+            var meterRepo = new ElectricMeterRepository(session);
+            _meterService = new ElectricMeterService(meterRepo);
         }
       
         public ActionResult Index()
@@ -48,14 +56,27 @@ namespace TenantSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddMeter(ElectricMeter electricMeter)
+        public ActionResult AddMeter(ElectricMeterViewModel electricMeter)
         {            
             if (ModelState.IsValid)
             {
                 electricMeter.DateOfCurrentMeterReading = electricMeter.DateOfMeterInstalled;
                 electricMeter.CurrentMeterReading = electricMeter.InitialReading;
-                _db.ElectricMeter.Add(electricMeter);
-                _db.SaveChanges();                
+                var newMeter = new ElectricMeterViewModel
+                {
+                    InitialReading = electricMeter.InitialReading,
+                    CurrentMeterReading = electricMeter.CurrentMeterReading,
+                    DateOfCurrentMeterReading = electricMeter.DateOfCurrentMeterReading,
+                    DateOfMeterInstalled = electricMeter.DateOfMeterInstalled,
+                    IsOccupied = electricMeter.IsOccupied,
+                    MeterType = (int)electricMeter.MeterType,
+                    Name = electricMeter.Name
+                };
+
+                _meterService.AddMeter(newMeter);
+
+                //_db.ElectricMeter.Add(electricMeter);
+                //_db.SaveChanges();                
             }
             return RedirectToAction("AddMeter");
         }

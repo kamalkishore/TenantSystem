@@ -14,7 +14,7 @@ namespace TenantSystem.Model.Model
         public virtual string MiddleName { get; set; }
         public virtual string NickName { get; set; }
         public virtual int PhoneNumber { get; set; }
-        public virtual string FullName { get { return FirstName + " " + LastName; } }
+        //public virtual string FullName { get { return FirstName + " " + LastName; } }
         //public virtual ElectricMeter ElectricMeter { get; set; }
         //public Building Building { get; set; }
         //public Floor Floor { get; set; }

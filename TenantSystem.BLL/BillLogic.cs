@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TenantSystem.BLL.ViewModel;
 using TenantSystem.Model.Interface;
 using TenantSystem.Model.Model;
 
@@ -15,13 +16,13 @@ namespace TenantSystem.BLL
             _billRepo = billRepostory;
         }
 
-        public IEnumerable<dynamic> GetAllBillsFor(Tenant tenant)
+        public IEnumerable<BillViewModel> GetAllBillsFor(Tenant tenant)
         {
             var bills = _billRepo.GetAll(tenant);
             return GetBillList(bills);
         }
 
-        public IEnumerable<dynamic> GetAllBillsFor(string month, string year)
+        public IEnumerable<BillViewModel> GetAllBillsFor(string month, string year)
         {
             var bills =  _billRepo
                         .GetAll()
@@ -31,7 +32,7 @@ namespace TenantSystem.BLL
             return GetBillList(bills);
         }
 
-        public IEnumerable<dynamic> GetAllBillsFor(Tenant tenant, string month, string year)
+        public IEnumerable<BillViewModel> GetAllBillsFor(Tenant tenant, string month, string year)
         {
             var tenantBills = _billRepo.GetAll(tenant);
 
@@ -42,9 +43,9 @@ namespace TenantSystem.BLL
             return GetBillList(bills);
         }
 
-        private IEnumerable<dynamic> GetBillList(IEnumerable<Bill> bills)
+        private IEnumerable<BillViewModel> GetBillList(IEnumerable<Bill> bills)
         {
-            return bills.Select(x => new
+            return bills.Select(x => new BillViewModel
             {
                 Id = x.Id,
                 TenantName = x.Tenant.FirstName + " " + x.Tenant.LastName,
@@ -65,14 +66,48 @@ namespace TenantSystem.BLL
             .ToList();
         }
 
-        public IEnumerable<Bill> GetAllBills()
+        public IEnumerable<BillViewModel> GetAllBills()
         {
-            return _billRepo.GetAll();
+            return _billRepo.GetAll().Select(x=> new BillViewModel
+            {
+                Id = x.Id,
+                CurrentMonthPayableAmount = x.CurrentPayableAmount,
+                CurrentMonthReading = x.CurrentReading,
+                CurrentMonthReadingDate = x.CurrentReadingDate,
+                PreviousMonthPendingAmount = x.PreviousPendingAmount,
+                LastPaidAmount = x.LastPaidAmount,
+                LastPaidAmountDate = x.LastPaidAmountDate,
+                PerUnitPrice = x.PricePerUnit,
+                PreviousMonthReading = x.PreviousReading,
+                PreviousMonthReadingDate = x.PreviousReadingDate,
+                TenantName = x.Tenant.FirstName + " " + x.Tenant.LastName,
+                TotalPayableAmount = x.TotalAmount,
+                UnitConsumed = x.UnitConsumed,
+                Year = x.CurrentReadingDate.Year
+
+            });
         }
 
-        public IEnumerable<Bill> GetBillsFor(Tenant tenant)
+        public IEnumerable<BillViewModel> GetBillsFor(Tenant tenant)
         {
-            return _billRepo.GetAll(tenant);
+            return _billRepo.GetAll(tenant).Select(x => new BillViewModel
+            {
+                Id = x.Id,
+                CurrentMonthPayableAmount = x.CurrentPayableAmount,
+                CurrentMonthReading = x.CurrentReading,
+                CurrentMonthReadingDate = x.CurrentReadingDate,
+                PreviousMonthPendingAmount = x.PreviousPendingAmount,
+                LastPaidAmount = x.LastPaidAmount,
+                LastPaidAmountDate = x.LastPaidAmountDate,
+                PerUnitPrice = x.PricePerUnit,
+                PreviousMonthReading = x.PreviousReading,
+                PreviousMonthReadingDate = x.PreviousReadingDate,
+                TenantName = x.Tenant.FirstName + " " + x.Tenant.LastName,
+                TotalPayableAmount = x.TotalAmount,
+                UnitConsumed = x.UnitConsumed,
+                Year = x.CurrentReadingDate.Year
+
+            });
         }
     }
 }

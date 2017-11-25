@@ -40,10 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\IElectricMeterRepository.cs" />
+    <Compile Include="Interface\IMeterReadingRepository.cs" />
     <Compile Include="Interface\IBillRepository.cs" />
+    <Compile Include="Interface\IPreviousReadingDetailRepository.cs" />
     <Compile Include="Interface\ITenantRepository.cs" />
     <Compile Include="Model\Bill.cs" />
+    <Compile Include="Model\ElectricMeter.cs" />
     <Compile Include="Model\Tenant.cs" />
+    <Compile Include="Model\TenantMeterReading.cs" />
+    <Compile Include="Model\TenantPreviousReadingDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
