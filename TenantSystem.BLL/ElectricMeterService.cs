@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TenantSystem.BLL.ViewModel;
 using TenantSystem.Model.Interface;
 using TenantSystem.Model.Model;
@@ -35,16 +32,14 @@ namespace TenantSystem.BLL
 
         public void UpdateMeter(ElectricMeterViewModel meterView)
         {
-            var meter = new ElectricMeter
-            {
-                InitialReading = meterView.InitialReading,
-                CurrentMeterReading = meterView.CurrentMeterReading,
-                DateOfCurrentMeterReading = meterView.DateOfCurrentMeterReading,
-                DateOfMeterInstalled = meterView.DateOfMeterInstalled,
-                IsOccupied = false,
-                Name = meterView.Name,
-                MeterType = meterView.MeterType
-            };
+            var meter = _meterRepo.Get(meterView.Id);
+            meter.InitialReading = meterView.InitialReading;
+            meter.CurrentMeterReading = meterView.CurrentMeterReading;
+            meter.DateOfCurrentMeterReading = meterView.DateOfCurrentMeterReading;
+            meter.DateOfMeterInstalled = meterView.DateOfMeterInstalled;
+            meter.IsOccupied = meterView.IsOccupied;
+            meter.Name = meterView.Name;
+            meter.MeterType = meterView.MeterType;
 
             _meterRepo.Update(meter);
         }

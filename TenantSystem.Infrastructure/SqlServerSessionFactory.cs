@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,7 +17,7 @@ namespace TenantSystem.Infrastructure
         {
             get
             {
-                return @"Data Source=DESKTOP-NMGIVVB\KKDEV;Initial Catalog=TenantDB;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+                return ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
             }
         }
 
