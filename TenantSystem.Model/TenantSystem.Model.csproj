@@ -47,9 +47,11 @@
     <Compile Include="Interface\ITenantRepository.cs" />
     <Compile Include="Model\Bill.cs" />
     <Compile Include="Model\ElectricMeter.cs" />
+    <Compile Include="Model\Result.cs" />
     <Compile Include="Model\Tenant.cs" />
     <Compile Include="Model\TenantMeterReading.cs" />
     <Compile Include="Model\TenantPreviousReadingDetails.cs" />
+    <Compile Include="Model\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
