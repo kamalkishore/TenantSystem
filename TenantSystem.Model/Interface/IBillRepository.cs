@@ -14,6 +14,7 @@ namespace TenantSystem.Model.Interface
         void Delete(Bill bill);
         IEnumerable<Bill> GetAll();
         IEnumerable<Bill> GetAll(Tenant tenant);
+        IEnumerable<Bill> GetAll(int tenantId);
         Bill Get(long billId);
     }
 }

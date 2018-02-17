@@ -55,6 +55,13 @@ namespace TenantSystem.Infrastructure.Repository
                 .List();
         }
 
+        public IEnumerable<Bill> GetAll(int tenantId)
+        {
+            return _session.QueryOver<Bill>()
+                .Where(x => x.Tenant.Id == tenantId)
+                .List();
+        }
+
         public Bill Get(long billId)
         {
             return _session.Get<Bill>(billId);

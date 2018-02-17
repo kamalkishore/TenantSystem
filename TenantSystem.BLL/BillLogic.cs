@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TenantSystem.BLL.ViewModel;
 using TenantSystem.Model.Interface;
@@ -16,10 +15,24 @@ namespace TenantSystem.BLL
             _billRepo = billRepostory;
         }
 
-        public IEnumerable<BillViewModel> GetAllBillsFor(Tenant tenant)
+        public Result<IEnumerable<BillViewModel>> GetAllBillsFor(Tenant tenant)
         {
             var bills = _billRepo.GetAll(tenant);
-            return GetBillList(bills);
+
+            if (bills == null || bills.Count() == 0)
+                return Result.Fail<IEnumerable<BillViewModel>>("No Bills found for tenant");
+
+            return Result.Ok(GetBillList(bills));
+        }
+
+        public Result<IEnumerable<BillViewModel>> GetAllBillsFor(int tenantId)
+        {
+            var bills = _billRepo.GetAll(tenantId);
+
+            if (bills == null || bills.Count() == 0)
+                return Result.Fail<IEnumerable<BillViewModel>>("No Bills found for tenant");
+
+            return Result.Ok(GetBillList(bills));
         }
 
         public IEnumerable<BillViewModel> GetAllBillsFor(string month, string year)

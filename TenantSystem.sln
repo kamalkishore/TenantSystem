@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+# Visual Studio Express 14 for Web
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TenantSystem", "TenantSystem\TenantSystem.csproj", "{7E3DF8C0-DD97-4DBF-A2B9-7AF6E0962947}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TenantSystem.Infrastructure", "TenantSystem.Infrastructure\TenantSystem.Infrastructure.csproj", "{D3AC5208-D96C-41E7-BFB8-0BE7DF4DDD29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TenantSystem.BLL", "TenantSystem.BLL\TenantSystem.BLL.csproj", "{2B8441E9-BA3D-421E-86C8-625DDEC9F6A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TenantSystem.Api", "TenantSystem.Api\TenantSystem.Api.csproj", "{1AA8DC99-42FC-4862-BA2E-AF316BBDD308}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2B8441E9-BA3D-421E-86C8-625DDEC9F6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B8441E9-BA3D-421E-86C8-625DDEC9F6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B8441E9-BA3D-421E-86C8-625DDEC9F6A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AA8DC99-42FC-4862-BA2E-AF316BBDD308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AA8DC99-42FC-4862-BA2E-AF316BBDD308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AA8DC99-42FC-4862-BA2E-AF316BBDD308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AA8DC99-42FC-4862-BA2E-AF316BBDD308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
