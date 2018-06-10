@@ -20,7 +20,14 @@ namespace TenantSystem.Infrastructure.Repository
 
         public int Add(Tenant tenant)
         {
-            throw new NotImplementedException();
+            using (var transaction = _session.BeginTransaction())
+            {
+                var id = _session.Save(tenant);
+
+                transaction.Commit();
+
+                return (int)id;
+            }
         }
 
         public void Delete(Tenant tenant)
@@ -40,7 +47,11 @@ namespace TenantSystem.Infrastructure.Repository
 
         public void Update(Tenant tenant)
         {
-            throw new NotImplementedException();
+            using (var transaction = _session.BeginTransaction())
+            {
+                _session.Save(tenant);
+                transaction.Commit();                
+            }
         }
     }
 }

@@ -47,6 +47,7 @@
     <Compile Include="ViewModel\BillViewModel.cs" />
     <Compile Include="ViewModel\ElectricMeterViewModel.cs" />
     <Compile Include="ViewModel\MeterReadingViewModel.cs" />
+    <Compile Include="ViewModel\TenantPaymentViewModel.cs" />
     <Compile Include="ViewModel\TenantViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

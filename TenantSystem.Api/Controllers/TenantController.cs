@@ -61,20 +61,45 @@ namespace TenantSystem.Api.Controllers
             }            
         }
 
-        // GET: api/Tenant/5
-        public Envelope<TenantViewModel> Get(int id)
+        [Route("api/tenant/{id}/payments")]
+        public IHttpActionResult GetPayments(int id)
         {
-            return Envelope.Ok(_tenantLogic.GetTenant(id));
+            try
+            {
+                var result = _billLogic.GetAllBillsFor(id);
+
+                if (result.IsFailure)
+                    return Error(result.Error);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(HttpStatusCode.BadGateway);
+            }
+        }
+
+        // GET: api/Tenant/5
+        public IHttpActionResult Get(int id)
+        {
+            return Ok(_tenantLogic.GetTenant(id));
         }
 
         // POST: api/Tenant
-        public void Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody]TenantViewModel tenant)
         {
+            var result = _tenantLogic.AddTenant(tenant);
+
+            if(result.IsFailure)
+                return Error(result.Error);
+
+            return Ok();
         }
 
         // PUT: api/Tenant/5
         public void Put(int id, [FromBody]string value)
         {
+
         }
 
         // DELETE: api/Tenant/5

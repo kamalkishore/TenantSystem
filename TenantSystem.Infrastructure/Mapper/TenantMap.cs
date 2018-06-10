@@ -15,7 +15,7 @@ namespace TenantSystem.Infrastructure.Mapper
             Table("Tenants");
             //LazyLoad();
             Id(x => x.Id).GeneratedBy.Identity().Column("Id");
-            //References(x => x.ElectricMeter).Column("ElectricMeterId");
+            References(x => x.ElectricMeter).Column("MeterId");
             //References(x => x.LastBill).Column("LastBillId");
             //References(x => x.BalanceDetails).Column("BalanceDetailsId");
             Map(x => x.FirstName).Column("FirstName").Not.Nullable();

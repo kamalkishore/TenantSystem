@@ -16,6 +16,8 @@ namespace TenantSystem.BLL
 
         public int AddMeter(ElectricMeterViewModel meterView)
         {
+            meterView.DateOfCurrentMeterReading = meterView.DateOfMeterInstalled;
+            meterView.CurrentMeterReading = meterView.InitialReading;
             var meter = new ElectricMeter
             {
                 InitialReading = meterView.InitialReading,

@@ -54,6 +54,7 @@
     <Compile Include="Mapper\ElectricMeterMap.cs" />
     <Compile Include="Mapper\TenantMeterReadingMap.cs" />
     <Compile Include="Mapper\TenantMap.cs" />
+    <Compile Include="Mapper\TenantPaymentMap.cs" />
     <Compile Include="Mapper\TenantPreviousReadingDetailsMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ElectricMeterRepository.cs" />
@@ -62,6 +63,8 @@
     <Compile Include="Repository\PreviousReadingDetailRepository.cs" />
     <Compile Include="Repository\TenantRepository.cs" />
     <Compile Include="SqlServerSessionFactory.cs" />
+    <Compile Include="Util\SessionFactory.cs" />
+    <Compile Include="Util\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

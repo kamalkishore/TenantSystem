@@ -53,14 +53,31 @@ namespace TenantSystem.BLL
         public IEnumerable<TenantViewModel> GetTenants()
         {
             return _tenantRepo.GetAll()
-                .Select(x => new TenantViewModel { Id = x.Id, Name = x.FirstName + " " + x.LastName})
+                .Select(x => new TenantViewModel { Id = x.Id, FirstName = x.FirstName, LastName = x.LastName})
                 .ToList();
         }
 
         public TenantViewModel GetTenant(int id)
         {
             var tenant = _tenantRepo.Get(id);
-            return new TenantViewModel { Id = tenant.Id, Name = tenant.FirstName + " " + tenant.LastName };
+            return new TenantViewModel
+                        {
+                            Id = tenant.Id,
+                            FirstName = tenant.FirstName,
+                            LastName = tenant.LastName,
+                            PhoneNumber = tenant.PhoneNumber,
+                            Meter = new ElectricMeterViewModel
+                            {
+                                Id = tenant.ElectricMeter.Id,
+                                Name = tenant.ElectricMeter.Name,
+                                CurrentMeterReading = tenant.ElectricMeter.CurrentMeterReading,
+                                DateOfCurrentMeterReading = tenant.ElectricMeter.DateOfCurrentMeterReading,
+                                DateOfMeterInstalled = tenant.ElectricMeter.DateOfMeterInstalled,
+                                InitialReading = tenant.ElectricMeter.InitialReading,
+                                IsOccupied = tenant.ElectricMeter.IsOccupied,
+                                MeterType = tenant.ElectricMeter.MeterType
+                            }
+                        };
         }
 
         public void AddMeterReading(MeterReadingViewModel reading)
@@ -114,6 +131,55 @@ namespace TenantSystem.BLL
 
                 _previousReadingRepo.Add(previousReading);
             }
+        }
+
+        public Result AddTenant(TenantViewModel tenantViewModel)
+        {
+            if (tenantViewModel == null)
+                return Result.Fail("Null object cannot be processed");
+            if (tenantViewModel.Meter == null)
+                return Result.Fail("Meter is not assigned");
+            if (_electricMeterRepo.Get(tenantViewModel.Meter.Id) == null)
+                return Result.Fail("Invalid meter is assigned");
+
+            var newTenant = new Tenant();
+            newTenant.FirstName = tenantViewModel.FirstName;
+            newTenant.LastName = tenantViewModel.LastName;
+            newTenant.MiddleName = tenantViewModel.MiddleName;
+            newTenant.PhoneNumber = tenantViewModel.PhoneNumber;
+            newTenant.ElectricMeter = _electricMeterRepo.Get(tenantViewModel.Meter.Id);
+
+            _tenantRepo.Add(newTenant);
+
+            return Result.Ok();
+        }
+
+        public Result Editenant(TenantViewModel tenantViewModel)
+        {
+            if (tenantViewModel == null)
+                return Result.Fail("Null object cannot be processed");
+
+            if (_tenantRepo.Get(tenantViewModel.Id) == null)
+                return Result.Fail("Tenant does not exist");
+
+            //if (tenantViewModel.Meter == null)
+            //    return Result.Fail("Meter is not assigned");
+            //if (_electricMeterRepo.Get(tenantViewModel.Meter.Id) == null)
+            //    return Result.Fail("Invalid meter is assigned");
+
+            var existingTenant = _tenantRepo.Get(tenantViewModel.Id);
+            existingTenant.FirstName = tenantViewModel.FirstName;
+            existingTenant.LastName = tenantViewModel.LastName;
+            existingTenant.MiddleName = tenantViewModel.MiddleName;
+            existingTenant.PhoneNumber = tenantViewModel.PhoneNumber;
+
+            _tenantRepo.Update(existingTenant);
+            return Result.Ok();
+        }
+
+        public Result GetPayments(int id)
+        {
+
         }
     }
 }

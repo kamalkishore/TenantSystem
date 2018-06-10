@@ -24,7 +24,7 @@ namespace TenantSystem.Api.Controllers
 
         protected IHttpActionResult Error(string errorMessage)
         {
-            return BadRequest(result.ErrorMessage);
+            return BadRequest(errorMessage);
         }
     }
 }

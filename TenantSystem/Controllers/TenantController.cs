@@ -90,7 +90,7 @@ namespace TenantSystem.Controllers
             ViewBag.Tenant = _tenantLogic.GetTenants().Select(x => new SelectListItem
                                                                     {
                                                                         Value = x.Id.ToString(),
-                                                                        Text = x.Name
+                                                                        Text = x.FullName
                                                                     });
 
             ViewBag.PricePerUnit = _db.ElectricityMeterPerUnitPrices
@@ -291,7 +291,7 @@ namespace TenantSystem.Controllers
             var listOfTenants = _tenantLogic.GetTenants().Select(x => new
             {
                 Id = x.Id,
-                FullName = x.Name
+                FullName = x.FullName
             }
             ).OrderBy(y=>y.Id).ToList();
 
@@ -317,7 +317,7 @@ namespace TenantSystem.Controllers
         {
             var tenant = _tenantLogic.GetTenant(int.Parse(tenantId));
 
-            return Json(new { bills = _tenantLogic.GetTenantHistory(tenant), TenantName = tenant.Name }, JsonRequestBehavior.AllowGet);
+            return Json(new { bills = _tenantLogic.GetTenantHistory(tenant), TenantName = tenant.FullName }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
